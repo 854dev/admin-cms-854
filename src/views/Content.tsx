@@ -14,31 +14,69 @@ import Textarea from 'components/form/Textarea';
 // import DataChartJS from 'data/chartjs';
 
 import api from 'api';
+import {
+  ColumnDef,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+  createColumnHelper,
+} from '@tanstack/react-table';
+import TableComponent from 'components/Table';
 
 const Content = () => {
-  const { data, isFetching } = api.useGetContentListQuery({});
+  const { data, isFetching } = api.useGetContentListQuery({
+    page: 1,
+    limit: 10,
+  });
+
+  const columnHelper = createColumnHelper<any>();
+
+  const columns = [
+    columnHelper.accessor('title', {
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('creator', {
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('createdAt', {
+      cell: (info) => info.getValue(),
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor('updatedAt', {
+      cell: (info) => info.getValue(),
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor('status', {
+      cell: (info) => info.getValue(),
+      footer: (info) => info.column.id,
+    }),
+  ];
+
+  const table = useReactTable({
+    data: data ? data.data : [],
+    columns,
+    // Pipeline
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
   return (
     <main className='workspace'>
-      {/* Breadcrumb */}
-      <section className='breadcrumb'>
-        <h1>Content</h1>
-      </section>
+      <div className='container'>
+        {/* Breadcrumb */}
+        <section className='breadcrumb'>
+          <h1>Content</h1>
+        </section>
 
-      <div className='container'>{data ? JSON.stringify(data.data) : ''}</div>
+        <div className='card p-4'>
+          <div className='flex'>
+            {data ? <TableComponent table={table} className='w-full'></TableComponent> : null}
+          </div>
+        </div>
+      </div>
 
-      <table className='table'>
-        <thead>
-          <th>a</th>
-          <th>b</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-          </tr>
-        </tbody>
-      </table>
       <Footer />
     </main>
   );
