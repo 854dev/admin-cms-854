@@ -1,0 +1,92 @@
+/*
+Base
+*/
+
+html {
+  @apply font-body;
+}
+
+body {
+  @apply relative flex min-h-screen w-full bg-background text-sm text-normal;
+
+  &.backdrop-show {
+    @apply overflow-hidden;
+  }
+}
+
+#root {
+  @apply relative flex min-h-screen w-full;
+}
+
+h1,
+.h1 {
+  @apply font-heading text-3xl leading-10;
+}
+
+@media screen(md) {
+  h1,
+  .h1 {
+    @apply text-4xl;
+  }
+}
+
+h2,
+.h2 {
+  @apply font-heading text-2xl font-bold;
+}
+
+h3,
+.h3 {
+  @apply font-heading text-xl font-bold;
+}
+
+h4,
+.h4 {
+  @apply font-heading font-bold text-primary;
+}
+
+h5,
+.h5 {
+  @apply font-heading text-base font-bold;
+}
+
+h6,
+.h6 {
+  @apply font-heading text-xs font-bold;
+}
+
+a {
+  @apply text-primary;
+}
+
+small {
+  @apply text-xs text-muted;
+}
+
+input {
+  @apply min-w-0;
+}
+
+.dark {
+  a,
+  button {
+    &:hover {
+      @apply text-primary-700;
+    }
+  }
+}
+
+a,
+button {
+  &:hover {
+    @apply text-primary-700;
+  }
+
+  &:focus {
+    @apply outline-none;
+  }
+}
+
+hr {
+  @apply border-divider;
+}

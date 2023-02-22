@@ -1,0 +1,418 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Nunito+Sans:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Yantramanav:400,700&display=swap');
+
+/* Tippy.js */
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/themes/light-border.css';
+@import 'tippy.js/animations/scale.css';
+@import 'tippy.js/animations/shift-toward-extreme.css';
+
+/* Animate.css */
+@import 'animate.css/animate.css';
+
+/* Glide.js */
+@import '@glidejs/glide/dist/css/glide.core.css';
+
+/* Main */
+@import 'tailwindcss/base.css';
+@import 'base.css';
+@import 'tailwindcss/components.css';
+@import 'components.css';
+@import 'sections.css';
+@import 'tailwindcss/utilities.css';
+@import 'utilities.css';
+
+:root {
+  /* Primary */
+  --color-primary: theme('skin.sky.DEFAULT');
+  --color-primary-50: theme('skin.sky.50');
+  --color-primary-100: theme('skin.sky.100');
+  --color-primary-200: theme('skin.sky.200');
+  --color-primary-300: theme('skin.sky.300');
+  --color-primary-400: theme('skin.sky.400');
+  --color-primary-500: theme('skin.sky.500');
+  --color-primary-600: theme('skin.sky.600');
+  --color-primary-700: theme('skin.sky.700');
+  --color-primary-800: theme('skin.sky.800');
+  --color-primary-900: theme('skin.sky.900');
+
+  /* Gray */
+  --color-gray-50: theme('skin.gray.50');
+  --color-gray-100: theme('skin.gray.100');
+  --color-gray-200: theme('skin.gray.200');
+  --color-gray-300: theme('skin.gray.300');
+  --color-gray-400: theme('skin.gray.400');
+  --color-gray-500: theme('skin.gray.500');
+  --color-gray-600: theme('skin.gray.600');
+  --color-gray-700: theme('skin.gray.700');
+  --color-gray-800: theme('skin.gray.800');
+  --color-gray-900: theme('skin.gray.900');
+
+  /* Secondary */
+  --color-secondary: theme('skin.secondary.DEFAULT');
+
+  --color-text-normal: var(--color-gray-600);
+  --color-text-muted: var(--color-gray-500);
+  --color-text-highlighted: var(--color-gray-700);
+  --color-text-placeholder: var(--color-gray-400);
+  --color-text-component: theme('skin.white');
+
+  --color-divider: var(--color-gray-200);
+  --color-border: var(--color-gray-300);
+
+  --color-background: var(--color-gray-100);
+  --color-foreground: theme('skin.white');
+  --color-input: theme('skin.white');
+
+  /* Fonts */
+  --font-body: 'Nunito Sans';
+  --font-heading: 'Nunito';
+}
+
+.dark {
+  --color-text-normal: var(--color-gray-500);
+  --color-text-muted: var(--color-gray-600);
+  --color-text-highlighted: var(--color-gray-500);
+  --color-text-placeholder: var(--color-gray-700);
+  --color-text-component: var(--color-gray-800);
+
+  --color-divider: var(--color-gray-900);
+  --color-border: var(--color-gray-700);
+
+  --color-background: var(--color-gray-900);
+  --color-foreground: var(--color-gray-800);
+  --color-input: var(--color-gray-900);
+}
+
+.gray-slate {
+  --color-gray-50: theme('skin.slate.50');
+  --color-gray-100: theme('skin.slate.100');
+  --color-gray-200: theme('skin.slate.200');
+  --color-gray-300: theme('skin.slate.300');
+  --color-gray-400: theme('skin.slate.400');
+  --color-gray-500: theme('skin.slate.500');
+  --color-gray-600: theme('skin.slate.600');
+  --color-gray-700: theme('skin.slate.700');
+  --color-gray-800: theme('skin.slate.800');
+  --color-gray-900: theme('skin.slate.900');
+}
+
+.gray-zinc {
+  --color-gray-50: theme('skin.zinc.50');
+  --color-gray-100: theme('skin.zinc.100');
+  --color-gray-200: theme('skin.zinc.200');
+  --color-gray-300: theme('skin.zinc.300');
+  --color-gray-400: theme('skin.zinc.400');
+  --color-gray-500: theme('skin.zinc.500');
+  --color-gray-600: theme('skin.zinc.600');
+  --color-gray-700: theme('skin.zinc.700');
+  --color-gray-800: theme('skin.zinc.800');
+  --color-gray-900: theme('skin.zinc.900');
+}
+
+.gray-neutral {
+  --color-gray-50: theme('skin.neutral.50');
+  --color-gray-100: theme('skin.neutral.100');
+  --color-gray-200: theme('skin.neutral.200');
+  --color-gray-300: theme('skin.neutral.300');
+  --color-gray-400: theme('skin.neutral.400');
+  --color-gray-500: theme('skin.neutral.500');
+  --color-gray-600: theme('skin.neutral.600');
+  --color-gray-700: theme('skin.neutral.700');
+  --color-gray-800: theme('skin.neutral.800');
+  --color-gray-900: theme('skin.neutral.900');
+}
+
+.gray-stone {
+  --color-gray-50: theme('skin.stone.50');
+  --color-gray-100: theme('skin.stone.100');
+  --color-gray-200: theme('skin.stone.200');
+  --color-gray-300: theme('skin.stone.300');
+  --color-gray-400: theme('skin.stone.400');
+  --color-gray-500: theme('skin.stone.500');
+  --color-gray-600: theme('skin.stone.600');
+  --color-gray-700: theme('skin.stone.700');
+  --color-gray-800: theme('skin.stone.800');
+  --color-gray-900: theme('skin.stone.900');
+}
+
+.theme-red {
+  /* Primary */
+  --color-primary: theme('skin.red.DEFAULT');
+  --color-primary-50: theme('skin.red.50');
+  --color-primary-100: theme('skin.red.100');
+  --color-primary-200: theme('skin.red.200');
+  --color-primary-300: theme('skin.red.300');
+  --color-primary-400: theme('skin.red.400');
+  --color-primary-500: theme('skin.red.500');
+  --color-primary-600: theme('skin.red.600');
+  --color-primary-700: theme('skin.red.700');
+  --color-primary-800: theme('skin.red.800');
+  --color-primary-900: theme('skin.red.900');
+}
+
+.theme-orange {
+  /* Primary */
+  --color-primary: theme('skin.orange.DEFAULT');
+  --color-primary-50: theme('skin.orange.50');
+  --color-primary-100: theme('skin.orange.100');
+  --color-primary-200: theme('skin.orange.200');
+  --color-primary-300: theme('skin.orange.300');
+  --color-primary-400: theme('skin.orange.400');
+  --color-primary-500: theme('skin.orange.500');
+  --color-primary-600: theme('skin.orange.600');
+  --color-primary-700: theme('skin.orange.700');
+  --color-primary-800: theme('skin.orange.800');
+  --color-primary-900: theme('skin.orange.900');
+}
+
+.theme-amber {
+  /* Primary */
+  --color-primary: theme('skin.amber.DEFAULT');
+  --color-primary-50: theme('skin.amber.50');
+  --color-primary-100: theme('skin.amber.100');
+  --color-primary-200: theme('skin.amber.200');
+  --color-primary-300: theme('skin.amber.300');
+  --color-primary-400: theme('skin.amber.400');
+  --color-primary-500: theme('skin.amber.500');
+  --color-primary-600: theme('skin.amber.600');
+  --color-primary-700: theme('skin.amber.700');
+  --color-primary-800: theme('skin.amber.800');
+  --color-primary-900: theme('skin.amber.900');
+}
+
+.theme-yellow {
+  /* Primary */
+  --color-primary: theme('skin.yellow.DEFAULT');
+  --color-primary-50: theme('skin.yellow.50');
+  --color-primary-100: theme('skin.yellow.100');
+  --color-primary-200: theme('skin.yellow.200');
+  --color-primary-300: theme('skin.yellow.300');
+  --color-primary-400: theme('skin.yellow.400');
+  --color-primary-500: theme('skin.yellow.500');
+  --color-primary-600: theme('skin.yellow.600');
+  --color-primary-700: theme('skin.yellow.700');
+  --color-primary-800: theme('skin.yellow.800');
+  --color-primary-900: theme('skin.yellow.900');
+}
+
+.theme-lime {
+  /* Primary */
+  --color-primary: theme('skin.lime.DEFAULT');
+  --color-primary-50: theme('skin.lime.50');
+  --color-primary-100: theme('skin.lime.100');
+  --color-primary-200: theme('skin.lime.200');
+  --color-primary-300: theme('skin.lime.300');
+  --color-primary-400: theme('skin.lime.400');
+  --color-primary-500: theme('skin.lime.500');
+  --color-primary-600: theme('skin.lime.600');
+  --color-primary-700: theme('skin.lime.700');
+  --color-primary-800: theme('skin.lime.800');
+  --color-primary-900: theme('skin.lime.900');
+}
+
+.theme-green {
+  /* Primary */
+  --color-primary: theme('skin.green.DEFAULT');
+  --color-primary-50: theme('skin.green.50');
+  --color-primary-100: theme('skin.green.100');
+  --color-primary-200: theme('skin.green.200');
+  --color-primary-300: theme('skin.green.300');
+  --color-primary-400: theme('skin.green.400');
+  --color-primary-500: theme('skin.green.500');
+  --color-primary-600: theme('skin.green.600');
+  --color-primary-700: theme('skin.green.700');
+  --color-primary-800: theme('skin.green.800');
+  --color-primary-900: theme('skin.green.900');
+}
+
+.theme-emerald {
+  /* Primary */
+  --color-primary: theme('skin.emerald.DEFAULT');
+  --color-primary-50: theme('skin.emerald.50');
+  --color-primary-100: theme('skin.emerald.100');
+  --color-primary-200: theme('skin.emerald.200');
+  --color-primary-300: theme('skin.emerald.300');
+  --color-primary-400: theme('skin.emerald.400');
+  --color-primary-500: theme('skin.emerald.500');
+  --color-primary-600: theme('skin.emerald.600');
+  --color-primary-700: theme('skin.emerald.700');
+  --color-primary-800: theme('skin.emerald.800');
+  --color-primary-900: theme('skin.emerald.900');
+}
+
+.theme-teal {
+  /* Primary */
+  --color-primary: theme('skin.teal.DEFAULT');
+  --color-primary-50: theme('skin.teal.50');
+  --color-primary-100: theme('skin.teal.100');
+  --color-primary-200: theme('skin.teal.200');
+  --color-primary-300: theme('skin.teal.300');
+  --color-primary-400: theme('skin.teal.400');
+  --color-primary-500: theme('skin.teal.500');
+  --color-primary-600: theme('skin.teal.600');
+  --color-primary-700: theme('skin.teal.700');
+  --color-primary-800: theme('skin.teal.800');
+  --color-primary-900: theme('skin.teal.900');
+}
+
+.theme-cyan {
+  /* Primary */
+  --color-primary: theme('skin.cyan.DEFAULT');
+  --color-primary-50: theme('skin.cyan.50');
+  --color-primary-100: theme('skin.cyan.100');
+  --color-primary-200: theme('skin.cyan.200');
+  --color-primary-300: theme('skin.cyan.300');
+  --color-primary-400: theme('skin.cyan.400');
+  --color-primary-500: theme('skin.cyan.500');
+  --color-primary-600: theme('skin.cyan.600');
+  --color-primary-700: theme('skin.cyan.700');
+  --color-primary-800: theme('skin.cyan.800');
+  --color-primary-900: theme('skin.cyan.900');
+}
+
+.theme-blue {
+  /* Primary */
+  --color-primary: theme('skin.blue.DEFAULT');
+  --color-primary-50: theme('skin.blue.50');
+  --color-primary-100: theme('skin.blue.100');
+  --color-primary-200: theme('skin.blue.200');
+  --color-primary-300: theme('skin.blue.300');
+  --color-primary-400: theme('skin.blue.400');
+  --color-primary-500: theme('skin.blue.500');
+  --color-primary-600: theme('skin.blue.600');
+  --color-primary-700: theme('skin.blue.700');
+  --color-primary-800: theme('skin.blue.800');
+  --color-primary-900: theme('skin.blue.900');
+}
+
+.theme-indigo {
+  /* Primary */
+  --color-primary: theme('skin.indigo.DEFAULT');
+  --color-primary-50: theme('skin.indigo.50');
+  --color-primary-100: theme('skin.indigo.100');
+  --color-primary-200: theme('skin.indigo.200');
+  --color-primary-300: theme('skin.indigo.300');
+  --color-primary-400: theme('skin.indigo.400');
+  --color-primary-500: theme('skin.indigo.500');
+  --color-primary-600: theme('skin.indigo.600');
+  --color-primary-700: theme('skin.indigo.700');
+  --color-primary-800: theme('skin.indigo.800');
+  --color-primary-900: theme('skin.indigo.900');
+}
+
+.theme-violet {
+  /* Primary */
+  --color-primary: theme('skin.violet.DEFAULT');
+  --color-primary-50: theme('skin.violet.50');
+  --color-primary-100: theme('skin.violet.100');
+  --color-primary-200: theme('skin.violet.200');
+  --color-primary-300: theme('skin.violet.300');
+  --color-primary-400: theme('skin.violet.400');
+  --color-primary-500: theme('skin.violet.500');
+  --color-primary-600: theme('skin.violet.600');
+  --color-primary-700: theme('skin.violet.700');
+  --color-primary-800: theme('skin.violet.800');
+  --color-primary-900: theme('skin.violet.900');
+}
+
+.theme-purple {
+  /* Primary */
+  --color-primary: theme('skin.purple.DEFAULT');
+  --color-primary-50: theme('skin.purple.50');
+  --color-primary-100: theme('skin.purple.100');
+  --color-primary-200: theme('skin.purple.200');
+  --color-primary-300: theme('skin.purple.300');
+  --color-primary-400: theme('skin.purple.400');
+  --color-primary-500: theme('skin.purple.500');
+  --color-primary-600: theme('skin.purple.600');
+  --color-primary-700: theme('skin.purple.700');
+  --color-primary-800: theme('skin.purple.800');
+  --color-primary-900: theme('skin.purple.900');
+}
+
+.theme-fuchsia {
+  /* Primary */
+  --color-primary: theme('skin.fuchsia.DEFAULT');
+  --color-primary-50: theme('skin.fuchsia.50');
+  --color-primary-100: theme('skin.fuchsia.100');
+  --color-primary-200: theme('skin.fuchsia.200');
+  --color-primary-300: theme('skin.fuchsia.300');
+  --color-primary-400: theme('skin.fuchsia.400');
+  --color-primary-500: theme('skin.fuchsia.500');
+  --color-primary-600: theme('skin.fuchsia.600');
+  --color-primary-700: theme('skin.fuchsia.700');
+  --color-primary-800: theme('skin.fuchsia.800');
+  --color-primary-900: theme('skin.fuchsia.900');
+}
+
+.theme-pink {
+  /* Primary */
+  --color-primary: theme('skin.pink.DEFAULT');
+  --color-primary-50: theme('skin.pink.50');
+  --color-primary-100: theme('skin.pink.100');
+  --color-primary-200: theme('skin.pink.200');
+  --color-primary-300: theme('skin.pink.300');
+  --color-primary-400: theme('skin.pink.400');
+  --color-primary-500: theme('skin.pink.500');
+  --color-primary-600: theme('skin.pink.600');
+  --color-primary-700: theme('skin.pink.700');
+  --color-primary-800: theme('skin.pink.800');
+  --color-primary-900: theme('skin.pink.900');
+}
+
+.theme-rose {
+  /* Primary */
+  --color-primary: theme('skin.rose.DEFAULT');
+  --color-primary-50: theme('skin.rose.50');
+  --color-primary-100: theme('skin.rose.100');
+  --color-primary-200: theme('skin.rose.200');
+  --color-primary-300: theme('skin.rose.300');
+  --color-primary-400: theme('skin.rose.400');
+  --color-primary-500: theme('skin.rose.500');
+  --color-primary-600: theme('skin.rose.600');
+  --color-primary-700: theme('skin.rose.700');
+  --color-primary-800: theme('skin.rose.800');
+  --color-primary-900: theme('skin.rose.900');
+}
+
+.font-montserrat {
+  --font-heading: 'Montserrat';
+  --font-body: 'Montserrat';
+}
+
+.font-raleway {
+  --font-heading: 'Raleway';
+  --font-body: 'Raleway';
+}
+
+.font-poppins {
+  --font-heading: 'Poppins';
+  --font-body: 'Poppins';
+}
+
+.font-oswald {
+  --font-heading: 'Oswald';
+  --font-body: 'Oswald';
+}
+
+.font-roboto-condensed-roboto {
+  --font-heading: 'Roboto Condensed';
+  --font-body: 'Roboto';
+}
+
+.font-inter {
+  --font-heading: 'Inter';
+  --font-body: 'Inter';
+}
+
+.font-yantramanav {
+  --font-heading: 'Yantramanav';
+  --font-body: 'Yantramanav';
+}
