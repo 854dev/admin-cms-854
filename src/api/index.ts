@@ -10,6 +10,13 @@ const api = createApi({
         url: 'content',
       }),
     }),
+
+    getContentDetail: builder.query({
+      query: (id: number) => ({
+        method: 'get',
+        url: `content/${id}/body`,
+      }),
+    }),
   }),
 });
 

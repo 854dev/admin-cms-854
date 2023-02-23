@@ -33,6 +33,7 @@ const Breadcrumb = (props) => {
 
 Breadcrumb.propTypes = {
   title: PropTypes.string,
+  children: PropTypes.arrayOf(PropTypes.element),
 };
 
 const BreadcrumbItem = (props) => {
