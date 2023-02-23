@@ -21,7 +21,7 @@ import {
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
 import { ContentMeta } from 'types/common';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 const Content = () => {
   const { contentId } = useParams();
@@ -34,6 +34,20 @@ const Content = () => {
     deletedAt: '',
     status: 'draft',
   });
+
+  const [fetchContentDetail, contentDetailResponse] = api.useLazyGetContentDetailQuery();
+
+  const getContentDetail = async (contentId: number) => {
+    const res = await fetchContentDetail(contentId).unwrap();
+    setContentMeta({ ...res, body: undefined });
+    console.log(res);
+  };
+
+  useLayoutEffect(() => {
+    if (contentId) {
+      getContentDetail(Number(contentId));
+    }
+  }, [contentId]);
 
   return (
     <main className='workspace'>

@@ -21,6 +21,7 @@ function FormMeta(props: Props) {
         <div className='text-sm'>제목 (title)</div>
         <Input
           invalid={meta.title.length === 0}
+          value={meta.title}
           className='mt-1 py-2'
           placeholder='title'
           onChange={(e) => {
@@ -33,6 +34,7 @@ function FormMeta(props: Props) {
         <div className='text-sm'>작성자 (creator)</div>
         <Input
           invalid={meta.title.length === 0}
+          value={meta.creator}
           className='mt-1 py-2'
           placeholder='creator'
           onChange={(e) => {

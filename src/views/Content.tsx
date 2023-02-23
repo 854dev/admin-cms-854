@@ -4,7 +4,6 @@ import Footer from 'layouts/partials/Footer';
 // import Area from 'components/charts/Area';
 import Badge from 'components/Badge';
 import Breadcrumb, { BreadcrumbItem } from 'components/Breadcrumb';
-import Button from 'components/Button';
 import CustomSelect from 'components/form/CustomSelect';
 import Input from 'components/form/Input';
 import Label from 'components/form/Label';
@@ -23,16 +22,41 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import TableComponent from 'components/Table';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Content = () => {
+  const navigate = useNavigate();
+
   const { data, isFetching } = api.useGetContentListQuery({
     page: 1,
     limit: 10,
   });
 
+  const onClickIdBadge = (id: string) => {
+    alert(id);
+  };
+
   const columnHelper = createColumnHelper<any>();
 
   const columns = [
+    columnHelper.accessor('contentId', {
+      header: 'contentId',
+      cell: (info) => (
+        <div className='flex flex-row justify-evenly'>
+          {info.getValue()}
+          <Link to={`/content/${info.getValue()}`}>
+            <Badge
+              className={'cursor-pointer'}
+              onClick={() => {
+                onClickIdBadge(info.getValue());
+              }}
+            >
+              수정
+            </Badge>
+          </Link>
+        </div>
+      ),
+    }),
     columnHelper.accessor('title', {
       cell: (info) => info.getValue(),
     }),
