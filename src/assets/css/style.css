@@ -7,6 +7,9 @@
 @import url('https://fonts.googleapis.com/css?family=Inter:400,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Yantramanav:400,700&display=swap');
 
+/* Quill */
+@import 'react-quill/dist/quill.snow.css';
+
 /* Tippy.js */
 @import 'tippy.js/dist/tippy.css';
 @import 'tippy.js/themes/light-border.css';

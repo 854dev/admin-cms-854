@@ -68,10 +68,13 @@ const Content = () => {
 
         <div className='card p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
-          <FormBody body={[]} onSubmit={() => {}}></FormBody>
+          {contentDetailResponse.data ? (
+            <>
+              <FormBody body={contentDetailResponse.data.body ?? []} onSubmit={() => {}}></FormBody>
+            </>
+          ) : null}
         </div>
       </div>
-
       <Footer />
     </main>
   );
