@@ -14,7 +14,7 @@ const api = createApi({
     getContentDetail: builder.query({
       query: (id: number) => ({
         method: 'get',
-        url: `content/${id}/body`,
+        url: `content/${id}`,
       }),
     }),
   }),
