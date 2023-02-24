@@ -22,6 +22,7 @@ import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
 import { ContentMeta } from 'types/common';
 import { useLayoutEffect, useState } from 'react';
+import FormBody from './content/FormBody';
 
 const Content = () => {
   const { contentId } = useParams();
@@ -40,7 +41,6 @@ const Content = () => {
   const getContentDetail = async (contentId: number) => {
     const res = await fetchContentDetail(contentId).unwrap();
     setContentMeta({ ...res, body: undefined });
-    console.log(res);
   };
 
   useLayoutEffect(() => {
@@ -61,8 +61,14 @@ const Content = () => {
           </Breadcrumb>
         </section>
 
-        <div className='card p-4'>
+        <div className='card mb-5 p-4'>
+          <h3 className='mb-4'>콘텐츠 정보</h3>
           <FormMeta meta={contentMeta} setMeta={setContentMeta}></FormMeta>
+        </div>
+
+        <div className='card p-4'>
+          <h3 className='mb-4'>콘텐츠 내용</h3>
+          <FormBody body={[]} onSubmit={() => {}}></FormBody>
         </div>
       </div>
 
