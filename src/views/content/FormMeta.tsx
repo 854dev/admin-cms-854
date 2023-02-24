@@ -17,11 +17,11 @@ function FormMeta(props: Props) {
   };
 
   return (
-    <div className='grid w-full grid-cols-2 gap-2'>
+    <div className='grid w-full grid-cols-2 gap-4'>
       <div>
         <div className='text-sm'>제목 (title)</div>
         <Input
-          invalid={meta.title.length === 0}
+          invalid={false}
           value={meta.title}
           className='mt-1 py-2'
           placeholder='title'
@@ -34,7 +34,7 @@ function FormMeta(props: Props) {
       <div>
         <div className='text-sm'>작성자 (creator)</div>
         <Input
-          invalid={meta.title.length === 0}
+          invalid={false}
           value={meta.creator}
           className='mt-1 py-2'
           placeholder='creator'
