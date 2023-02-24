@@ -20,7 +20,7 @@ import {
 } from '@tanstack/react-table';
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
-import { ContentMeta } from 'types/common';
+import { ContentBody, ContentMeta } from 'types/common';
 import { useLayoutEffect, useState } from 'react';
 import FormBody from './content/FormBody';
 
@@ -36,11 +36,14 @@ const Content = () => {
     status: 'draft',
   });
 
+  const [contentBody, setContentBody] = useState<ContentBody[]>([]);
+
   const [fetchContentDetail, contentDetailResponse] = api.useLazyGetContentDetailQuery();
 
   const getContentDetail = async (contentId: number) => {
     const res = await fetchContentDetail(contentId).unwrap();
     setContentMeta({ ...res, body: undefined });
+    setContentBody(res.body);
   };
 
   useLayoutEffect(() => {
@@ -73,6 +76,10 @@ const Content = () => {
               <FormBody body={contentDetailResponse.data.body ?? []} onSubmit={() => {}}></FormBody>
             </>
           ) : null}
+        </div>
+
+        <div className='flex flex-row justify-end p-4'>
+          <Button>저장</Button>
         </div>
       </div>
       <Footer />

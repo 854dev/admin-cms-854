@@ -49,12 +49,12 @@ function FormMeta(props: Props) {
 
         <div className='mb-4 flex flex-row justify-start gap-4'>
           <div className='cursor-pointer' onClick={() => onChange('status', 'draft')}>
-            <Badge className={meta.status === 'draft' ? 'bg-primary' : 'bg-secondary'}>
+            <Badge className={`p-3 ${meta.status === 'draft' ? 'bg-primary' : 'bg-gray-300'}`}>
               <span>draft : 초안</span>
             </Badge>
           </div>
           <div className='cursor-pointer' onClick={() => onChange('status', 'publish')}>
-            <Badge className={meta.status === 'publish' ? 'bg-primary' : 'bg-secondary'}>
+            <Badge className={`p-3 ${meta.status === 'publish' ? 'bg-primary' : 'bg-gray-300'}`}>
               <span>publish : 게시</span>
             </Badge>
           </div>
