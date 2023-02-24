@@ -14,10 +14,10 @@ function FormBody(props: Props) {
 
   const EachBodyForm = (props: ContentBody) => {
     return (
-      <div className='border-red-400 min-h-[480px] w-full rounded-md border border-solid p-6'>
+      <div className='border-red-400 min-h-[384px] w-full rounded-md border border-solid p-6'>
         <h3>{props.bodyFieldName}</h3>
         <ReactQuill
-          className='h-full'
+          className='h-64'
           theme='snow'
           value={props.bodyFieldValue}
           onChange={() => {}}
