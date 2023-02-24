@@ -6,6 +6,7 @@ import Error404 from 'views/Error404';
 import ContentType from 'views/ContentType';
 import Content from 'views/Content';
 import ContentDetail from 'views/ContentDetail';
+import ContentAdd from 'views/ContentAdd';
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
         <Route element={<LayoutDefault />}>
           <Route path='/' element={<Dashboard />} />
           <Route path='/content' element={<Content />} />
+          <Route path='/content/add' element={<ContentAdd />} />
           <Route path='/content/:contentId' element={<ContentDetail />} />
           <Route path='/content-type' element={<ContentType />} />
           <Route path='*' element={<Error404 />} />

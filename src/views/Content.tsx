@@ -23,6 +23,7 @@ import {
 } from '@tanstack/react-table';
 import TableComponent from 'components/Table';
 import { Link, useNavigate } from 'react-router-dom';
+import Button from 'components/Button';
 
 const Content = () => {
   const navigate = useNavigate();
@@ -93,6 +94,14 @@ const Content = () => {
         <section className='breadcrumb'>
           <h1>Content</h1>
         </section>
+
+        <div className='mb-4 flex flex-row justify-between'>
+          <Link to='/content/add'>
+            <Button className='px-4 py-1 text-lg'>
+              <span>게시글 작성</span>
+            </Button>
+          </Link>
+        </div>
 
         <div className='card p-4'>
           <div className='flex'>
