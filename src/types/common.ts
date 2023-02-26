@@ -17,3 +17,11 @@ export interface ContentBody {
 }
 
 export interface ContentBase<T = any> extends ContentMeta {}
+
+export interface CreateContentDto extends ContentMeta {
+  body: ContentBody[];
+}
+
+export interface UpdateContentDto extends CreateContentDto {
+  contentId: string;
+}

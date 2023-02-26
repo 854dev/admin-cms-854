@@ -42,6 +42,8 @@ const Content = () => {
 
   const [fetchContentDetail, contentDetailResponse] = api.useLazyGetContentDetailQuery();
 
+  const [triggerPatchContent, patchContentResponse] = api.usePatchContentMutation();
+
   const getContentDetail = async (contentId: number) => {
     const res = await fetchContentDetail(contentId).unwrap();
     setContentMeta({ ...res, body: undefined });
@@ -50,12 +52,13 @@ const Content = () => {
   };
 
   // TODO
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const param = {
+      contentId: contentId ?? '',
       ...contentMeta,
       body: contentBodyRef.current.contentBody,
     };
-    console.log(param);
+    const res = await triggerPatchContent(param);
   };
 
   useLayoutEffect(() => {

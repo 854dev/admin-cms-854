@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { CreateContentDto, UpdateContentDto } from 'types/common';
 
 // Define a service using a base URL and expected endpoints
 const api = createApi({
@@ -15,6 +16,22 @@ const api = createApi({
       query: (id: number) => ({
         method: 'get',
         url: `content/${id}`,
+      }),
+    }),
+
+    postContent: builder.mutation({
+      query: (dto: CreateContentDto) => ({
+        method: 'post',
+        url: `content/`,
+        body: dto,
+      }),
+    }),
+
+    patchContent: builder.mutation({
+      query: (dto: UpdateContentDto) => ({
+        method: 'patch',
+        url: `content/${dto.contentId}`,
+        body: dto,
       }),
     }),
   }),
