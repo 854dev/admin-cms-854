@@ -46,6 +46,7 @@ const Content = () => {
     const res = await fetchContentDetail(contentId).unwrap();
     setContentMeta({ ...res, body: undefined });
     setContentBody(res.body);
+    contentBodyRef.current.contentBody = res.body;
   };
 
   // TODO
