@@ -66,20 +66,26 @@ const Content = () => {
 
         <div className='card mb-5 p-4'>
           <h3 className='mb-4'>콘텐츠 정보</h3>
-          <FormMeta meta={contentMeta} setMeta={setContentMeta}></FormMeta>
+          <FormMeta contentMeta={contentMeta} setContentMeta={setContentMeta}></FormMeta>
         </div>
 
         <div className='card p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
           {contentDetailResponse.data ? (
             <>
-              <FormBody body={contentDetailResponse.data.body ?? []} onSubmit={() => {}}></FormBody>
+              <FormBody contentBody={contentBody ?? []} setContentBody={setContentBody}></FormBody>
             </>
           ) : null}
         </div>
 
         <div className='flex flex-row justify-end p-4'>
-          <Button>저장</Button>
+          <Button
+            onClick={() => {
+              console.log('first');
+            }}
+          >
+            저장
+          </Button>
         </div>
       </div>
       <Footer />
