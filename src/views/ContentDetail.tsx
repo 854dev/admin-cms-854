@@ -21,7 +21,7 @@ import {
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
 import { ContentBody, ContentMeta } from 'types/common';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import FormBody from './content/FormBody';
 
 const Content = () => {
@@ -38,12 +38,23 @@ const Content = () => {
 
   const [contentBody, setContentBody] = useState<ContentBody[]>([]);
 
+  const contentBodyRef = useRef<{ contentBody: ContentBody[] }>({ contentBody: [] });
+
   const [fetchContentDetail, contentDetailResponse] = api.useLazyGetContentDetailQuery();
 
   const getContentDetail = async (contentId: number) => {
     const res = await fetchContentDetail(contentId).unwrap();
     setContentMeta({ ...res, body: undefined });
     setContentBody(res.body);
+  };
+
+  // TODO
+  const onSubmit = () => {
+    const param = {
+      ...contentMeta,
+      body: contentBodyRef.current.contentBody,
+    };
+    console.log(param);
   };
 
   useLayoutEffect(() => {
@@ -73,19 +84,13 @@ const Content = () => {
           <h3 className='mb-4'>콘텐츠 내용</h3>
           {contentDetailResponse.data ? (
             <>
-              <FormBody contentBody={contentBody ?? []} setContentBody={setContentBody}></FormBody>
+              <FormBody ref={contentBodyRef} contentBody={contentBody ?? []}></FormBody>
             </>
           ) : null}
         </div>
 
         <div className='flex flex-row justify-end p-4'>
-          <Button
-            onClick={() => {
-              console.log('first');
-            }}
-          >
-            저장
-          </Button>
+          <Button onClick={onSubmit}>저장</Button>
         </div>
       </div>
       <Footer />
