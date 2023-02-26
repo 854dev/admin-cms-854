@@ -13,6 +13,8 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
     const { contentBody } = props;
 
     const EachBodyForm = (props: ContentBody) => {
+      // const currentValue = useRef<{ text: string }>();
+
       const onChangeQuill = (e: string) => {
         const newBody = contentBody.map((elem) => {
           if (elem.bodyFieldId === props.bodyFieldId) {
@@ -27,6 +29,8 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
         if (contentBodyRef.current) {
           contentBodyRef.current.contentBody = newBody;
         }
+
+        // setContentBody(newBody);
       };
 
       return (

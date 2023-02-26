@@ -3,7 +3,8 @@ import { CreateContentDto, UpdateContentDto } from 'types/common';
 
 // Define a service using a base URL and expected endpoints
 const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080', mode: 'cors' }),
+
   endpoints: (builder) => ({
     getContentList: builder.query({
       query: () => ({
@@ -29,7 +30,7 @@ const api = createApi({
 
     patchContent: builder.mutation({
       query: (dto: UpdateContentDto) => ({
-        method: 'patch',
+        method: 'put',
         url: `content/${dto.contentId}`,
         body: dto,
       }),

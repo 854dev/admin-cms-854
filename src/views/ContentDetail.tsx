@@ -58,6 +58,7 @@ const Content = () => {
       ...contentMeta,
       body: contentBodyRef.current.contentBody,
     };
+    setContentBody(contentBodyRef.current.contentBody);
     const res = await triggerPatchContent(param);
   };
 
@@ -86,11 +87,10 @@ const Content = () => {
 
         <div className='card p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
-          {contentDetailResponse.data ? (
-            <>
-              <FormBody ref={contentBodyRef} contentBody={contentBody ?? []}></FormBody>
-            </>
-          ) : null}
+          <FormBody
+            ref={contentBodyRef}
+            contentBody={contentBody ?? contentBodyRef.current.contentBody}
+          ></FormBody>
         </div>
 
         <div className='flex flex-row justify-end p-4'>
