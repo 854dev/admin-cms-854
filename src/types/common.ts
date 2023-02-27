@@ -45,8 +45,8 @@ export interface ContentTypeDetail extends ContentType {
 }
 
 export interface CreateBodyFieldDto {
-  contentTypeId: string;
-  fieldTypeId: string;
+  contentTypeId: string | number;
+  fieldTypeId: string | number;
   fieldName: string;
   fieldTypeName: bodyFieldType;
 }
