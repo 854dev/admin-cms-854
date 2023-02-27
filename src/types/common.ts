@@ -25,3 +25,19 @@ export interface CreateContentDto extends ContentMeta {
 export interface UpdateContentDto extends CreateContentDto {
   contentId: string;
 }
+
+export interface ContentType {
+  id: number;
+  name: string;
+}
+
+export interface ContentBodyField {
+  id: number;
+  contentTypeId: string;
+  fieldTypeId: number;
+  fieldName: string;
+}
+
+export interface ContentTypeDetail extends ContentType {
+  bodyField: ContentBodyField[];
+}

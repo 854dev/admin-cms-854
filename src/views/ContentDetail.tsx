@@ -42,7 +42,7 @@ const Content = () => {
 
   const [fetchContentDetail, contentDetailResponse] = api.useLazyGetContentDetailQuery();
 
-  const [triggerPatchContent, patchContentResponse] = api.usePatchContentMutation();
+  const [triggerPatchContent, patchContentResponse] = api.usePutContentMutation();
 
   const getContentDetail = async (contentId: number) => {
     const res = await fetchContentDetail(contentId).unwrap();

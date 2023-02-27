@@ -28,11 +28,46 @@ const api = createApi({
       }),
     }),
 
-    patchContent: builder.mutation({
+    putContent: builder.mutation({
       query: (dto: UpdateContentDto) => ({
         method: 'put',
         url: `content/${dto.contentId}`,
         body: dto,
+      }),
+    }),
+
+    getContentTypeList: builder.query({
+      query: () => ({
+        method: 'get',
+        url: 'content-type',
+      }),
+    }),
+
+    getContentTypeDetail: builder.query({
+      query: (id: string) => ({
+        method: 'get',
+        url: `content-type/${id}`,
+      }),
+    }),
+
+    postContentType: builder.query({
+      query: () => ({
+        method: 'post',
+        url: 'content-type',
+      }),
+    }),
+
+    putContentType: builder.query({
+      query: () => ({
+        method: 'put',
+        url: 'content-type',
+      }),
+    }),
+
+    deleteContentType: builder.query({
+      query: () => ({
+        method: 'delete',
+        url: 'content-type',
       }),
     }),
   }),
