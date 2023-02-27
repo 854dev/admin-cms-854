@@ -1,3 +1,5 @@
+import { ChangeEventHandler, useEffect, useState } from 'react';
+
 import Footer from 'layouts/partials/Footer';
 
 // import LineWithAnnotationChart from 'components/charts/LineWithAnnotationChart';
@@ -11,9 +13,43 @@ import Label from 'components/form/Label';
 // import PolarArea from 'components/charts/PolarArea';
 import Textarea from 'components/form/Textarea';
 
-// import DataChartJS from 'data/chartjs';
+import { ContentBody, ContentMeta, ContentType } from 'types/common';
+import api from 'api';
 
-const ContentType = () => {
+const ContentTypeManage = () => {
+  const [contentType, setcontentType] = useState('-1');
+
+  const [contentTypeDetailTrigger, contentTypeDetailResult] =
+    api.useLazyGetContentTypeDetailQuery();
+
+  const {
+    data: contentTypeListData,
+    error: contentTypeListError,
+    isSuccess: contentTypeListSuccess,
+  } = api.useGetContentTypeListQuery({
+    page: 1,
+    limit: 50,
+  });
+
+  const getContentTypeDetail = async (id: string) => {
+    const res = await contentTypeDetailTrigger(id).unwrap();
+  };
+
+  const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
+    setcontentType(e.currentTarget.value);
+    getContentTypeDetail(e.currentTarget.value);
+  };
+
+  useEffect(() => {
+    if (contentTypeListSuccess) {
+      if (contentTypeListData.data.length > 1) {
+        const firstId = contentTypeListData.data[0].id;
+        setcontentType(firstId);
+        getContentTypeDetail(firstId);
+      }
+    }
+  }, [contentTypeListSuccess]);
+
   return (
     <main className='workspace'>
       {/* Breadcrumb */}
@@ -21,11 +57,30 @@ const ContentType = () => {
         <h1>Content Type</h1>
       </section>
 
-      <div></div>
+      {/* content type Select */}
+      <div className='card relative mb-5 p-4'>
+        <h3>콘텐츠 타입 선택</h3>
+        <CustomSelect onChange={onChangeContentType}>
+          {contentTypeListData ? (
+            <>
+              {contentTypeListData.data.map((elem: ContentType) => (
+                <option key={elem.id} value={elem.id}>
+                  {elem.name}
+                </option>
+              ))}
+            </>
+          ) : null}
+        </CustomSelect>
+      </div>
+
+      {/* manage body field */}
+      <div>
+        {contentTypeDetailResult.isSuccess ? JSON.stringify(contentTypeDetailResult.data) : null}
+      </div>
 
       <Footer />
     </main>
   );
 };
 
-export default ContentType;
+export default ContentTypeManage;
