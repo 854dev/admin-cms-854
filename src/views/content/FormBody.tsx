@@ -29,8 +29,6 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
         if (contentBodyRef.current) {
           contentBodyRef.current.contentBody = newBody;
         }
-
-        // setContentBody(newBody);
       };
 
       return (
