@@ -80,10 +80,9 @@ const api = createApi({
     }),
 
     deleteBodyField: builder.mutation({
-      query: (body: CreateBodyFieldDto) => ({
+      query: (id: string) => ({
         method: 'delete',
         url: `body-field/${id}`,
-        body,
       }),
     }),
   }),
