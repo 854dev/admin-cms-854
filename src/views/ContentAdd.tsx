@@ -23,6 +23,7 @@ import {
 import FormBody from './content/FormBody';
 import Dropdown from 'components/Dropdown';
 import CustomSelect from 'components/form/CustomSelect';
+import { createContentBodyFromBodyField } from 'util/util';
 
 const ContentAdd = () => {
   const contentBodyRef = useRef<{ contentBody: ContentBody[] }>({ contentBody: [] });
@@ -43,6 +44,8 @@ const ContentAdd = () => {
   const [contentTypeDetailTrigger, contentTypeDetailResult] =
     api.useLazyGetContentTypeDetailQuery();
 
+  const [postContentTrigger, postContentResult] = api.usePostContentMutation();
+
   const [contentMeta, setContentMeta] = useState<ContentMeta>({
     title: '',
     creator: '',
@@ -53,18 +56,25 @@ const ContentAdd = () => {
   });
 
   const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
+    setcontentType(e.currentTarget.value);
     getContentTypeDetail(e.currentTarget.value);
   };
 
   const getContentTypeDetail = async (id: string) => {
     const res = await contentTypeDetailTrigger(id).unwrap();
-    console.log(res);
-    // contentBodyRef.current.contentBody = res;
-    console.log(contentBodyRef.current.contentBody);
+    const contentBody = createContentBodyFromBodyField(res.bodyField);
+    contentBodyRef.current.contentBody = contentBody;
+    setContentBody(contentBody);
   };
 
-  const onSubmit = () => {
-    console.log('first');
+  const onSubmit = async () => {
+    const param = {
+      contentTypeId: contentType,
+      ...contentMeta,
+      body: contentBodyRef.current.contentBody,
+    };
+    setContentBody(contentBodyRef.current.contentBody);
+    const res = await postContentTrigger(param);
   };
 
   useEffect(() => {
@@ -111,13 +121,10 @@ const ContentAdd = () => {
 
         <div className='card p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
-          {JSON.stringify(
-            contentTypeDetailResult.isSuccess ? contentTypeDetailResult.data.bodyField : 'ㅗ'
-          )}
-          {/* <FormBody
+          <FormBody
             ref={contentBodyRef}
             contentBody={contentBodyRef.current.contentBody}
-          ></FormBody> */}
+          ></FormBody>
         </div>
 
         <div className='flex flex-row justify-end p-4'>
