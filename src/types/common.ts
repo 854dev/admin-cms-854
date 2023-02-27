@@ -1,5 +1,6 @@
 export type contentMetaDate = string | null; // "2023-02-16T04:48:28.000Z",
 export type contentMetaStatus = 'draft' | 'publish';
+export type bodyFieldType = 'string' | 'number' | 'boolean' | 'text';
 
 export interface ContentMeta {
   title: string;
@@ -36,6 +37,7 @@ export interface ContentBodyField {
   contentTypeId: string;
   fieldTypeId: number;
   fieldName: string;
+  fieldTypeName: bodyFieldType;
 }
 
 export interface ContentTypeDetail extends ContentType {
