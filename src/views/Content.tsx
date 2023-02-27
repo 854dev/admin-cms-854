@@ -28,10 +28,16 @@ import Button from 'components/Button';
 const Content = () => {
   const navigate = useNavigate();
 
-  const { data, isFetching } = api.useGetContentListQuery({
-    page: 1,
-    limit: 10,
-  });
+  const { data, isFetching } = api.useGetContentListQuery(
+    {
+      page: 1,
+      limit: 10,
+    },
+    {
+      skip: false,
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const onClickIdBadge = (id: string) => {
     alert(id);
