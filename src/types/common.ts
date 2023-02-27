@@ -43,3 +43,10 @@ export interface ContentBodyField {
 export interface ContentTypeDetail extends ContentType {
   bodyField: ContentBodyField[];
 }
+
+export interface CreateBodyFieldDto {
+  contentTypeId: string;
+  fieldTypeId: string;
+  fieldName: string;
+  fieldTypeName: bodyFieldType;
+}
