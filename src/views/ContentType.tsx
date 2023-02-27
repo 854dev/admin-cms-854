@@ -12,7 +12,14 @@ import Label from 'components/form/Label';
 // import PolarArea from 'components/charts/PolarArea';
 import Textarea from 'components/form/Textarea';
 
-import { ContentBody, ContentMeta, ContentType, ContentBodyField } from 'types/common';
+import {
+  ContentBody,
+  ContentMeta,
+  ContentType,
+  ContentBodyField,
+  CreateBodyFieldDto,
+  bodyFieldType,
+} from 'types/common';
 import api from 'api';
 
 const ContentTypeManage = () => {
@@ -25,14 +32,24 @@ const ContentTypeManage = () => {
     data: contentTypeListData,
     error: contentTypeListError,
     isSuccess: contentTypeListSuccess,
-    refetch,
+    refetch: contentTypeListRefetch,
   } = api.useGetContentTypeListQuery({
     page: 1,
     limit: 50,
   });
 
-  // const [deleteTrigger, deleteResult] = api.
+  const [bodyFieldDeleteTrigger, bodyFieldDeleteResult] = api.useDeleteBodyFieldMutation();
 
+  const [postBodyField, postBodyFieldResult] = api.usePostBodyFieldMutation();
+
+  const [postBodyFieldDto, setPostBodyFieldDto] = useState<CreateBodyFieldDto>({
+    contentTypeId: -1,
+    fieldTypeId: -1,
+    fieldName: '',
+    fieldTypeName: 'string',
+  });
+
+  /** FUNCTION */
   const getContentTypeDetail = async (id: string) => {
     const res = await contentTypeDetailTrigger(id).unwrap();
   };
@@ -42,8 +59,19 @@ const ContentTypeManage = () => {
     getContentTypeDetail(e.currentTarget.value);
   };
 
-  const onClickDeleteContentType = async (id: string) => {
-    const res = api.refetch();
+  const onClickDeleteBodyField = async (id: string) => {
+    const res = await bodyFieldDeleteTrigger(id);
+    contentTypeListRefetch();
+  };
+
+  const onClickAddField = async () => {
+    const body: CreateBodyFieldDto = {
+      ...postBodyFieldDto,
+      contentTypeId: Number(contentType),
+    };
+
+    const res = await postBodyField(body).unwrap();
+    console.log(res);
   };
 
   useEffect(() => {
@@ -108,7 +136,7 @@ const ContentTypeManage = () => {
                               <Button
                                 className='bg-danger text-center text-sm'
                                 onClick={() => {
-                                  onClickDeleteContentType(String(elem.id));
+                                  onClickDeleteBodyField(String(elem.id));
                                 }}
                               >
                                 삭제
@@ -126,26 +154,48 @@ const ContentTypeManage = () => {
 
           <div className='card w-full p-4'>
             <div className='flex justify-end'>
-              <Button
-                className='px-4 text-center text-sm'
-                onClick={() => {
-                  console.log('first');
-                }}
-              >
+              <Button className='px-4 text-center text-sm' onClick={onClickAddField}>
                 필드 추가
               </Button>
             </div>
 
             <div className='flex flex-col justify-evenly'>
-              <div>필드 이름</div>
+              <div className='mb-4'>
+                <p>필드 이름</p>
+                <Input
+                  value={postBodyFieldDto.fieldName}
+                  onChange={(e) => {
+                    setPostBodyFieldDto({
+                      ...postBodyFieldDto,
+                      fieldName: e.currentTarget.value,
+                    });
+                  }}
+                ></Input>
+              </div>
 
               {/* bodyFieldType 중 하나 */}
               <div>
                 <p>필드 타입</p>
-                <div></div>
-                {['string', 'number', 'boolean', 'text'].map((elem) => {
-                  return <Button className={`${'bg-gray-200'} text-sm`}>{elem}</Button>;
-                })}
+                <div className='flex flex-row justify-start gap-4'>
+                  {(['string', 'number', 'boolean', 'text'] as bodyFieldType[]).map((elem) => {
+                    return (
+                      <Button
+                        key={elem}
+                        className={`${
+                          postBodyFieldDto.fieldTypeName === elem ? 'bg-primary' : 'bg-gray-200'
+                        } text-sm`}
+                        onClick={() => {
+                          setPostBodyFieldDto({
+                            ...postBodyFieldDto,
+                            fieldTypeName: elem,
+                          });
+                        }}
+                      >
+                        {elem}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
