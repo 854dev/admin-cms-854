@@ -74,7 +74,7 @@ const api = createApi({
     postBodyField: builder.mutation({
       query: (body: CreateBodyFieldDto) => ({
         method: 'post',
-        url: 'body-field/id',
+        url: 'body-field',
         body,
       }),
     }),
