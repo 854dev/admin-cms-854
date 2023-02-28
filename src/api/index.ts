@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { CreateBodyFieldDto, CreateContentDto, UpdateContentDto } from 'types/common';
+import { CreateBodyFieldDto, CreateContentDto, ID, UpdateContentDto } from 'types/common';
 
 // Define a service using a base URL and expected endpoints
 const api = createApi({
@@ -14,7 +14,7 @@ const api = createApi({
     }),
 
     getContentDetail: builder.query({
-      query: (id: number) => ({
+      query: (id: ID) => ({
         method: 'get',
         url: `content/${id}`,
       }),
@@ -44,7 +44,7 @@ const api = createApi({
     }),
 
     getContentTypeDetail: builder.query({
-      query: (id: string) => ({
+      query: (id: ID) => ({
         method: 'get',
         url: `content-type/${id}`,
       }),
@@ -65,7 +65,7 @@ const api = createApi({
     }),
 
     deleteContentType: builder.mutation({
-      query: (id: string) => ({
+      query: (id: ID) => ({
         method: 'delete',
         url: `content-type/${id}`,
       }),
@@ -80,7 +80,7 @@ const api = createApi({
     }),
 
     deleteBodyField: builder.mutation({
-      query: (id: string) => ({
+      query: (id: ID) => ({
         method: 'delete',
         url: `body-field/${id}`,
       }),
