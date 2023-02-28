@@ -48,7 +48,7 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
       <div className='w-full gap-2 '>
         {contentBody.map((elem, idx) => {
           return (
-            <React.Fragment key={elem.bodyFieldId}>
+            <React.Fragment key={elem.bodyFieldName}>
               <EachBodyForm
                 bodyFieldId={elem.bodyFieldId}
                 bodyFieldName={elem.bodyFieldName}
