@@ -33,6 +33,10 @@ export interface ContentType {
   name: string;
 }
 
+export interface CreateContentTypeDto {
+  name: string;
+}
+
 export interface ContentBodyField {
   id: ID;
   contentTypeId: ID;

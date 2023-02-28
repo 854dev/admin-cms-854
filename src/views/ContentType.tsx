@@ -22,12 +22,13 @@ import {
 } from 'types/common';
 import api from 'api';
 import FormBodyField from './content/FormBodyField';
-import Modal, { ModalBody, ModalFooter, ModalHeader } from 'components/Modal';
+import { useDispatch } from 'react-redux';
+import { setAlert } from 'features/alertSlice';
 
 const ContentTypeManage = () => {
-  const [contentType, setcontentType] = useState('-1');
+  const dispatch = useDispatch();
 
-  const [isContentTypeModalOpen, setIsContentTypeModalOpen] = useState(false);
+  const [contentType, setcontentType] = useState('-1');
 
   const {
     data: contentTypeListData,
@@ -39,8 +40,34 @@ const ContentTypeManage = () => {
     limit: 50,
   });
 
+  const [addContentTypeTrigger, addContentTypeResult] = api.usePostContentTypeMutation();
+
+  const [deleteContentTypeTrigger, deleteContentTypeResult] = api.useDeleteContentTypeMutation();
+
+  const [contentTypeDto, setContentTypeDto] = useState({
+    name: '',
+  });
+
   const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
     setcontentType(e.currentTarget.value);
+  };
+
+  const onClickAddContentType = async () => {
+    const res = await addContentTypeTrigger(contentTypeDto).unwrap();
+    if (addContentTypeResult.isSuccess) {
+      dispatch(setAlert({ title: '타입 추가 완료', color: 'success' }));
+    } else {
+      dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
+    }
+  };
+
+  const onClickDeleteContentType = async () => {
+    const res = await deleteContentTypeTrigger(Number(contentType)).unwrap();
+    if (deleteContentTypeResult.isSuccess) {
+      dispatch(setAlert({ title: '타입 삭제 완료', color: 'success' }));
+    } else {
+      dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
+    }
   };
 
   useEffect(() => {
@@ -60,31 +87,48 @@ const ContentTypeManage = () => {
           <h1>Content Type</h1>
         </section>
 
-        {/* content type Select */}
-        <div className='card mb-5 p-4'>
-          <div className='mb-2 flex justify-between'>
-            <h3>콘텐츠 타입 선택</h3>
-            <Button
-              className={'p-2 text-sm'}
-              onClick={() => {
-                setIsContentTypeModalOpen(true);
-              }}
-            >
-              콘텐츠 타입 추가
-            </Button>
+        <div className='flex flex-row justify-between gap-4'>
+          {/* content type Select */}
+          <div className='card mb-5 w-full p-4'>
+            <div className='mb-2 flex justify-between'>
+              <p>콘텐츠 타입 이름</p>
+              <Button className={'bg-danger py-1 px-2 text-sm'} onClick={onClickDeleteContentType}>
+                콘텐츠 타입 삭제
+              </Button>
+            </div>
+
+            <CustomSelect onChange={onChangeContentType}>
+              {contentTypeListData ? (
+                <>
+                  {contentTypeListData.data.map((elem: ContentType) => (
+                    <option key={elem.id} value={elem.id}>
+                      {elem.name}
+                    </option>
+                  ))}
+                </>
+              ) : null}
+            </CustomSelect>
           </div>
 
-          <CustomSelect onChange={onChangeContentType}>
-            {contentTypeListData ? (
-              <>
-                {contentTypeListData.data.map((elem: ContentType) => (
-                  <option key={elem.id} value={elem.id}>
-                    {elem.name}
-                  </option>
-                ))}
-              </>
-            ) : null}
-          </CustomSelect>
+          {/* content type Select */}
+          <div className='card mb-5 w-full p-4'>
+            <div className='mb-2 flex justify-between'>
+              <p>콘텐츠 타입 이름</p>
+              <Button className={'py-1 px-2 text-sm'} onClick={onClickAddContentType}>
+                콘텐츠 타입 추가
+              </Button>
+            </div>
+
+            <Input
+              value={contentTypeDto.name}
+              onChange={(e) => {
+                setContentTypeDto({
+                  ...contentTypeDto,
+                  name: e.currentTarget.value,
+                });
+              }}
+            ></Input>
+          </div>
         </div>
 
         <FormBodyField
@@ -94,31 +138,6 @@ const ContentTypeManage = () => {
       </div>
 
       <Footer />
-
-      <Modal
-        active={isContentTypeModalOpen}
-        onClose={() => {
-          setIsContentTypeModalOpen(false);
-        }}
-        centered
-      >
-        <ModalHeader>Modal Title</ModalHeader>
-        <ModalBody>
-          <div className='min-w-[300px]'>하이 헬로우</div>
-        </ModalBody>
-        <ModalFooter>
-          <div className='flex ltr:ml-auto rtl:mr-auto'>
-            <Button
-              color='secondary'
-              className='text-sm'
-              onClick={() => setIsContentTypeModalOpen(false)}
-            >
-              Close
-            </Button>
-            <Button className='text-sm'>Save Changes</Button>
-          </div>
-        </ModalFooter>
-      </Modal>
     </main>
   );
 };
