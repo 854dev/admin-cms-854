@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -40,6 +40,14 @@ const Alert = (props) => {
     alertRef.current.style.removeProperty('opacity');
     alertRef.current.style.removeProperty('height');
   };
+
+  useEffect(() => {
+    if (isAlertActive) {
+      setTimeout(() => {
+        setIsAlertActive(false);
+      }, 2000);
+    }
+  }, [isAlertActive]);
 
   return (
     <CSSTransition
