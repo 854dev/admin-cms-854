@@ -45,7 +45,7 @@ const Alert = (props) => {
     if (isAlertActive) {
       setTimeout(() => {
         setIsAlertActive(false);
-      }, 2000);
+      }, 3000);
     }
   }, [isAlertActive]);
 
