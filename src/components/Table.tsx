@@ -9,9 +9,6 @@ interface Props {
 function ReactTable(props: Props) {
   const { table, className } = props;
 
-  console.log(table.getRowModel().rows);
-  console.log(table.getRowModel());
-
   return (
     <table className={`table ${className}`}>
       <thead>
