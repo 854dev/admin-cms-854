@@ -73,7 +73,7 @@ const ContentAdd = () => {
 
   const onSubmit = async () => {
     const param = {
-      contentTypeId: contentType,
+      contentTypeId: Number(contentType),
       ...contentMeta,
       body: contentBodyRef.current.contentBody,
     };
