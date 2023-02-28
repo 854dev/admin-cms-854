@@ -6,13 +6,18 @@ import { RootState } from 'features/store';
 function AlertContainer() {
   const alertState = useSelector((state: RootState) => state.alert);
 
-  const { title, dismissable, color, outlined, children } = alertState;
+  const { alert } = alertState;
 
   return (
-    <div className={`fixed left-1/2 bottom-8 ${title === '' ? 'hidden' : ''}`}>
-      <Alert title={title} dismissable={dismissable} color={color} outlined={outlined}>
-        {children}
-      </Alert>
+    <div className={`fixed left-1/2 bottom-8`}>
+      {alert.map((elem) => {
+        const { title, dismissable, color, outlined, children } = elem;
+        return (
+          <Alert title={title} dismissable={dismissable} color={color} outlined={outlined}>
+            {children}
+          </Alert>
+        );
+      })}
     </div>
   );
 }

@@ -24,9 +24,13 @@ import FormBody from './content/FormBody';
 import Dropdown from 'components/Dropdown';
 import CustomSelect from 'components/form/CustomSelect';
 import { createContentBodyFromBodyField } from 'util/util';
+import { useDispatch } from 'react-redux';
+import { setAlert } from 'features/alertSlice';
 
 const ContentAdd = () => {
   const contentBodyRef = useRef<{ contentBody: ContentBody[] }>({ contentBody: [] });
+
+  const dispatch = useDispatch();
 
   const [contentType, setcontentType] = useState('-1');
 
@@ -61,7 +65,7 @@ const ContentAdd = () => {
   };
 
   const getContentTypeDetail = async (id: string) => {
-    const res = await contentTypeDetailTrigger(id).unwrap();
+    const res = await contentTypeDetailTrigger(Number(id)).unwrap();
     const contentBody = createContentBodyFromBodyField(res.bodyField);
     contentBodyRef.current.contentBody = contentBody;
     setContentBody(contentBody);
@@ -75,6 +79,15 @@ const ContentAdd = () => {
     };
     setContentBody(contentBodyRef.current.contentBody);
     const res = await postContentTrigger(param);
+
+    dispatch(
+      setAlert({
+        title: '등록 완료',
+        color: 'success',
+        dismissable: true,
+        outlined: false,
+      })
+    );
   };
 
   useEffect(() => {

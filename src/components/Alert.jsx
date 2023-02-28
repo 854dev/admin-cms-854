@@ -4,8 +4,13 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
+import { popAlert } from 'features/alertSlice';
+import { useDispatch } from 'react-redux';
+
 const Alert = (props) => {
   const { title, color = 'primary', outlined, dismissable, children } = props;
+
+  const dispatch = useDispatch();
 
   const alertRef = useRef();
 
@@ -39,6 +44,7 @@ const Alert = (props) => {
   const onExited = () => {
     alertRef.current.style.removeProperty('opacity');
     alertRef.current.style.removeProperty('height');
+    dispatch(popAlert());
   };
 
   useEffect(() => {
