@@ -58,7 +58,7 @@ const ContentTypeManage = () => {
         </section>
 
         {/* content type Select */}
-        <div className='card relative mb-5 p-4'>
+        <div className='card mb-5 p-4'>
           <h3>콘텐츠 타입 선택</h3>
           <CustomSelect onChange={onChangeContentType}>
             {contentTypeListData ? (
