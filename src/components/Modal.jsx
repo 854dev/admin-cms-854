@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import Backdrop from 'components/Backdrop';
 
-import useOnClickOutside from 'utilities/hooks/useOnClickOutside';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const ModalContext = createContext();
 
