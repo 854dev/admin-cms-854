@@ -22,9 +22,12 @@ import {
 } from 'types/common';
 import api from 'api';
 import FormBodyField from './content/FormBodyField';
+import Modal, { ModalBody, ModalFooter, ModalHeader } from 'components/Modal';
 
 const ContentTypeManage = () => {
   const [contentType, setcontentType] = useState('-1');
+
+  const [isContentTypeModalOpen, setIsContentTypeModalOpen] = useState(false);
 
   const {
     data: contentTypeListData,
@@ -59,7 +62,18 @@ const ContentTypeManage = () => {
 
         {/* content type Select */}
         <div className='card mb-5 p-4'>
-          <h3>콘텐츠 타입 선택</h3>
+          <div className='mb-2 flex justify-between'>
+            <h3>콘텐츠 타입 선택</h3>
+            <Button
+              className={'p-2 text-sm'}
+              onClick={() => {
+                setIsContentTypeModalOpen(true);
+              }}
+            >
+              콘텐츠 타입 추가
+            </Button>
+          </div>
+
           <CustomSelect onChange={onChangeContentType}>
             {contentTypeListData ? (
               <>
@@ -80,6 +94,31 @@ const ContentTypeManage = () => {
       </div>
 
       <Footer />
+
+      <Modal
+        active={isContentTypeModalOpen}
+        onClose={() => {
+          setIsContentTypeModalOpen(false);
+        }}
+        centered
+      >
+        <ModalHeader>Modal Title</ModalHeader>
+        <ModalBody>
+          <div className='min-w-[300px]'>하이 헬로우</div>
+        </ModalBody>
+        <ModalFooter>
+          <div className='flex ltr:ml-auto rtl:mr-auto'>
+            <Button
+              color='secondary'
+              className='text-sm'
+              onClick={() => setIsContentTypeModalOpen(false)}
+            >
+              Close
+            </Button>
+            <Button className='text-sm'>Save Changes</Button>
+          </div>
+        </ModalFooter>
+      </Modal>
     </main>
   );
 };
