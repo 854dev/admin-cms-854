@@ -59,6 +59,7 @@ function FormBodyField(props: Props) {
             <table className='table w-full'>
               <thead>
                 <tr>
+                  <th>순서(id)</th>
                   <th>필드 타입</th>
                   <th>필드 명</th>
                   <th>&nbsp;</th>
@@ -70,6 +71,9 @@ function FormBodyField(props: Props) {
                     {contentTypeDetailResult.data.bodyField.map((elem: ContentBodyField) => {
                       return (
                         <tr key={elem.id}>
+                          <td>
+                            <div className='text-center'>{elem.id}</div>
+                          </td>
                           <td>
                             <div className='text-center'>{elem.fieldTypeName}</div>{' '}
                           </td>
