@@ -1,6 +1,7 @@
 export type contentMetaDate = string | null; // "2023-02-16T04:48:28.000Z",
 export type contentMetaStatus = 'draft' | 'publish';
 export type bodyFieldType = 'string' | 'number' | 'boolean' | 'text';
+export type ID = number;
 
 export interface ContentMeta {
   title: string;
@@ -12,7 +13,7 @@ export interface ContentMeta {
 }
 
 export interface ContentBody {
-  bodyFieldId: number; // 1
+  bodyFieldId: ID; // 1
   bodyFieldName: string; // 'article_main';
   bodyFieldValue: string; // '<p>하이 헬로우</p>';
 }
@@ -24,18 +25,18 @@ export interface CreateContentDto extends ContentMeta {
 }
 
 export interface UpdateContentDto extends CreateContentDto {
-  contentId: string;
+  contentId: ID;
 }
 
 export interface ContentType {
-  id: number;
+  id: ID;
   name: string;
 }
 
 export interface ContentBodyField {
-  id: number;
-  contentTypeId: string;
-  fieldTypeId: number;
+  id: ID;
+  contentTypeId: ID;
+  fieldTypeId: ID;
   fieldName: string;
   fieldTypeName: bodyFieldType;
 }
@@ -45,8 +46,8 @@ export interface ContentTypeDetail extends ContentType {
 }
 
 export interface CreateBodyFieldDto {
-  contentTypeId: string | number;
-  fieldTypeId: string | number;
+  contentTypeId: ID;
+  fieldTypeId: ID;
   fieldName: string;
   fieldTypeName: bodyFieldType;
 }
