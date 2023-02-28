@@ -61,10 +61,13 @@ const Alert = (props) => {
             alert_outlined: outlined,
           })}
         >
-          <strong className='uppercase'>
-            <bdi>{title}</bdi>
-          </strong>
-          {children}
+          <div className={`_content ${dismissable ? 'pr-8' : null}`}>
+            <strong className='uppercase'>
+              <bdi>{title}</bdi>
+            </strong>
+            {children}
+          </div>
+
           {dismissable ? (
             <button
               className='dismiss la la-times'
