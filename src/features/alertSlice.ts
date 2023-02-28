@@ -6,8 +6,8 @@ export interface AlertState {
   title: string;
   color?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
   outlined?: boolean;
-  dismissable: boolean;
-  children: string;
+  dismissable?: boolean;
+  children?: string;
 }
 
 const initialState: { alert: AlertState[] } = { alert: [] };
