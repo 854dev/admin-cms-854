@@ -87,7 +87,7 @@ const api = createApi({
     }),
 
     deleteBodySchema: builder.mutation({
-      query: (id: ID) => ({
+      query: (id: common.ID) => ({
         method: 'delete',
         url: `content-body-schema/${id}`,
       }),

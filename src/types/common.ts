@@ -31,6 +31,7 @@ export interface ContentType {
 }
 
 export interface ContentBodySchema {
+  id: ID;
   contentTypeId: ID;
   fieldType: bodyFieldType;
   fieldName: string;

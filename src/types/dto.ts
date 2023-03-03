@@ -13,7 +13,7 @@ export interface CreateBodySchemaDto {
 }
 
 export interface CreateContentTypeDto {
-  name: string;
+  contentTypeName: string;
 }
 
 export interface CreateContentDto extends ContentMeta {
