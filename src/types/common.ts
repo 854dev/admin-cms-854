@@ -3,6 +3,11 @@ export type contentMetaStatus = 'draft' | 'publish';
 export type bodyFieldType = 'string' | 'number' | 'boolean' | 'text';
 export type ID = number;
 
+export interface PagedResponse<T = unknown> {
+  data: T[];
+  hasNextPage: boolean;
+}
+
 export interface ContentMeta {
   title: string;
   creator: string;
