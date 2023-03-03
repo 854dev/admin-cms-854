@@ -7,9 +7,8 @@ export interface PagedRequest {
 
 export interface CreateBodySchemaDto {
   contentTypeId: ID;
-  fieldTypeId: ID;
   fieldName: string;
-  fieldTypeName: bodyFieldType;
+  fieldType: bodyFieldType;
 }
 
 export interface CreateContentTypeDto {
