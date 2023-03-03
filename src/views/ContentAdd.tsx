@@ -11,7 +11,7 @@ import FormMeta from './content/FormMeta';
 import api from 'api';
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
-import { ContentBody, ContentMeta, ContentType } from 'types/common';
+import { ContentBody, ContentMeta, ContentType, ID } from 'types/common';
 import {
   ChangeEvent,
   ChangeEventHandler,
@@ -32,7 +32,7 @@ const ContentAdd = () => {
 
   const dispatch = useDispatch();
 
-  const [contentType, setcontentType] = useState('-1');
+  const [contentType, setcontentType] = useState<number>();
 
   const [contentBody, setContentBody] = useState<ContentBody[]>([]);
 
@@ -51,6 +51,8 @@ const ContentAdd = () => {
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
 
   const [contentMeta, setContentMeta] = useState<ContentMeta>({
+    contentTypeId: -1,
+    contentTypeName: '',
     title: '',
     creator: '',
     createdAt: '2000-01-01',
@@ -59,21 +61,21 @@ const ContentAdd = () => {
     status: 'draft',
   });
 
-  const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
-    setcontentType(e.currentTarget.value);
-    getContentTypeDetail(e.currentTarget.value);
+  const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
+    setcontentType(contentTypeId);
+    setContentMeta({ ...contentMeta, contentTypeName, contentTypeId });
+    getContentTypeDetail(contentTypeId);
   };
 
-  const getContentTypeDetail = async (id: string) => {
+  const getContentTypeDetail = async (id: ID) => {
     const res = await contentTypeDetailTrigger(Number(id)).unwrap();
-    const contentBody = createContentBodyFromBodyField(res.bodyField);
+    const contentBody = createContentBodyFromBodyField(res.bodySchema);
     contentBodyRef.current.contentBody = contentBody;
     setContentBody(contentBody);
   };
 
   const onSubmit = async () => {
     const param = {
-      contentTypeId: Number(contentType),
       ...contentMeta,
       body: contentBodyRef.current.contentBody,
     };
@@ -90,11 +92,14 @@ const ContentAdd = () => {
     );
   };
 
+  /** 컨텐츠 타입 페칭 후  1번쨰 선택 */
   useEffect(() => {
     if (contentTypeListSuccess) {
       if (contentTypeListData.data.length > 1) {
-        const firstId = contentTypeListData.data[0].id;
+        const firstId = contentTypeListData.data[0].contentTypeId;
+        const firstName = contentTypeListData.data[0].contentTypeName;
         setcontentType(firstId);
+        setContentMeta({ ...contentMeta, contentTypeName: firstName, contentTypeId: firstId });
         getContentTypeDetail(firstId);
       }
     }
@@ -114,12 +119,24 @@ const ContentAdd = () => {
         {/* content type Select */}
         <div className='card relative mb-5 p-4'>
           <h3>콘텐츠 타입 선택</h3>
-          <CustomSelect onChange={onChangeContentType}>
+          <CustomSelect
+            name='contentTypeSelect'
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+              const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
+                .dataset as { contentTypeId: string; contentTypeName: string };
+              onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
+            }}
+          >
             {contentTypeListData ? (
               <>
                 {contentTypeListData.data.map((elem: ContentType) => (
-                  <option key={elem.id} value={elem.id}>
-                    {elem.name}
+                  <option
+                    key={elem.contentTypeId}
+                    value={elem.contentTypeId}
+                    data-content-type-id={elem.contentTypeId}
+                    data-content-type-name={elem.contentTypeName}
+                  >
+                    {elem.contentTypeName}
                   </option>
                 ))}
               </>

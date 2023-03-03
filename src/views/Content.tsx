@@ -26,8 +26,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/Button';
 
 const Content = () => {
-  const navigate = useNavigate();
-
   const { data, isFetching } = api.useGetContentListQuery(
     {
       page: 1,
