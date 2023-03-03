@@ -1,11 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {
-  CreateBodyFieldDto,
-  CreateContentDto,
-  CreateContentTypeDto,
-  ID,
-  UpdateContentDto,
-} from 'types/common';
+import { ID } from 'types/common';
+import * as dto from 'types/dto';
 
 // Define a service using a base URL and expected endpoints
 const api = createApi({
@@ -27,7 +22,7 @@ const api = createApi({
     }),
 
     postContent: builder.mutation({
-      query: (dto: CreateContentDto) => ({
+      query: (dto: dto.CreateContentDto) => ({
         method: 'post',
         url: `content/`,
         body: dto,
@@ -35,7 +30,7 @@ const api = createApi({
     }),
 
     putContent: builder.mutation({
-      query: (dto: UpdateContentDto) => ({
+      query: (dto: dto.UpdateContentDto) => ({
         method: 'put',
         url: `content/${dto.contentId}`,
         body: dto,
@@ -57,7 +52,7 @@ const api = createApi({
     }),
 
     postContentType: builder.mutation({
-      query: (body: CreateContentTypeDto) => ({
+      query: (body: dto.CreateContentTypeDto) => ({
         method: 'post',
         url: 'content-type',
         body,
@@ -78,18 +73,18 @@ const api = createApi({
       }),
     }),
 
-    postBodyField: builder.mutation({
-      query: (body: CreateBodyFieldDto) => ({
+    postBodySchema: builder.mutation({
+      query: (body: dto.CreateBodySchemaDto) => ({
         method: 'post',
-        url: 'body-field',
+        url: 'content-body-schema',
         body,
       }),
     }),
 
-    deleteBodyField: builder.mutation({
+    deleteBodySchema: builder.mutation({
       query: (id: ID) => ({
         method: 'delete',
-        url: `body-field/${id}`,
+        url: `content-body-schema/${id}`,
       }),
     }),
   }),
