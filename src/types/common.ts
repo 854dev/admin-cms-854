@@ -20,38 +20,17 @@ export interface ContentBody {
 
 export interface ContentBase<T = any> extends ContentMeta {}
 
-export interface CreateContentDto extends ContentMeta {
-  body: ContentBody[];
-}
-
-export interface UpdateContentDto extends CreateContentDto {
-  contentId: ID;
-}
-
 export interface ContentType {
-  id: ID;
-  name: string;
-}
-
-export interface CreateContentTypeDto {
-  name: string;
-}
-
-export interface ContentBodyField {
-  id: ID;
   contentTypeId: ID;
-  fieldTypeId: ID;
+  contentTypeName: string;
+}
+
+export interface ContentBodySchema {
+  contentTypeId: ID;
+  fieldType: bodyFieldType;
   fieldName: string;
-  fieldTypeName: bodyFieldType;
 }
 
 export interface ContentTypeDetail extends ContentType {
-  bodyField: ContentBodyField[];
-}
-
-export interface CreateBodyFieldDto {
-  contentTypeId: ID;
-  fieldTypeId: ID;
-  fieldName: string;
-  fieldTypeName: bodyFieldType;
+  bodySchema: ContentBodySchema[];
 }
