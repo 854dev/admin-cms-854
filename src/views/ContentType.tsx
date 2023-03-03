@@ -12,14 +12,7 @@ import Label from 'components/form/Label';
 // import PolarArea from 'components/charts/PolarArea';
 import Textarea from 'components/form/Textarea';
 
-import {
-  ContentBody,
-  ContentMeta,
-  ContentType,
-  ContentBodyField,
-  CreateBodyFieldDto,
-  bodyFieldType,
-} from 'types/common';
+import { ContentBody, ContentMeta, ContentType, bodyFieldType } from 'types/common';
 import api from 'api';
 import FormBodyField from './content/FormBodyField';
 import { useDispatch } from 'react-redux';
@@ -28,7 +21,7 @@ import { setAlert } from 'features/alertSlice';
 const ContentTypeManage = () => {
   const dispatch = useDispatch();
 
-  const [contentType, setcontentType] = useState('-1');
+  const [contentType, setcontentType] = useState(-1);
 
   const {
     data: contentTypeListData,
@@ -45,35 +38,37 @@ const ContentTypeManage = () => {
   const [deleteContentTypeTrigger, deleteContentTypeResult] = api.useDeleteContentTypeMutation();
 
   const [contentTypeDto, setContentTypeDto] = useState({
-    name: '',
+    contentTypeName: '',
   });
 
   const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
-    setcontentType(e.currentTarget.value);
+    setcontentType(Number(e.currentTarget.value));
   };
 
   const onClickAddContentType = async () => {
-    const res = await addContentTypeTrigger(contentTypeDto).unwrap();
-    if (addContentTypeResult.isSuccess) {
-      dispatch(setAlert({ title: '타입 추가 완료', color: 'success' }));
-    } else {
-      dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
-    }
+    const res = addContentTypeTrigger(contentTypeDto)
+      .then(() => {
+        dispatch(setAlert({ title: '타입 추가 완료', color: 'success' }));
+      })
+      .catch(() => {
+        dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
+      });
   };
 
   const onClickDeleteContentType = async () => {
-    const res = await deleteContentTypeTrigger(Number(contentType)).unwrap();
-    if (deleteContentTypeResult.isSuccess) {
-      dispatch(setAlert({ title: '타입 삭제 완료', color: 'success' }));
-    } else {
-      dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
-    }
+    const res = await deleteContentTypeTrigger(contentType)
+      .then(() => {
+        dispatch(setAlert({ title: '타입 삭제 완료', color: 'success' }));
+      })
+      .catch(() => {
+        dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
+      });
   };
 
   useEffect(() => {
     if (contentTypeListSuccess) {
       if (contentTypeListData.data.length > 1) {
-        const firstId = contentTypeListData.data[0].id;
+        const firstId = contentTypeListData.data[0].contentTypeId;
         setcontentType(firstId);
       }
     }
@@ -101,8 +96,8 @@ const ContentTypeManage = () => {
               {contentTypeListData ? (
                 <>
                   {contentTypeListData.data.map((elem: ContentType) => (
-                    <option key={elem.id} value={elem.id}>
-                      {elem.name}
+                    <option key={elem.contentTypeId} value={elem.contentTypeId}>
+                      {elem.contentTypeName}
                     </option>
                   ))}
                 </>
@@ -120,21 +115,21 @@ const ContentTypeManage = () => {
             </div>
 
             <Input
-              value={contentTypeDto.name}
+              value={contentTypeDto.contentTypeName}
               onChange={(e) => {
                 setContentTypeDto({
                   ...contentTypeDto,
-                  name: e.currentTarget.value,
+                  contentTypeName: e.currentTarget.value,
                 });
               }}
             ></Input>
           </div>
         </div>
 
-        <FormBodyField
+        {/* <FormBodyField
           contentTypeId={contentType}
           contentTypeListRefetch={contentTypeListRefetch}
-        ></FormBodyField>
+        ></FormBodyField> */}
       </div>
 
       <Footer />
