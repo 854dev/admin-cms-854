@@ -5,7 +5,7 @@ import * as dto from 'types/dto';
 // Define a service using a base URL and expected endpoints
 const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080', mode: 'cors' }),
-
+  tagTypes: ['ContentType', 'ContentBodySchema', 'Content'],
   endpoints: (builder) => ({
     getContentList: builder.query({
       query: (req: dto.PagedRequest) => ({
@@ -46,14 +46,7 @@ const api = createApi({
         url: 'content-type',
       }),
       transformResponse: (response: common.PagedResponse<common.ContentType>) => response,
-    }),
-
-    getContentTypeDetail: builder.query({
-      query: (id: common.ID) => ({
-        method: 'get',
-        url: `content-type/${id}`,
-        transformResponse: (response: common.ContentTypeDetail) => response,
-      }),
+      providesTags: (result, error, id) => ['ContentType'],
     }),
 
     postContentType: builder.mutation({
@@ -62,13 +55,15 @@ const api = createApi({
         url: 'content-type',
         body,
       }),
+      invalidatesTags: ['ContentType'],
     }),
 
-    putContentType: builder.query({
+    putContentType: builder.mutation({
       query: (id: common.ID) => ({
         method: 'put',
         url: `content-type/${id}`,
       }),
+      invalidatesTags: ['ContentType'],
     }),
 
     deleteContentType: builder.mutation({
@@ -76,6 +71,16 @@ const api = createApi({
         method: 'delete',
         url: `content-type/${id}`,
       }),
+      invalidatesTags: ['ContentType'],
+    }),
+
+    getContentTypeDetail: builder.query({
+      query: (id: common.ID) => ({
+        method: 'get',
+        url: `content-type/${id}`,
+        transformResponse: (response: common.ContentTypeDetail) => response,
+      }),
+      providesTags: (result, error, id) => ['ContentBodySchema'],
     }),
 
     postBodySchema: builder.mutation({
@@ -84,6 +89,7 @@ const api = createApi({
         url: 'content-body-schema',
         body,
       }),
+      invalidatesTags: ['ContentBodySchema'],
     }),
 
     deleteBodySchema: builder.mutation({
