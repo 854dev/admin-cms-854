@@ -54,6 +54,10 @@ function FormBodyField(props: Props) {
       <div className='flex w-full flex-row gap-4'>
         {/* manage body field */}
         <div className='card w-full p-4'>
+          {contentTypeDetailResult.isSuccess ? (
+            <h2>{contentTypeDetailResult.data.contentTypeName} 타입 필드 목록</h2>
+          ) : null}
+
           <div className='flex flex-row justify-center'>
             <table className='table w-full'>
               <thead>

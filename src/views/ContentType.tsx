@@ -26,6 +26,7 @@ const ContentTypeManage = () => {
   const {
     data: contentTypeListData,
     error: contentTypeListError,
+    isFetching: contentTypeListIsFetching,
     isSuccess: contentTypeListSuccess,
     refetch: contentTypeListRefetch,
   } = api.useGetContentTypeListQuery({
@@ -56,9 +57,14 @@ const ContentTypeManage = () => {
   };
 
   const onClickDeleteContentType = async () => {
+    if (!contentType) {
+      return;
+    }
+
     const res = await deleteContentTypeTrigger(contentType)
       .then(() => {
         dispatch(setAlert({ title: '타입 삭제 완료', color: 'success' }));
+        setcontentType(undefined);
       })
       .catch(() => {
         dispatch(setAlert({ title: '에러 발생', color: 'danger' }));
@@ -67,12 +73,12 @@ const ContentTypeManage = () => {
 
   useEffect(() => {
     if (contentTypeListSuccess) {
-      if (contentTypeListData.data.length > 1) {
+      if (contentTypeListData.data.length > 0) {
         const firstId = contentTypeListData.data[0].contentTypeId;
         setcontentType(firstId);
       }
     }
-  }, [contentTypeListSuccess]);
+  }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
     <main className='workspace'>
@@ -126,7 +132,9 @@ const ContentTypeManage = () => {
           </div>
         </div>
 
-        {contentType ? <FormBodyField contentTypeId={contentType}></FormBodyField> : null}
+        {contentTypeListData && contentType ? (
+          <FormBodyField contentTypeId={contentType}></FormBodyField>
+        ) : null}
       </div>
 
       <Footer />
