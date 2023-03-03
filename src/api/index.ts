@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ID } from 'types/common';
+import * as common from 'types/common';
 import * as dto from 'types/dto';
 
 // Define a service using a base URL and expected endpoints
@@ -8,17 +8,20 @@ const api = createApi({
 
   endpoints: (builder) => ({
     getContentList: builder.query({
-      query: () => ({
+      query: (req: dto.PagedRequest) => ({
         method: 'get',
         url: 'content',
+        params: req,
       }),
+      transformResponse: (response: common.PagedResponse<common.ContentMeta>) => response,
     }),
 
     getContentDetail: builder.query({
-      query: (id: ID) => ({
+      query: (id: common.ID) => ({
         method: 'get',
         url: `content/${id}`,
       }),
+      transformResponse: (response: common.ContentTypeDetail) => response,
     }),
 
     postContent: builder.mutation({
@@ -38,16 +41,18 @@ const api = createApi({
     }),
 
     getContentTypeList: builder.query({
-      query: () => ({
+      query: (req: dto.PagedRequest) => ({
         method: 'get',
         url: 'content-type',
       }),
+      transformResponse: (response: common.PagedResponse<common.ContentType>) => response,
     }),
 
     getContentTypeDetail: builder.query({
-      query: (id: ID) => ({
+      query: (id: common.ID) => ({
         method: 'get',
         url: `content-type/${id}`,
+        transformResponse: (response: common.ContentTypeDetail) => response,
       }),
     }),
 
@@ -60,14 +65,14 @@ const api = createApi({
     }),
 
     putContentType: builder.query({
-      query: () => ({
+      query: (id: common.ID) => ({
         method: 'put',
-        url: 'content-type',
+        url: `content-type/${id}`,
       }),
     }),
 
     deleteContentType: builder.mutation({
-      query: (id: ID) => ({
+      query: (id: common.ID) => ({
         method: 'delete',
         url: `content-type/${id}`,
       }),
