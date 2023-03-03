@@ -1,6 +1,6 @@
 import { bodyFieldType, ContentBody, ContentMeta, ID } from './common';
 
-export interface CreateBodyFieldDto {
+export interface CreateBodySchemaDto {
   contentTypeId: ID;
   fieldTypeId: ID;
   fieldName: string;
