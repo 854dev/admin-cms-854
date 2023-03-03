@@ -58,7 +58,6 @@ function FormBodyField(props: Props) {
             <table className='table w-full'>
               <thead>
                 <tr>
-                  <th>순서(id)</th>
                   <th>필드 타입</th>
                   <th>필드 명</th>
                   <th>&nbsp;</th>
