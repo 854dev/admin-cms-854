@@ -2,52 +2,51 @@ import api from 'api';
 import Button from 'components/Button';
 import Input from 'components/form/Input';
 import React, { useEffect, useState } from 'react';
-import { bodyFieldType, ContentBodyField, CreateBodyFieldDto } from 'types/common';
+import { bodyFieldType, ContentBodySchema, ID } from 'types/common';
+import { CreateBodySchemaDto } from 'types/dto';
 
 interface Props {
-  contentTypeId: number | string;
-  contentTypeListRefetch: any;
+  contentTypeId: ID;
 }
 
 function FormBodyField(props: Props) {
-  const { contentTypeId, contentTypeListRefetch } = props;
+  const { contentTypeId } = props;
 
   const [contentTypeDetailTrigger, contentTypeDetailResult] =
     api.useLazyGetContentTypeDetailQuery();
 
-  const [bodyFieldDeleteTrigger, bodyFieldDeleteResult] = api.useDeleteBodyFieldMutation();
+  const [bodyFieldDeleteTrigger, bodyFieldDeleteResult] = api.useDeleteBodySchemaMutation();
 
-  const [postBodyField, postBodyFieldResult] = api.usePostBodyFieldMutation();
+  const [postBodyField, postBodyFieldResult] = api.usePostBodySchemaMutation();
 
-  const [postBodyFieldDto, setPostBodyFieldDto] = useState<CreateBodyFieldDto>({
+  const [postBodyFieldDto, setPostBodyFieldDto] = useState<CreateBodySchemaDto>({
     contentTypeId: -1,
-    fieldTypeId: -1,
     fieldName: '',
-    fieldTypeName: 'string',
+    fieldType: 'text',
   });
 
   /** FUNCTION */
-  const getContentTypeDetail = async (id: string) => {
+  const getContentTypeDetail = async (id: ID) => {
     const res = await contentTypeDetailTrigger(id).unwrap();
   };
 
-  const onClickDeleteBodyField = async (id: string) => {
+  const onClickDeleteBodyField = async (id: ID) => {
     const res = await bodyFieldDeleteTrigger(id);
-    getContentTypeDetail(String(contentTypeId));
+    getContentTypeDetail(contentTypeId);
   };
 
   const onClickAddField = async () => {
-    const body: CreateBodyFieldDto = {
+    const body: CreateBodySchemaDto = {
       ...postBodyFieldDto,
       contentTypeId: Number(contentTypeId),
     };
 
     const res = await postBodyField(body);
-    getContentTypeDetail(String(contentTypeId));
+    getContentTypeDetail(contentTypeId);
   };
 
   useEffect(() => {
-    getContentTypeDetail(String(contentTypeId));
+    getContentTypeDetail(contentTypeId);
   }, [contentTypeId]);
 
   return (
@@ -68,14 +67,11 @@ function FormBodyField(props: Props) {
               <tbody>
                 {contentTypeDetailResult.isSuccess ? (
                   <>
-                    {contentTypeDetailResult.data.bodyField.map((elem: ContentBodyField) => {
+                    {contentTypeDetailResult.data.bodySchema.map((elem: ContentBodySchema) => {
                       return (
                         <tr key={elem.id}>
                           <td>
-                            <div className='text-center'>{elem.id}</div>
-                          </td>
-                          <td>
-                            <div className='text-center'>{elem.fieldTypeName}</div>{' '}
+                            <div className='text-center'>{elem.fieldType}</div>{' '}
                           </td>
                           <td>
                             <div className='text-center'>{elem.fieldName}</div>
@@ -84,7 +80,7 @@ function FormBodyField(props: Props) {
                             <Button
                               className='bg-danger text-center text-sm'
                               onClick={() => {
-                                onClickDeleteBodyField(String(elem.id));
+                                onClickDeleteBodyField(elem.id);
                               }}
                             >
                               삭제

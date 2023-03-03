@@ -21,7 +21,7 @@ import { setAlert } from 'features/alertSlice';
 const ContentTypeManage = () => {
   const dispatch = useDispatch();
 
-  const [contentType, setcontentType] = useState(-1);
+  const [contentType, setcontentType] = useState<number>();
 
   const {
     data: contentTypeListData,
@@ -126,10 +126,7 @@ const ContentTypeManage = () => {
           </div>
         </div>
 
-        {/* <FormBodyField
-          contentTypeId={contentType}
-          contentTypeListRefetch={contentTypeListRefetch}
-        ></FormBodyField> */}
+        {contentType ? <FormBodyField contentTypeId={contentType}></FormBodyField> : null}
       </div>
 
       <Footer />
