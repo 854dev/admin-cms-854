@@ -9,6 +9,8 @@ export interface PagedResponse<T = unknown> {
 }
 
 export interface ContentMeta {
+  contentTypeId: ID;
+  contentTypeName: string;
   title: string;
   creator: string;
   createdAt: contentMetaDate;
