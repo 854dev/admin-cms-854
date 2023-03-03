@@ -40,6 +40,7 @@ const ContentAdd = () => {
     data: contentTypeListData,
     error: contentTypeListError,
     isSuccess: contentTypeListSuccess,
+    isFetching: contentTypeListIsFetching,
   } = api.useGetContentTypeListQuery({
     page: 1,
     limit: 50,
@@ -95,7 +96,7 @@ const ContentAdd = () => {
   /** 컨텐츠 타입 페칭 후  1번쨰 선택 */
   useEffect(() => {
     if (contentTypeListSuccess) {
-      if (contentTypeListData.data.length > 1) {
+      if (contentTypeListData.data.length > 0) {
         const firstId = contentTypeListData.data[0].contentTypeId;
         const firstName = contentTypeListData.data[0].contentTypeName;
         setcontentType(firstId);
@@ -103,7 +104,7 @@ const ContentAdd = () => {
         getContentTypeDetail(firstId);
       }
     }
-  }, [contentTypeListSuccess]);
+  }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
     <main className='workspace'>
