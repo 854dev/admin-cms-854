@@ -2,21 +2,22 @@ import Badge from 'components/Badge';
 import Input from 'components/form/Input';
 import Label from 'components/form/Label';
 import React, { useState } from 'react';
-import { ContentMeta } from 'types/common';
+import { ContentDetail } from 'types/common';
 
+/** 콘텐츠 메타는 contentDetail 수정시에만 수정 가능하다 */
 interface Props {
-  contentMeta: ContentMeta;
-  setContentMeta: React.Dispatch<React.SetStateAction<ContentMeta>>;
+  contentDetail: ContentDetail;
+  setContentDetail: React.Dispatch<React.SetStateAction<ContentDetail>>;
 }
 
 function FormMeta(props: Props) {
-  const { contentMeta, setContentMeta } = props;
+  const { contentDetail, setContentDetail } = props;
 
-  const onChange = (key: keyof ContentMeta, value: string) => {
-    setContentMeta({ ...contentMeta, [key]: value });
+  const onChange = (key: keyof ContentDetail, value: string) => {
+    setContentDetail({ ...contentDetail, [key]: value });
   };
 
-  const { title, creator, status, createdAt, updatedAt } = contentMeta;
+  const { title, creator, status, createdAt, updatedAt } = contentDetail;
 
   return (
     <div className='grid w-full grid-cols-2 gap-4'>

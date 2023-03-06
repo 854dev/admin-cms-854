@@ -20,23 +20,25 @@ import {
 } from '@tanstack/react-table';
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
-import { ContentBody, ContentMeta } from 'types/common';
+import { ContentBody, ContentDetail, ContentMeta } from 'types/common';
 import { useLayoutEffect, useRef, useState } from 'react';
 import FormBody from './content/FormBody';
+import { UpdateContentDto } from 'types/dto';
 
 const Content = () => {
   const { contentId } = useParams();
 
-  const [contentMeta, setContentMeta] = useState<ContentMeta>({
+  const [contentDetail, setContentDetail] = useState<ContentDetail>({
     title: '',
+    contentTypeId: -1,
+    contentTypeName: '',
     creator: '',
     createdAt: '2000-01-01',
     updatedAt: '2000-01-01',
     deletedAt: '',
     status: 'draft',
+    body: [],
   });
-
-  const [contentBody, setContentBody] = useState<ContentBody[]>([]);
 
   const contentBodyRef = useRef<{ contentBody: ContentBody[] }>({ contentBody: [] });
 
@@ -46,19 +48,18 @@ const Content = () => {
 
   const getContentDetail = async (contentId: number) => {
     const res = await fetchContentDetail(contentId).unwrap();
-    setContentMeta({ ...res, body: undefined });
-    setContentBody(res.body);
+    setContentDetail(res);
     contentBodyRef.current.contentBody = res.body;
   };
 
   // TODO
   const onSubmit = async () => {
-    const param = {
-      contentId: contentId ?? '',
-      ...contentMeta,
+    const param: UpdateContentDto = {
+      ...contentDetail,
+      contentId: Number(contentId) ?? '',
       body: contentBodyRef.current.contentBody,
     };
-    setContentBody(contentBodyRef.current.contentBody);
+    setContentDetail(param);
     const res = await triggerPatchContent(param);
   };
 
@@ -82,15 +83,12 @@ const Content = () => {
 
         <div className='card mb-5 p-4'>
           <h3 className='mb-4'>콘텐츠 정보</h3>
-          <FormMeta contentMeta={contentMeta} setContentMeta={setContentMeta}></FormMeta>
+          <FormMeta contentDetail={contentDetail} setContentDetail={setContentDetail}></FormMeta>
         </div>
 
         <div className='card p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
-          <FormBody
-            ref={contentBodyRef}
-            contentBody={contentBody ?? contentBodyRef.current.contentBody}
-          ></FormBody>
+          <FormBody ref={contentBodyRef} contentBody={contentDetail.body}></FormBody>
         </div>
 
         <div className='flex flex-row justify-end p-4'>
