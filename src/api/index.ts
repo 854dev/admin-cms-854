@@ -21,7 +21,7 @@ const api = createApi({
         method: 'get',
         url: `content/${id}`,
       }),
-      transformResponse: (response: common.ContentTypeDetail) => response,
+      transformResponse: (response: common.ContentDetail) => response,
     }),
 
     postContent: builder.mutation({

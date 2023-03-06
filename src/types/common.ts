@@ -25,8 +25,6 @@ export interface ContentBody {
   bodyFieldValue: string; // '<p>하이 헬로우</p>';
 }
 
-export interface ContentBase<T = any> extends ContentMeta {}
-
 export interface ContentType {
   contentTypeId: ID;
   contentTypeName: string;
@@ -41,4 +39,8 @@ export interface ContentBodySchema {
 
 export interface ContentTypeDetail extends ContentType {
   bodySchema: ContentBodySchema[];
+}
+
+export interface ContentDetail extends ContentMeta {
+  body: ContentBody[];
 }
