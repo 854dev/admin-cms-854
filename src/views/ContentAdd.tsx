@@ -11,7 +11,7 @@ import FormMeta from './content/FormMeta';
 import api from 'api';
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
-import { ContentBody, ContentMeta, ContentType, ID } from 'types/common';
+import { ContentBody, ContentDetail, ContentType, ID } from 'types/common';
 import {
   ChangeEvent,
   ChangeEventHandler,
@@ -51,20 +51,20 @@ const ContentAdd = () => {
 
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
 
-  const [contentMeta, setContentMeta] = useState<ContentMeta>({
+  const [contentDetail, setContentDetail] = useState<ContentDetail>({
+    title: '',
     contentTypeId: -1,
     contentTypeName: '',
-    title: '',
     creator: '',
     createdAt: '2000-01-01',
     updatedAt: '2000-01-01',
     deletedAt: '',
     status: 'draft',
+    body: [],
   });
 
   const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
     setcontentType(contentTypeId);
-    setContentMeta({ ...contentMeta, contentTypeName, contentTypeId });
     getContentTypeDetail(contentTypeId);
   };
 
@@ -77,7 +77,7 @@ const ContentAdd = () => {
 
   const onSubmit = async () => {
     const param = {
-      ...contentMeta,
+      ...contentDetail,
       body: contentBodyRef.current.contentBody,
     };
     setContentBody(contentBodyRef.current.contentBody);
@@ -100,7 +100,7 @@ const ContentAdd = () => {
         const firstId = contentTypeListData.data[0].contentTypeId;
         const firstName = contentTypeListData.data[0].contentTypeName;
         setcontentType(firstId);
-        setContentMeta({ ...contentMeta, contentTypeName: firstName, contentTypeId: firstId });
+        setContentDetail({ ...contentDetail, contentTypeName: firstName, contentTypeId: firstId });
         getContentTypeDetail(firstId);
       }
     }
@@ -147,7 +147,7 @@ const ContentAdd = () => {
 
         <div className='card mb-5 p-4'>
           <h3 className='mb-4'>콘텐츠 정보</h3>
-          <FormMeta contentMeta={contentMeta} setContentMeta={setContentMeta}></FormMeta>
+          <FormMeta contentDetail={contentDetail} setContentDetail={setContentDetail}></FormMeta>
         </div>
 
         <div className='card p-4'>
