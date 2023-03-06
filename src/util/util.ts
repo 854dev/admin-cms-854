@@ -1,10 +1,12 @@
-import { ContentBodyField } from 'types/common';
+import { ContentBody, ContentBodySchema } from 'types/common';
 
-export const createContentBodyFromBodyField = (bodyFields: ContentBodyField[]) => {
+export const createContentBodyFromBodyField: (bodyFields: ContentBodySchema[]) => ContentBody[] = (
+  bodyFields
+) => {
   return bodyFields.map((elem) => {
     return {
-      bodyFieldId: elem.fieldTypeId,
-      bodyFieldName: elem.fieldName,
+      bodyFieldId: elem.id,
+      bodyField: elem.fieldName,
       bodyFieldValue: '',
     };
   });

@@ -21,7 +21,7 @@ export interface ContentMeta {
 
 export interface ContentBody {
   bodyFieldId: ID; // 1
-  bodyFieldName: string; // 'article_main';
+  bodyField: string; // 'article_main';
   bodyFieldValue: string; // '<p>하이 헬로우</p>';
 }
 

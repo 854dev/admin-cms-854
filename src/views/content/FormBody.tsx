@@ -33,7 +33,7 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
 
       return (
         <div className='min-h-[384px] w-full rounded-md p-6 outline-dashed outline-gray-200'>
-          <h3>{props.bodyFieldName}</h3>
+          <h3>{props.bodyField}</h3>
           <ReactQuill
             className='h-64'
             theme='snow'
@@ -51,7 +51,7 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
             <React.Fragment key={elem.bodyFieldId}>
               <EachBodyForm
                 bodyFieldId={elem.bodyFieldId}
-                bodyFieldName={elem.bodyFieldName}
+                bodyField={elem.bodyField}
                 bodyFieldValue={elem.bodyFieldValue}
               ></EachBodyForm>
             </React.Fragment>
