@@ -5,9 +5,9 @@ export const createContentBodyFromBodyField: (bodyFields: ContentBodySchema[]) =
 ) => {
   return bodyFields.map((elem) => {
     return {
-      bodyFieldId: elem.id,
-      bodyField: elem.fieldName,
-      bodyFieldValue: '',
+      schemaId: elem.schemaId,
+      schemaName: elem.schemaName,
+      schemaValue: '',
     };
   });
 };

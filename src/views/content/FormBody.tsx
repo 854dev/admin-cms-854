@@ -1,26 +1,26 @@
 import Input from 'components/form/Input';
 import Label from 'components/form/Label';
 import React, { SetStateAction, useRef, useState } from 'react';
-import { ContentBody } from 'types/common';
+import { ContentBody, ContentBodyWithName } from 'types/common';
 import ReactQuill from 'react-quill';
 
 interface Props {
-  contentBody: ContentBody[];
+  contentBody: ContentBodyWithName[];
 }
 
-const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
+const FormBody = React.forwardRef<{ contentBody: ContentBodyWithName[] }, Props>(
   (props, contentBodyRef) => {
     const { contentBody } = props;
 
-    const EachBodyForm = (props: ContentBody) => {
+    const EachBodyForm = (props: ContentBodyWithName) => {
       // const currentValue = useRef<{ text: string }>();
 
       const onChangeQuill = (e: string) => {
         const newBody = contentBody.map((elem) => {
-          if (elem.bodyFieldId === props.bodyFieldId) {
+          if (elem.schemaId === props.schemaId) {
             return {
               ...elem,
-              bodyFieldValue: e,
+              schemaValue: e,
             };
           }
           return elem;
@@ -33,11 +33,11 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
 
       return (
         <div className='min-h-[384px] w-full rounded-md p-6 outline-dashed outline-gray-200'>
-          <h3>{props.bodyField}</h3>
+          <h3>{props.schemaName}</h3>
           <ReactQuill
             className='h-64'
             theme='snow'
-            value={props.bodyFieldValue}
+            value={props.schemaValue}
             onChange={(content, delta, source, editor) => onChangeQuill(editor.getHTML())}
           ></ReactQuill>
         </div>
@@ -48,11 +48,11 @@ const FormBody = React.forwardRef<{ contentBody: ContentBody[] }, Props>(
       <div className='w-full gap-2 '>
         {contentBody.map((elem, idx) => {
           return (
-            <React.Fragment key={elem.bodyFieldId}>
+            <React.Fragment key={elem.schemaId}>
               <EachBodyForm
-                bodyFieldId={elem.bodyFieldId}
-                bodyField={elem.bodyField}
-                bodyFieldValue={elem.bodyFieldValue}
+                schemaId={elem.schemaId}
+                schemaName={elem.schemaName}
+                schemaValue={elem.schemaValue}
               ></EachBodyForm>
             </React.Fragment>
           );

@@ -24,6 +24,11 @@ export interface ContentBody {
   schemaValue: string; // '<p>하이 헬로우</p>';
 }
 
+/** 프론트엔드 표시용 schemaName 추가된 ContentBody */
+export interface ContentBodyWithName extends ContentBody {
+  schemaName: string;
+}
+
 export interface ContentType {
   contentTypeId: ID;
   contentTypeName: string;
