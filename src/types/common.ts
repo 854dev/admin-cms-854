@@ -20,9 +20,8 @@ export interface ContentMeta {
 }
 
 export interface ContentBody {
-  bodyFieldId: ID; // 1
-  bodyField: string; // 'article_main';
-  bodyFieldValue: string; // '<p>하이 헬로우</p>';
+  schemaId: ID; // 1
+  schemaValue: string; // '<p>하이 헬로우</p>';
 }
 
 export interface ContentType {
