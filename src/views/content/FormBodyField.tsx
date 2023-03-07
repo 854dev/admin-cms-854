@@ -129,12 +129,12 @@ function FormBodyField(props: Props) {
                     <Button
                       key={elem}
                       className={`${
-                        postBodyFieldDto.schemaName === elem ? 'bg-primary' : 'bg-gray-200'
+                        postBodyFieldDto.schemaType === elem ? 'bg-primary' : 'bg-gray-200'
                       } text-sm`}
                       onClick={() => {
                         setPostBodyFieldDto({
                           ...postBodyFieldDto,
-                          schemaName: elem,
+                          schemaType: elem,
                         });
                       }}
                     >
