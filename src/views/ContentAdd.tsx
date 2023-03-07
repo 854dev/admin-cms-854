@@ -11,7 +11,7 @@ import FormMeta from './content/FormMeta';
 import api from 'api';
 import TableComponent from 'components/Table';
 import { useParams } from 'react-router-dom';
-import { ContentBody, ContentDetail, ContentType, ID } from 'types/common';
+import { ContentBodyWithName, ContentDetail, ContentType, ID } from 'types/common';
 import {
   ChangeEvent,
   ChangeEventHandler,
@@ -28,13 +28,13 @@ import { useDispatch } from 'react-redux';
 import { setAlert } from 'features/alertSlice';
 
 const ContentAdd = () => {
-  const contentBodyRef = useRef<{ contentBody: ContentBody[] }>({ contentBody: [] });
+  const contentBodyRef = useRef<{ contentBody: ContentBodyWithName[] }>({ contentBody: [] });
 
   const dispatch = useDispatch();
 
   const [contentType, setcontentType] = useState<number>();
 
-  const [contentBody, setContentBody] = useState<ContentBody[]>([]);
+  const [contentBody, setContentBody] = useState<ContentBodyWithName[]>([]);
 
   const {
     data: contentTypeListData,
@@ -152,10 +152,7 @@ const ContentAdd = () => {
 
         <div className='card p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
-          <FormBody
-            ref={contentBodyRef}
-            contentBody={contentBodyRef.current.contentBody}
-          ></FormBody>
+          <FormBody ref={contentBodyRef} contentBody={contentBody}></FormBody>
         </div>
 
         <div className='flex flex-row justify-end p-4'>

@@ -1,8 +1,8 @@
-import { ContentBody, ContentBodySchema } from 'types/common';
+import { ContentBody, ContentBodySchema, ContentBodyWithName } from 'types/common';
 
-export const createContentBodyFromBodyField: (bodyFields: ContentBodySchema[]) => ContentBody[] = (
-  bodyFields
-) => {
+export const createContentBodyFromBodyField: (
+  bodyFields: ContentBodySchema[]
+) => ContentBodyWithName[] = (bodyFields) => {
   return bodyFields.map((elem) => {
     return {
       schemaId: elem.schemaId,
