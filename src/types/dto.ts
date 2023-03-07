@@ -1,4 +1,4 @@
-import { bodyFieldType, ContentBody, ContentMeta, ID } from './common';
+import { schemaType, ContentBody, ContentMeta, ID } from './common';
 
 export interface PagedRequest {
   page: number;
@@ -8,7 +8,7 @@ export interface PagedRequest {
 export interface CreateBodySchemaDto {
   contentTypeId: ID;
   schemaName: string;
-  schemaType: bodyFieldType;
+  schemaType: schemaType;
 }
 
 export interface CreateContentTypeDto {
