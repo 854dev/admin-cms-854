@@ -24,6 +24,7 @@ import { ContentBody, ContentDetail, ContentMeta } from 'types/common';
 import { useLayoutEffect, useRef, useState } from 'react';
 import FormBody from './content/FormBody';
 import { UpdateContentDto } from 'types/dto';
+import { createContentBodyFromBodyField } from 'util/util';
 
 const Content = () => {
   const { contentId } = useParams();
@@ -47,7 +48,7 @@ const Content = () => {
   const [triggerPatchContent, patchContentResponse] = api.usePutContentMutation();
 
   const getContentDetail = async (contentId: number) => {
-    const res = await fetchContentDetail(contentId).unwrap();
+    const res = (await fetchContentDetail(contentId).unwrap()) as ContentDetail;
     setContentDetail(res);
     contentBodyRef.current.contentBody = res.body;
   };
