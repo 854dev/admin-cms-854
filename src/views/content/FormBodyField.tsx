@@ -2,7 +2,7 @@ import api from 'api';
 import Button from 'components/Button';
 import Input from 'components/form/Input';
 import React, { useEffect, useState } from 'react';
-import { bodyFieldType, ContentBodySchema, ID } from 'types/common';
+import { schemaType, ContentBodySchema, ID } from 'types/common';
 import { CreateBodySchemaDto } from 'types/dto';
 
 interface Props {
@@ -21,8 +21,8 @@ function FormBodyField(props: Props) {
 
   const [postBodyFieldDto, setPostBodyFieldDto] = useState<CreateBodySchemaDto>({
     contentTypeId: -1,
-    fieldName: '',
-    fieldType: 'text',
+    schemaName: '',
+    schemaType: 'text',
   });
 
   /** FUNCTION */
@@ -72,18 +72,18 @@ function FormBodyField(props: Props) {
                   <>
                     {contentTypeDetailResult.data.bodySchema.map((elem: ContentBodySchema) => {
                       return (
-                        <tr key={elem.id}>
+                        <tr key={elem.schemaId}>
                           <td>
-                            <div className='text-center'>{elem.fieldType}</div>{' '}
+                            <div className='text-center'>{elem.schemaType}</div>{' '}
                           </td>
                           <td>
-                            <div className='text-center'>{elem.fieldName}</div>
+                            <div className='text-center'>{elem.schemaName}</div>
                           </td>
                           <td>
                             <Button
                               className='bg-danger text-center text-sm'
                               onClick={() => {
-                                onClickDeleteBodyField(elem.id);
+                                onClickDeleteBodyField(elem.schemaId);
                               }}
                             >
                               삭제
@@ -110,31 +110,31 @@ function FormBodyField(props: Props) {
             <div className='mb-4'>
               <p>필드 이름</p>
               <Input
-                value={postBodyFieldDto.fieldName}
+                value={postBodyFieldDto.schemaName}
                 onChange={(e) => {
                   setPostBodyFieldDto({
                     ...postBodyFieldDto,
-                    fieldName: e.currentTarget.value,
+                    schemaName: e.currentTarget.value,
                   });
                 }}
               ></Input>
             </div>
 
-            {/* bodyFieldType 중 하나 */}
+            {/* schemaType 중 하나 */}
             <div>
               <p>필드 타입</p>
               <div className='flex flex-row justify-start gap-4'>
-                {(['string', 'number', 'boolean', 'text'] as bodyFieldType[]).map((elem) => {
+                {(['string', 'number', 'boolean', 'text'] as schemaType[]).map((elem) => {
                   return (
                     <Button
                       key={elem}
                       className={`${
-                        postBodyFieldDto.fieldTypeName === elem ? 'bg-primary' : 'bg-gray-200'
+                        postBodyFieldDto.schemaName === elem ? 'bg-primary' : 'bg-gray-200'
                       } text-sm`}
                       onClick={() => {
                         setPostBodyFieldDto({
                           ...postBodyFieldDto,
-                          fieldTypeName: elem,
+                          schemaName: elem,
                         });
                       }}
                     >
