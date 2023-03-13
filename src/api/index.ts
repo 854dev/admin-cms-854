@@ -5,7 +5,7 @@ import * as dto from 'types/dto';
 // Define a service using a base URL and expected endpoints
 const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080', mode: 'cors' }),
-  tagTypes: ['ContentType', 'ContentBodySchema', 'Content'],
+  tagTypes: ['ContentType', 'ContentBodySchema', 'Content', 'Tag'],
   endpoints: (builder) => ({
     getContentList: builder.query({
       query: (req: dto.PagedRequest) => ({
@@ -97,6 +97,40 @@ const api = createApi({
         method: 'delete',
         url: `content-body-schema/${id}`,
       }),
+    }),
+
+    postTag: builder.mutation({
+      query: (body: dto.CreateTagDto) => ({
+        method: 'post',
+        url: `tag`,
+        body,
+      }),
+      invalidatesTags: ['Tag'],
+    }),
+
+    getTag: builder.query({
+      query: () => ({
+        method: 'get',
+        url: `tag`,
+      }),
+      providesTags: (result, error, id) => ['Tag'],
+    }),
+
+    putTag: builder.mutation({
+      query: (body: dto.UpdateTagDto) => ({
+        method: 'put',
+        url: `tag/${body.tagId}`,
+        body,
+      }),
+      invalidatesTags: ['Tag'],
+    }),
+
+    deleteTag: builder.mutation({
+      query: (id: common.ID) => ({
+        method: 'delete',
+        url: `tag/${id}`,
+      }),
+      invalidatesTags: ['Tag'],
     }),
   }),
 });

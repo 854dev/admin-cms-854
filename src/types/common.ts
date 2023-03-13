@@ -17,6 +17,12 @@ export interface ContentMeta {
   updatedAt: contentMetaDate;
   deletedAt: contentMetaDate;
   status: contentMetaStatus;
+  tags: ContentTag[];
+}
+
+export interface ContentTag {
+  tagId: ID; // 1
+  name: string; // '하이';
 }
 
 export interface ContentBody {
