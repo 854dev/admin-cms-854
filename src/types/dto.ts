@@ -3,6 +3,7 @@ import { schemaType, ContentBody, ContentMeta, ID, ContentTag } from './common';
 export interface PagedRequest {
   page: number;
   limit: number;
+  contentTypeId?: ID;
 }
 
 export interface CreateBodySchemaDto {

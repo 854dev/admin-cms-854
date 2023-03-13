@@ -24,18 +24,34 @@ import {
 import TableComponent from 'components/Table';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/Button';
+import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ContentType } from 'types/common';
 
 const Content = () => {
+  const [contentType, setcontentType] = useState<number>();
+
   const { data, isFetching } = api.useGetContentListQuery(
     {
       page: 1,
       limit: 10,
+      contentTypeId: contentType ?? -1,
     },
     {
       skip: false,
       refetchOnMountOrArgChange: true,
     }
   );
+
+  const {
+    data: contentTypeListData,
+    error: contentTypeListError,
+    isFetching: contentTypeListIsFetching,
+    isSuccess: contentTypeListSuccess,
+    refetch: contentTypeListRefetch,
+  } = api.useGetContentTypeListQuery({
+    page: 1,
+    limit: 50,
+  });
 
   const onClickIdBadge = (id: string) => {
     alert(id);
@@ -91,6 +107,19 @@ const Content = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
+    setcontentType(Number(e.currentTarget.value));
+  };
+
+  useEffect(() => {
+    if (contentTypeListSuccess) {
+      if (contentTypeListData.data.length > 0) {
+        const firstId = contentTypeListData.data[0].contentTypeId;
+        setcontentType(firstId);
+      }
+    }
+  }, [contentTypeListSuccess, contentTypeListIsFetching]);
+
   return (
     <main className='workspace'>
       <div className='container'>
@@ -99,12 +128,31 @@ const Content = () => {
           <h1>Content</h1>
         </section>
 
-        <div className='mb-4 flex flex-row justify-between'>
+        <div className='mb-4 flex flex-row items-center justify-between'>
           <Link to='/content/add'>
             <Button className='px-4 py-1 text-lg'>
               <span>게시글 작성</span>
             </Button>
           </Link>
+
+          {/* content type Select */}
+          <div className='mb-5 w-48'>
+            <div className='mb-2 flex justify-between'>
+              <p>콘텐츠 타입 이름</p>
+            </div>
+
+            <CustomSelect onChange={onChangeContentType}>
+              {contentTypeListData ? (
+                <>
+                  {contentTypeListData.data.map((elem: ContentType) => (
+                    <option key={elem.contentTypeId} value={elem.contentTypeId}>
+                      {elem.contentTypeName}
+                    </option>
+                  ))}
+                </>
+              ) : null}
+            </CustomSelect>
+          </div>
         </div>
 
         <div className='card p-4'>
