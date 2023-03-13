@@ -12,7 +12,7 @@ import Label from 'components/form/Label';
 // import PolarArea from 'components/charts/PolarArea';
 import Textarea from 'components/form/Textarea';
 
-import { ContentBody, ContentMeta, ContentType, bodyFieldType } from 'types/common';
+import { ContentBody, ContentMeta, ContentType } from 'types/common';
 import api from 'api';
 import FormBodyField from './content/FormBodyField';
 import { useDispatch } from 'react-redux';
@@ -57,7 +57,7 @@ const ContentTypeManage = () => {
   };
 
   const onClickDeleteContentType = async () => {
-    if (!contentType) {
+    if (!contentType || !confirm('해당 타입의 콘텐츠 전체가 삭제됩니다. 진짜 삭제?')) {
       return;
     }
 
