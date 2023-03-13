@@ -1,4 +1,6 @@
 import { ContentBody, ContentBodySchema, ContentBodyWithName } from 'types/common';
+import { DateTime } from 'luxon';
+import { DATE_FORMAT } from './constant';
 
 export const createContentBodyFromBodyField: (
   bodyFields: ContentBodySchema[]
@@ -10,4 +12,8 @@ export const createContentBodyFromBodyField: (
       schemaValue: '',
     };
   });
+};
+
+export const parseDate = (dateString: string, format?: string) => {
+  return DateTime.fromISO(dateString).toFormat(format ?? DATE_FORMAT);
 };
