@@ -32,7 +32,9 @@ function ReactTable(props: Props) {
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => {
                 return (
-                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                  <td key={cell.id} className='text-center'>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
                 );
               })}
             </tr>
