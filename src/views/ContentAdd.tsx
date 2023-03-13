@@ -26,6 +26,7 @@ import CustomSelect from 'components/form/CustomSelect';
 import { createContentBodyFromBodyField } from 'util/util';
 import { useDispatch } from 'react-redux';
 import { setAlert } from 'features/alertSlice';
+import FormTag from './content/FormTag';
 
 const ContentAdd = () => {
   const contentBodyRef = useRef<{ contentBody: ContentBodyWithName[] }>({ contentBody: [] });
@@ -61,6 +62,7 @@ const ContentAdd = () => {
     deletedAt: '',
     status: 'draft',
     body: [],
+    tags: [],
   });
 
   const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
@@ -150,9 +152,19 @@ const ContentAdd = () => {
           <FormMeta contentDetail={contentDetail} setContentDetail={setContentDetail}></FormMeta>
         </div>
 
-        <div className='card p-4'>
+        <div className='card mb-5 p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
           <FormBody ref={contentBodyRef} contentBody={contentBody}></FormBody>
+        </div>
+
+        <div className='card mb-5 p-4'>
+          <h3 className='mb-4'>콘텐츠 태그</h3>
+          <FormTag
+            tags={contentDetail.tags}
+            onChangeTags={(tags) => {
+              setContentDetail({ ...contentDetail, tags });
+            }}
+          />
         </div>
 
         <div className='flex flex-row justify-end p-4'>

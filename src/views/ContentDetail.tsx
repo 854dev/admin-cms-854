@@ -25,6 +25,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import FormBody from './content/FormBody';
 import { UpdateContentDto } from 'types/dto';
 import { createContentBodyFromBodyField } from 'util/util';
+import FormTag from './content/FormTag';
 
 const Content = () => {
   const { contentId } = useParams();
@@ -39,6 +40,7 @@ const Content = () => {
     deletedAt: '',
     status: 'draft',
     body: [],
+    tags: [],
   });
 
   const contentBodyRef = useRef<{ contentBody: ContentBody[] }>({ contentBody: [] });
@@ -87,9 +89,19 @@ const Content = () => {
           <FormMeta contentDetail={contentDetail} setContentDetail={setContentDetail}></FormMeta>
         </div>
 
-        <div className='card p-4'>
+        <div className='card mb-5 p-4'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
           <FormBody ref={contentBodyRef} contentBody={contentDetail.body}></FormBody>
+        </div>
+
+        <div className='card mb-5 p-4'>
+          <h3 className='mb-4'>콘텐츠 태그</h3>
+          <FormTag
+            tags={contentDetail.tags}
+            onChangeTags={(tags) => {
+              setContentDetail({ ...contentDetail, tags });
+            }}
+          />
         </div>
 
         <div className='flex flex-row justify-end p-4'>
