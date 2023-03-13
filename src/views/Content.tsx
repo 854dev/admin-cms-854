@@ -26,6 +26,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/Button';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { ContentType } from 'types/common';
+import { parseDate } from 'util/util';
 
 const Content = () => {
   const [contentType, setcontentType] = useState<number>();
@@ -85,15 +86,23 @@ const Content = () => {
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor('createdAt', {
-      cell: (info) => info.getValue(),
+      cell: (info) => parseDate(info.getValue()),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor('updatedAt', {
-      cell: (info) => info.getValue(),
+      cell: (info) => parseDate(info.getValue()),
       footer: (info) => info.column.id,
     }),
     columnHelper.accessor('status', {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <>
+          {info.getValue() === 'draft' ? (
+            <span className='badge badge_secondary'>{info.getValue()}</span>
+          ) : (
+            <span className='badge badge_primary'>{info.getValue()}</span>
+          )}
+        </>
+      ),
       footer: (info) => info.column.id,
     }),
   ];
