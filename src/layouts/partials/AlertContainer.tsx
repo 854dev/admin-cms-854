@@ -13,7 +13,13 @@ function AlertContainer() {
       {alert.map((elem) => {
         const { title, dismissable, color, outlined, children } = elem;
         return (
-          <Alert title={title} dismissable={dismissable} color={color} outlined={outlined}>
+          <Alert
+            key={title}
+            title={title}
+            dismissable={dismissable}
+            color={color}
+            outlined={outlined}
+          >
             {children}
           </Alert>
         );
