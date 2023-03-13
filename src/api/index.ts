@@ -112,6 +112,7 @@ const api = createApi({
       query: () => ({
         method: 'get',
         url: `tag`,
+        transformResponse: (response: common.ContentTag[]) => response,
       }),
       providesTags: (result, error, id) => ['Tag'],
     }),
