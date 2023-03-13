@@ -129,7 +129,7 @@ const Content = () => {
         </section>
 
         <div className='mb-4 flex flex-row items-center justify-between'>
-          <Link to='/content/add'>
+          <Link to='/content/add' state={{ contentTypeId: contentType }}>
             <Button className='px-4 py-1 text-lg'>
               <span>게시글 작성</span>
             </Button>

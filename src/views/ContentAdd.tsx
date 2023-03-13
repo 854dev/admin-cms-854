@@ -10,7 +10,7 @@ import FormMeta from './content/FormMeta';
 
 import api from 'api';
 import TableComponent from 'components/Table';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { ContentBodyWithName, ContentDetail, ContentType, ID } from 'types/common';
 import {
   ChangeEvent,
@@ -29,6 +29,8 @@ import { setAlert } from 'features/alertSlice';
 import FormTag from './content/FormTag';
 
 const ContentAdd = () => {
+  const location = useLocation();
+
   const contentBodyRef = useRef<{ contentBody: ContentBodyWithName[] }>({ contentBody: [] });
 
   const dispatch = useDispatch();
@@ -95,16 +97,20 @@ const ContentAdd = () => {
     );
   };
 
-  /** 컨텐츠 타입 페칭 후  1번쨰 선택 */
+  /** 컨텐츠 타입 페칭 후  1번쨰 선택. 이전페이지에서 넘어왔다면 이미 선택되어 있음 */
   useEffect(() => {
-    if (contentTypeListSuccess) {
-      if (contentTypeListData.data.length > 0) {
-        const firstId = contentTypeListData.data[0].contentTypeId;
-        const firstName = contentTypeListData.data[0].contentTypeName;
-        setcontentType(firstId);
-        setContentDetail({ ...contentDetail, contentTypeName: firstName, contentTypeId: firstId });
-        getContentTypeDetail(firstId);
-      }
+    if (contentTypeListSuccess && contentTypeListData.data.length > 0) {
+      const contentTypeIdLocation = location.state?.contentTypeId;
+
+      const selectedContentType = contentTypeIdLocation
+        ? (contentTypeListData.data.find(
+            (elem) => elem.contentTypeId === contentTypeIdLocation
+          ) as ContentType)
+        : contentTypeListData.data[0];
+
+      setcontentType(selectedContentType.contentTypeId);
+      setContentDetail({ ...contentDetail, ...selectedContentType });
+      getContentTypeDetail(selectedContentType.contentTypeId);
     }
   }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
@@ -134,6 +140,7 @@ const ContentAdd = () => {
               <>
                 {contentTypeListData.data.map((elem: ContentType) => (
                   <option
+                    selected={elem.contentTypeId === contentType}
                     key={elem.contentTypeId}
                     value={elem.contentTypeId}
                     data-content-type-id={elem.contentTypeId}
