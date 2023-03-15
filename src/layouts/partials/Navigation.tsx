@@ -24,6 +24,7 @@ export default function Sidebar() {
             <ul className='space-y-1 pt-2 pb-4 text-sm'>
               <LinkItem to={'/'} name={'Dashboard'} />
               <LinkItem to={'/content'} name={'Content'} />
+              <LinkItem to={'/content/enum'} name={'Content Enum'} />
               <LinkItem to={'/content-type'} name={'Content Type'} />
             </ul>
           </div>

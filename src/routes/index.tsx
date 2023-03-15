@@ -7,6 +7,7 @@ import ContentType from 'views/ContentType';
 import Content from 'views/Content';
 import ContentDetail from 'views/ContentDetail';
 import ContentAdd from 'views/ContentAdd';
+import ContentEnum from 'views/ContentEnum';
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route element={<LayoutDefault />}>
           <Route path='/' element={<Dashboard />} />
           <Route path='/content' element={<Content />} />
+          <Route path='/content/enum' element={<ContentEnum />} />
           <Route path='/content/add' element={<ContentAdd />} />
           <Route path='/content/:contentId' element={<ContentDetail />} />
           <Route path='/content-type' element={<ContentType />} />
