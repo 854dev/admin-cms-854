@@ -9,7 +9,7 @@ function AlertContainer() {
   const { alert } = alertState;
 
   return (
-    <div className={`fixed left-1/2 bottom-8`}>
+    <div className={`fixed bottom-8 flex w-screen flex-col justify-center px-[30%]`}>
       {alert.map((elem) => {
         const { title, dismissable, color, outlined, children } = elem;
         return (
