@@ -97,24 +97,39 @@ const ContentAdd = () => {
   };
 
   const onSubmit = async () => {
-    const param = {
-      ...contentDetail,
-    };
-
-    // const param = {
-    //   ...contentDetail,
-    //   body: contentBodyRef.current.contentBody,
-    // };
-    // setContentBody(contentBodyRef.current.contentBody);
-    // const res = await postContentTrigger(param);
-    // dispatch(
-    //   setAlert({
-    //     title: '등록 완료',
-    //     color: 'success',
-    //     dismissable: true,
-    //     outlined: false,
-    //   })
-    // );
+    try {
+      const res = await postContentTrigger(contentDetail)
+        .unwrap()
+        .then((payload) => {
+          dispatch(
+            setAlert({
+              title: `성공 : ${payload}`,
+              color: 'success',
+              dismissable: true,
+              outlined: false,
+            })
+          );
+        })
+        .catch((error) => {
+          dispatch(
+            setAlert({
+              title: `${JSON.stringify(error.data?.message)}`,
+              color: 'danger',
+              dismissable: true,
+              outlined: false,
+            })
+          );
+        });
+    } catch (e) {
+      dispatch(
+        setAlert({
+          title: `rejected`,
+          color: 'danger',
+          dismissable: true,
+          outlined: false,
+        })
+      );
+    }
   };
 
   /** 컨텐츠 타입 페칭 후  1번쨰 선택. 이전페이지에서 넘어왔다면 이미 선택되어 있음 */
@@ -129,7 +144,11 @@ const ContentAdd = () => {
         : contentTypeListData.data[0];
 
       setcontentType(selectedContentType.contentTypeId);
-      setContentDetail({ ...contentDetail, ...selectedContentType });
+      setContentDetail({
+        ...contentDetail,
+        contentTypeId: selectedContentType.contentTypeId,
+        contentTypeName: selectedContentType.contentTypeName,
+      });
       getContentTypeDetail(selectedContentType.contentTypeId);
     }
   }, [contentTypeListSuccess, contentTypeListIsFetching]);
@@ -191,10 +210,15 @@ const ContentAdd = () => {
                 <Input id='title' name='title' type='text' onChange={handleContentDetailChange} />
               </div>
               <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='author'>
-                  Author
+                <Label className='mb-2 block' htmlFor='creator'>
+                  Creator
                 </Label>
-                <Input id='author' name='author' type='text' onChange={handleContentDetailChange} />
+                <Input
+                  id='creator'
+                  name='creator'
+                  type='text'
+                  onChange={handleContentDetailChange}
+                />
               </div>
               <div className='mb-5 sm:w-full xl:w-1/2'>
                 <Label className='mb-2 block' htmlFor='description'>
@@ -282,7 +306,13 @@ const ContentAdd = () => {
           </div>
         </div>
 
-        <ContentForm contentDetail={contentDetail} onSubmit={onSubmit}></ContentForm>
+        <div className='my-1 text-right'>
+          <Button onClick={onSubmit} name='submit'>
+            Submit
+          </Button>
+        </div>
+
+        {/* <ContentForm contentDetail={contentDetail} onSubmit={onSubmit}></ContentForm> */}
       </div>
       <Footer />
     </main>
