@@ -13,6 +13,7 @@ export interface ContentMeta {
   contentTypeId?: ID;
   contentTypeName?: string;
   title: string;
+  description?: string;
   creator?: string;
   createdAt?: contentMetaDate;
   updatedAt?: contentMetaDate;
