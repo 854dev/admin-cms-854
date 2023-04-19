@@ -12,7 +12,7 @@ import api from 'api';
 import TableComponent from 'components/Table';
 import { useLocation, useParams } from 'react-router-dom';
 import { ContentBodySchema, ContentDetail, ContentType, ID } from 'types/common';
-import {
+import React, {
   ChangeEvent,
   ChangeEventHandler,
   useEffect,
@@ -74,12 +74,13 @@ const ContentAdd = () => {
   //   getContentTypeDetail(contentTypeId);
   // };
 
-  // const getContentTypeDetail = async (id: ID) => {
-  //   const res = await contentTypeDetailTrigger(Number(id)).unwrap();
-  //   const contentBody = createContentBodyFromBodyField(res.bodySchema);
-  //   contentBodyRef.current.contentBody = contentBody;
-  //   setContentBody(contentBody);
-  // };
+  const getContentTypeDetail = async (id: ID) => {
+    const res = await contentTypeDetailTrigger(Number(id)).unwrap();
+    setContentBodySchema(res.contentBodySchema);
+    // const contentBody = createContentBodyFromBodyField(res.bodySchema);
+    // contentBodyRef.current.contentBody = contentBody;
+    // setContentBody(contentBody);
+  };
 
   const handleContentDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const key = event.target.name as keyof ContentDetail;
@@ -120,21 +121,21 @@ const ContentAdd = () => {
   };
 
   /** 컨텐츠 타입 페칭 후  1번쨰 선택. 이전페이지에서 넘어왔다면 이미 선택되어 있음 */
-  // useEffect(() => {
-  //   if (contentTypeListSuccess && contentTypeListData.data.length > 0) {
-  //     const contentTypeIdLocation = location.state?.contentTypeId;
+  useEffect(() => {
+    if (contentTypeListSuccess && contentTypeListData.data.length > 0) {
+      const contentTypeIdLocation = location.state?.contentTypeId;
 
-  //     const selectedContentType = contentTypeIdLocation
-  //       ? (contentTypeListData.data.find(
-  //           (elem) => elem.contentTypeId === contentTypeIdLocation
-  //         ) as ContentType)
-  //       : contentTypeListData.data[0];
+      const selectedContentType = contentTypeIdLocation
+        ? (contentTypeListData.data.find(
+            (elem) => elem.contentTypeId === contentTypeIdLocation
+          ) as ContentType)
+        : contentTypeListData.data[0];
 
-  //     setcontentType(selectedContentType.contentTypeId);
-  //     setContentDetail({ ...contentDetail, ...selectedContentType });
-  //     getContentTypeDetail(selectedContentType.contentTypeId);
-  //   }
-  // }, [contentTypeListSuccess, contentTypeListIsFetching]);
+      setcontentType(selectedContentType.contentTypeId);
+      setContentDetail({ ...contentDetail, ...selectedContentType });
+      getContentTypeDetail(selectedContentType.contentTypeId);
+    }
+  }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
     <main className='workspace'>
@@ -182,6 +183,9 @@ const ContentAdd = () => {
                   ) : null}
                 </CustomSelect>
               </div>
+
+              <hr className='mb-3' />
+
               {/* content meta */}
               <div className='mb-5 sm:w-full xl:w-1/2'>
                 <Label className='mb-2 block' htmlFor='title'>
@@ -239,6 +243,8 @@ const ContentAdd = () => {
                   updatedAt : {contentDetail.updatedAt}
                 </Label>
               </div>
+
+              <hr className='mb-3' />
 
               {/* content body */}
               <div className='w-full'>
