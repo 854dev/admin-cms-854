@@ -69,17 +69,14 @@ const ContentAdd = () => {
 
   const [contentBodySchema, setContentBodySchema] = useState<ContentBodySchema[]>([]);
 
-  // const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
-  //   setcontentType(contentTypeId);
-  //   getContentTypeDetail(contentTypeId);
-  // };
+  const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
+    setcontentType(contentTypeId);
+    getContentTypeDetail(contentTypeId);
+  };
 
   const getContentTypeDetail = async (id: ID) => {
     const res = await contentTypeDetailTrigger(Number(id)).unwrap();
     setContentBodySchema(res.contentBodySchema);
-    // const contentBody = createContentBodyFromBodyField(res.bodySchema);
-    // contentBodyRef.current.contentBody = contentBody;
-    // setContentBody(contentBody);
   };
 
   const handleContentDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,11 +157,11 @@ const ContentAdd = () => {
                 <CustomSelect
                   className={'mb-2'}
                   name='contentTypeSelect'
-                  // onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  //   const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
-                  //     .dataset as { contentTypeId: string; contentTypeName: string };
-                  //   onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
-                  // }}
+                  onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                    const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
+                      .dataset as { contentTypeId: string; contentTypeName: string };
+                    onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
+                  }}
                 >
                   {contentTypeListData ? (
                     <>
