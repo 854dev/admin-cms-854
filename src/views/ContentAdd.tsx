@@ -1,33 +1,17 @@
 import Footer from 'layouts/partials/Footer';
 
-import Badge from 'components/Badge';
 import Breadcrumb, { BreadcrumbItem } from 'components/Breadcrumb';
 import Button from 'components/Button';
 import Input from 'components/form/Input';
 import Label from 'components/form/Label';
-import Textarea from 'components/form/Textarea';
-import FormMeta from './content/FormMeta';
 
 import api from 'api';
-import TableComponent from 'components/Table';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ContentBodySchema, ContentDetail, ContentType, ID } from 'types/common';
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
-import FormBody from './content/ContentForm';
-import Dropdown from 'components/Dropdown';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import CustomSelect from 'components/form/CustomSelect';
-import { createContentBodyFromBodyField } from 'util/util';
 import { useDispatch } from 'react-redux';
 import { setAlert } from 'features/alertSlice';
-import FormTag from './content/FormTag';
-import ContentForm from './content/ContentForm';
 import ReactQuill from 'react-quill';
 
 const contentDetailDefault: ContentDetail = {
@@ -311,8 +295,6 @@ const ContentAdd = () => {
             Submit
           </Button>
         </div>
-
-        {/* <ContentForm contentDetail={contentDetail} onSubmit={onSubmit}></ContentForm> */}
       </div>
       <Footer />
     </main>
