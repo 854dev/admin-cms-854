@@ -1,154 +1,65 @@
-import api from 'api';
-import Button from 'components/Button';
-import Input from 'components/form/Input';
-import React, { useEffect, useState } from 'react';
-import { schemaType, ContentBodySchema, ID } from 'types/common';
-import { CreateBodySchemaDto } from 'types/dto';
+import { useEffect, useState } from 'react';
+import ReactQuill from 'react-quill';
 
-interface Props {
-  contentTypeId: ID;
+interface ContentSchema {
+  schemaId: number;
+  contentTypeId: number;
+  schemaType: 'text' | 'string';
+  schemaName: string;
 }
 
-function FormBodyField(props: Props) {
-  const { contentTypeId } = props;
+interface Props {
+  contentSchema: ContentSchema;
+}
 
-  const [contentTypeDetailTrigger, contentTypeDetailResult] =
-    api.useLazyGetContentTypeDetailQuery();
+function ContentForm({ contentSchema }: Props) {
+  const [schema, setSchema] = useState<ContentSchema[]>([]);
 
-  const [bodyFieldDeleteTrigger, bodyFieldDeleteResult] = api.useDeleteBodySchemaMutation();
+  // useEffect(() => {
+  //   axios.get<ContentSchema[]>('/content-schema/').then((response) => {
+  //     setSchema(response.data);
+  //   });
+  // }, []);
 
-  const [postBodyField, postBodyFieldResult] = api.usePostBodySchemaMutation();
+  const getFieldComponent = (schemaName: string) => {
+    const fieldSchema = schema.find((s) => s.schemaName === schemaName);
 
-  const [postBodyFieldDto, setPostBodyFieldDto] = useState<CreateBodySchemaDto>({
-    contentTypeId: -1,
-    schemaName: '',
-    schemaType: 'text',
-  });
+    if (!fieldSchema) {
+      throw new Error(`Schema not found for schemaName: ${schemaName}`);
+    }
 
-  /** FUNCTION */
-  const getContentTypeDetail = async (id: ID) => {
-    const res = await contentTypeDetailTrigger(id).unwrap();
+    if (fieldSchema.schemaType === 'text') {
+      return (
+        <ReactQuill
+          value={initialBody[schemaName]}
+          onChange={(value) => handleBodyChange(schemaName, value)}
+        />
+      );
+    } else {
+      return (
+        <input
+          type='text'
+          value={initialBody[schemaName]}
+          onChange={(event) => handleBodyChange(schemaName, event.target.value)}
+        />
+      );
+    }
   };
 
-  const onClickDeleteBodyField = async (id: ID) => {
-    const res = await bodyFieldDeleteTrigger(id);
-    getContentTypeDetail(contentTypeId);
+  const handleBodyChange = (schemaName: string, value: string) => {
+    // Body 변경 사항 처리
   };
-
-  const onClickAddField = async () => {
-    const body: CreateBodySchemaDto = {
-      ...postBodyFieldDto,
-      contentTypeId: Number(contentTypeId),
-    };
-
-    const res = await postBodyField(body);
-    getContentTypeDetail(contentTypeId);
-  };
-
-  useEffect(() => {
-    getContentTypeDetail(contentTypeId);
-  }, [contentTypeId]);
 
   return (
-    <>
-      <div className='flex w-full flex-row gap-4'>
-        {/* manage body field */}
-        <div className='card w-full p-4'>
-          {contentTypeDetailResult.isSuccess ? (
-            <h2>{contentTypeDetailResult.data.contentTypeName} 타입 필드 목록</h2>
-          ) : null}
-
-          <div className='flex flex-row justify-center'>
-            <table className='table w-full'>
-              <thead>
-                <tr>
-                  <th>필드 타입</th>
-                  <th>필드 명</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contentTypeDetailResult.isSuccess ? (
-                  <>
-                    {contentTypeDetailResult.data.bodySchema.map((elem: ContentBodySchema) => {
-                      return (
-                        <tr key={elem.schemaId}>
-                          <td>
-                            <div className='text-center'>{elem.schemaType}</div>{' '}
-                          </td>
-                          <td>
-                            <div className='text-center'>{elem.schemaName}</div>
-                          </td>
-                          <td>
-                            <Button
-                              className='bg-danger text-center text-sm'
-                              onClick={() => {
-                                onClickDeleteBodyField(elem.schemaId);
-                              }}
-                            >
-                              삭제
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
+    <div>
+      {schema.map((field) => (
+        <div key={field.schemaName}>
+          <label>{field.schemaName}</label>
+          {getFieldComponent(field.schemaName)}
         </div>
-
-        <div className='card w-full p-4'>
-          <div className='flex justify-end'>
-            <Button className='px-4 text-center text-sm' onClick={onClickAddField}>
-              필드 추가
-            </Button>
-          </div>
-
-          <div className='flex flex-col justify-evenly'>
-            <div className='mb-4'>
-              <p>필드 이름</p>
-              <Input
-                value={postBodyFieldDto.schemaName}
-                onChange={(e) => {
-                  setPostBodyFieldDto({
-                    ...postBodyFieldDto,
-                    schemaName: e.currentTarget.value,
-                  });
-                }}
-              ></Input>
-            </div>
-
-            {/* schemaType 중 하나 */}
-            <div>
-              <p>필드 타입</p>
-              <div className='flex flex-row justify-start gap-4'>
-                {(['string', 'number', 'boolean', 'text'] as schemaType[]).map((elem) => {
-                  return (
-                    <Button
-                      key={elem}
-                      className={`${
-                        postBodyFieldDto.schemaType === elem ? 'bg-primary' : 'bg-gray-200'
-                      } text-sm`}
-                      onClick={() => {
-                        setPostBodyFieldDto({
-                          ...postBodyFieldDto,
-                          schemaType: elem,
-                        });
-                      }}
-                    >
-                      {elem}
-                    </Button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+      ))}
+    </div>
   );
 }
 
-export default FormBodyField;
+export default ContentForm;

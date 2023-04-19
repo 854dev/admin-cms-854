@@ -11,7 +11,7 @@ import FormMeta from './content/FormMeta';
 import api from 'api';
 import TableComponent from 'components/Table';
 import { useLocation, useParams } from 'react-router-dom';
-import { ContentBodyWithName, ContentDetail, ContentType, ID } from 'types/common';
+import { ContentDetail, ContentType, ID } from 'types/common';
 import {
   ChangeEvent,
   ChangeEventHandler,
@@ -20,24 +20,34 @@ import {
   useRef,
   useState,
 } from 'react';
-import FormBody from './content/FormBody';
+import FormBody from './content/ContentForm';
 import Dropdown from 'components/Dropdown';
 import CustomSelect from 'components/form/CustomSelect';
 import { createContentBodyFromBodyField } from 'util/util';
 import { useDispatch } from 'react-redux';
 import { setAlert } from 'features/alertSlice';
 import FormTag from './content/FormTag';
+import ContentForm from './content/ContentForm';
+
+const contentDetailDefault: ContentDetail = {
+  title: '',
+  contentTypeId: -1,
+  contentTypeName: '',
+  creator: '',
+  createdAt: '-',
+  updatedAt: '-',
+  deletedAt: '',
+  status: 'draft',
+  body: {},
+  tags: [],
+};
 
 const ContentAdd = () => {
   const location = useLocation();
 
-  const contentBodyRef = useRef<{ contentBody: ContentBodyWithName[] }>({ contentBody: [] });
-
   const dispatch = useDispatch();
 
   const [contentType, setcontentType] = useState<number>();
-
-  const [contentBody, setContentBody] = useState<ContentBodyWithName[]>([]);
 
   const {
     data: contentTypeListData,
@@ -54,65 +64,57 @@ const ContentAdd = () => {
 
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
 
-  const [contentDetail, setContentDetail] = useState<ContentDetail>({
-    title: '',
-    contentTypeId: -1,
-    contentTypeName: '',
-    creator: '',
-    createdAt: '2000-01-01',
-    updatedAt: '2000-01-01',
-    deletedAt: '',
-    status: 'draft',
-    body: {},
-    tags: [],
-  });
+  const [contentDetail, setContentDetail] = useState<ContentDetail>(contentDetailDefault);
 
-  const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
-    setcontentType(contentTypeId);
-    getContentTypeDetail(contentTypeId);
-  };
+  // const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
+  //   setcontentType(contentTypeId);
+  //   getContentTypeDetail(contentTypeId);
+  // };
 
-  const getContentTypeDetail = async (id: ID) => {
-    const res = await contentTypeDetailTrigger(Number(id)).unwrap();
-    const contentBody = createContentBodyFromBodyField(res.bodySchema);
-    contentBodyRef.current.contentBody = contentBody;
-    setContentBody(contentBody);
-  };
+  // const getContentTypeDetail = async (id: ID) => {
+  //   const res = await contentTypeDetailTrigger(Number(id)).unwrap();
+  //   const contentBody = createContentBodyFromBodyField(res.bodySchema);
+  //   contentBodyRef.current.contentBody = contentBody;
+  //   setContentBody(contentBody);
+  // };
 
   const onSubmit = async () => {
     const param = {
       ...contentDetail,
-      body: contentBodyRef.current.contentBody,
     };
-    setContentBody(contentBodyRef.current.contentBody);
-    const res = await postContentTrigger(param);
 
-    dispatch(
-      setAlert({
-        title: '등록 완료',
-        color: 'success',
-        dismissable: true,
-        outlined: false,
-      })
-    );
+    // const param = {
+    //   ...contentDetail,
+    //   body: contentBodyRef.current.contentBody,
+    // };
+    // setContentBody(contentBodyRef.current.contentBody);
+    // const res = await postContentTrigger(param);
+    // dispatch(
+    //   setAlert({
+    //     title: '등록 완료',
+    //     color: 'success',
+    //     dismissable: true,
+    //     outlined: false,
+    //   })
+    // );
   };
 
   /** 컨텐츠 타입 페칭 후  1번쨰 선택. 이전페이지에서 넘어왔다면 이미 선택되어 있음 */
-  useEffect(() => {
-    if (contentTypeListSuccess && contentTypeListData.data.length > 0) {
-      const contentTypeIdLocation = location.state?.contentTypeId;
+  // useEffect(() => {
+  //   if (contentTypeListSuccess && contentTypeListData.data.length > 0) {
+  //     const contentTypeIdLocation = location.state?.contentTypeId;
 
-      const selectedContentType = contentTypeIdLocation
-        ? (contentTypeListData.data.find(
-            (elem) => elem.contentTypeId === contentTypeIdLocation
-          ) as ContentType)
-        : contentTypeListData.data[0];
+  //     const selectedContentType = contentTypeIdLocation
+  //       ? (contentTypeListData.data.find(
+  //           (elem) => elem.contentTypeId === contentTypeIdLocation
+  //         ) as ContentType)
+  //       : contentTypeListData.data[0];
 
-      setcontentType(selectedContentType.contentTypeId);
-      setContentDetail({ ...contentDetail, ...selectedContentType });
-      getContentTypeDetail(selectedContentType.contentTypeId);
-    }
-  }, [contentTypeListSuccess, contentTypeListIsFetching]);
+  //     setcontentType(selectedContentType.contentTypeId);
+  //     setContentDetail({ ...contentDetail, ...selectedContentType });
+  //     getContentTypeDetail(selectedContentType.contentTypeId);
+  //   }
+  // }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
     <main className='workspace'>
@@ -130,11 +132,11 @@ const ContentAdd = () => {
           <h3>콘텐츠 타입 선택</h3>
           <CustomSelect
             name='contentTypeSelect'
-            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
-                .dataset as { contentTypeId: string; contentTypeName: string };
-              onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
-            }}
+            // onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+            //   const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
+            //     .dataset as { contentTypeId: string; contentTypeName: string };
+            //   onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
+            // }}
           >
             {contentTypeListData ? (
               <>
@@ -153,6 +155,8 @@ const ContentAdd = () => {
             ) : null}
           </CustomSelect>
         </div>
+
+        <ContentForm contentDetail={contentDetail} onSubmit={onSubmit}></ContentForm>
 
         {/* <div className='p-4 mb-5 card'>
           <h3 className='mb-4'>콘텐츠 정보</h3>
