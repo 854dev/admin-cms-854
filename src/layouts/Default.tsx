@@ -6,8 +6,10 @@ import Footer from './partials/Footer';
 const LayoutDefault = () => {
   return (
     <>
-      <Navigation />
-      <Outlet />
+      <div className='w-full'>
+        <Navigation />
+        <Outlet />
+      </div>
     </>
   );
 };

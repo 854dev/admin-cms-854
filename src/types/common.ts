@@ -9,15 +9,16 @@ export interface PagedResponse<T = unknown> {
 }
 
 export interface ContentMeta {
-  contentTypeId: ID;
-  contentTypeName: string;
+  contentId?: ID;
+  contentTypeId?: ID;
+  contentTypeName?: string;
   title: string;
-  creator: string;
-  createdAt: contentMetaDate;
-  updatedAt: contentMetaDate;
-  deletedAt: contentMetaDate;
-  status: contentMetaStatus;
-  tags: ContentTag[];
+  creator?: string;
+  createdAt?: contentMetaDate;
+  updatedAt?: contentMetaDate;
+  deletedAt?: contentMetaDate;
+  status?: contentMetaStatus;
+  tags?: ContentTag[];
 }
 
 export interface ContentTag {
@@ -26,14 +27,13 @@ export interface ContentTag {
 }
 
 export interface ContentBody {
-  schemaId: ID; // 1
-  schemaValue: string; // '<p>하이 헬로우</p>';
+  [key: string]: string; // '<p>하이 헬로우</p>';
 }
 
 /** 프론트엔드 표시용 schemaName 추가된 ContentBody */
-export interface ContentBodyWithName extends ContentBody {
-  schemaName: string;
-}
+// export interface ContentBodyWithName extends ContentBody {
+//   schemaName: string;
+// }
 
 export interface ContentType {
   contentTypeId: ID;
@@ -52,5 +52,5 @@ export interface ContentTypeDetail extends ContentType {
 }
 
 export interface ContentDetail extends ContentMeta {
-  body: ContentBody[];
+  body: ContentBody;
 }

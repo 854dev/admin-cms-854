@@ -63,7 +63,7 @@ const ContentAdd = () => {
     updatedAt: '2000-01-01',
     deletedAt: '',
     status: 'draft',
-    body: [],
+    body: {},
     tags: [],
   });
 
@@ -154,17 +154,17 @@ const ContentAdd = () => {
           </CustomSelect>
         </div>
 
-        <div className='card mb-5 p-4'>
+        {/* <div className='p-4 mb-5 card'>
           <h3 className='mb-4'>콘텐츠 정보</h3>
           <FormMeta contentDetail={contentDetail} setContentDetail={setContentDetail}></FormMeta>
         </div>
 
-        <div className='card mb-5 p-4'>
+        <div className='p-4 mb-5 card'>
           <h3 className='mb-4'>콘텐츠 내용</h3>
           <FormBody ref={contentBodyRef} contentBody={contentBody}></FormBody>
         </div>
 
-        <div className='card mb-5 p-4'>
+        <div className='p-4 mb-5 card'>
           <h3 className='mb-4'>콘텐츠 태그</h3>
           <FormTag
             tags={contentDetail.tags}
@@ -176,7 +176,7 @@ const ContentAdd = () => {
 
         <div className='flex flex-row justify-end p-4'>
           <Button onClick={onSubmit}>저장</Button>
-        </div>
+        </div> */}
       </div>
       <Footer />
     </main>
