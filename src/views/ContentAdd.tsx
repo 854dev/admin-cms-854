@@ -28,6 +28,7 @@ import { useDispatch } from 'react-redux';
 import { setAlert } from 'features/alertSlice';
 import FormTag from './content/FormTag';
 import ContentForm from './content/ContentForm';
+import ReactQuill from 'react-quill';
 
 const contentDetailDefault: ContentDetail = {
   title: '',
@@ -77,6 +78,16 @@ const ContentAdd = () => {
   //   contentBodyRef.current.contentBody = contentBody;
   //   setContentBody(contentBody);
   // };
+
+  const handleBodyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const key = event.target.name;
+    const value = event.target.value;
+
+    setContentDetail((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
   const onSubmit = async () => {
     const param = {
@@ -128,59 +139,107 @@ const ContentAdd = () => {
         </section>
 
         {/* content type Select */}
-        <div className='card relative mb-5 p-4'>
-          <h3>콘텐츠 타입 선택</h3>
-          <CustomSelect
-            name='contentTypeSelect'
-            // onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            //   const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
-            //     .dataset as { contentTypeId: string; contentTypeName: string };
-            //   onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
-            // }}
-          >
-            {contentTypeListData ? (
-              <>
-                {contentTypeListData.data.map((elem: ContentType) => (
-                  <option
-                    selected={elem.contentTypeId === contentType}
-                    key={elem.contentTypeId}
-                    value={elem.contentTypeId}
-                    data-content-type-id={elem.contentTypeId}
-                    data-content-type-name={elem.contentTypeName}
-                  >
-                    {elem.contentTypeName}
-                  </option>
-                ))}
-              </>
-            ) : null}
-          </CustomSelect>
+        <div className='relative mb-5 p-4'>
+          {/* Content */}
+          <div className='lg:col-span-2 xl:col-span-3'>
+            <div className='card p-5'>
+              <div className='mb-5 sm:w-full xl:w-1/2'>
+                <Label className='mb-2 block' htmlFor='contentTypeSelect'>
+                  콘텐츠 타입 선택
+                </Label>
+                <CustomSelect
+                  className={'mb-2'}
+                  name='contentTypeSelect'
+                  // onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                  //   const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
+                  //     .dataset as { contentTypeId: string; contentTypeName: string };
+                  //   onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
+                  // }}
+                >
+                  {contentTypeListData ? (
+                    <>
+                      {contentTypeListData.data.map((elem: ContentType) => (
+                        <option
+                          selected={elem.contentTypeId === contentType}
+                          key={elem.contentTypeId}
+                          value={elem.contentTypeId}
+                          data-content-type-id={elem.contentTypeId}
+                          data-content-type-name={elem.contentTypeName}
+                        >
+                          {elem.contentTypeName}
+                        </option>
+                      ))}
+                    </>
+                  ) : null}
+                </CustomSelect>
+              </div>
+              {/* content meta */}
+              <div className='mb-5 sm:w-full xl:w-1/2'>
+                <Label className='mb-2 block' htmlFor='title'>
+                  Title
+                </Label>
+                <Input id='title' name='title' type='text' />
+              </div>
+              <div className='mb-5 sm:w-full xl:w-1/2'>
+                <Label className='mb-2 block' htmlFor='author'>
+                  Author
+                </Label>
+                <Input id='author' name='author' type='text' />
+              </div>
+              <div className='mb-5 sm:w-full xl:w-1/2'>
+                <Label className='mb-2 block' htmlFor='description'>
+                  Description
+                </Label>
+                <Input id='description' name='description' type='text' />
+              </div>
+              <div className='mb-5 sm:w-full xl:w-1/2'>
+                <Label className='mb-2 block' htmlFor='status'>
+                  Status
+                </Label>
+                <Button
+                  className={`mb-2 text-sm ${
+                    contentDetail.status === 'draft' ? 'bg-primary' : 'bg-secondary'
+                  }`}
+                >
+                  draft
+                </Button>
+                <Button
+                  className={`mb-2 text-sm ${
+                    contentDetail.status === 'publish' ? 'bg-primary' : 'bg-secondary'
+                  }`}
+                >
+                  publish
+                </Button>
+              </div>
+              <div className='mb-5 sm:w-full xl:w-1/2'>
+                <Label className='mb-2 block' htmlFor='title'>
+                  createdAt : {contentDetail.createdAt}
+                </Label>
+                <Label className='mb-2 block' htmlFor='title'>
+                  updatedAt : {contentDetail.updatedAt}
+                </Label>
+              </div>
+
+              {/* content body */}
+              <div className='w-full'>
+                <Label className='mb-2 block' htmlFor='excerpt'>
+                  야발년들아
+                </Label>
+                <div className='mt-5 min-h-[23rem]'>
+                  <ReactQuill
+                    className='h-[17rem] w-full'
+                    theme='snow'
+                    onChange={(content, delta, source, editor) => {
+                      editor.getHTML();
+                    }}
+                  ></ReactQuill>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <ContentForm contentDetail={contentDetail} onSubmit={onSubmit}></ContentForm>
-
-        {/* <div className='p-4 mb-5 card'>
-          <h3 className='mb-4'>콘텐츠 정보</h3>
-          <FormMeta contentDetail={contentDetail} setContentDetail={setContentDetail}></FormMeta>
-        </div>
-
-        <div className='p-4 mb-5 card'>
-          <h3 className='mb-4'>콘텐츠 내용</h3>
-          <FormBody ref={contentBodyRef} contentBody={contentBody}></FormBody>
-        </div>
-
-        <div className='p-4 mb-5 card'>
-          <h3 className='mb-4'>콘텐츠 태그</h3>
-          <FormTag
-            tags={contentDetail.tags}
-            onChangeTags={(tags) => {
-              setContentDetail({ ...contentDetail, tags });
-            }}
-          />
-        </div>
-
-        <div className='flex flex-row justify-end p-4'>
-          <Button onClick={onSubmit}>저장</Button>
-        </div> */}
       </div>
       <Footer />
     </main>
