@@ -9,14 +9,12 @@ import Button from 'components/Button';
 import CustomSelect from 'components/form/CustomSelect';
 import Input from 'components/form/Input';
 import Label from 'components/form/Label';
-// import PolarArea from 'components/charts/PolarArea';
-import Textarea from 'components/form/Textarea';
 
-import { ContentBody, ContentMeta, ContentType } from 'types/common';
+import { ContentBodySchema, ContentType, ID, schemaType } from 'types/common';
 import api from 'api';
-import FormBodyField from './content/FormBodyField';
 import { useDispatch } from 'react-redux';
 import { setAlert } from 'features/alertSlice';
+import { CreateBodySchemaDto } from 'types/dto';
 
 const ContentTypeManage = () => {
   const dispatch = useDispatch();
@@ -89,7 +87,7 @@ const ContentTypeManage = () => {
         </section>
 
         <div className='grid'>
-          <div className='card mb-5 p-4 sm:w-full md:w-1/2'>
+          <div className='card mb-5 w-full p-4'>
             {/* content type Select */}
             <div className='mb-4'>
               <div className='mb-2 flex items-center justify-between'>
@@ -135,16 +133,158 @@ const ContentTypeManage = () => {
               ></Input>
             </div>
           </div>
-        </div>
 
-        {contentTypeListData && contentType ? (
-          <FormBodyField contentTypeId={contentType}></FormBodyField>
-        ) : null}
+          {contentTypeListData && contentType ? (
+            <FormBodyField contentTypeId={contentType}></FormBodyField>
+          ) : null}
+        </div>
       </div>
 
       <Footer />
     </main>
   );
 };
+
+function FormBodyField(props: { contentTypeId: ID }) {
+  const { contentTypeId } = props;
+
+  const [contentTypeDetailTrigger, contentTypeDetailResult] =
+    api.useLazyGetContentTypeDetailQuery();
+
+  const [bodyFieldDeleteTrigger, bodyFieldDeleteResult] = api.useDeleteBodySchemaMutation();
+
+  const [postBodyField, postBodyFieldResult] = api.usePostBodySchemaMutation();
+
+  const [postBodyFieldDto, setPostBodyFieldDto] = useState<CreateBodySchemaDto>({
+    contentTypeId: -1,
+    schemaName: '',
+    schemaType: 'text',
+  });
+
+  /** FUNCTION */
+  const getContentTypeDetail = async (id: ID) => {
+    const res = await contentTypeDetailTrigger(id).unwrap();
+  };
+
+  const onClickDeleteBodyField = async (id: ID) => {
+    const res = await bodyFieldDeleteTrigger(id);
+    getContentTypeDetail(contentTypeId);
+  };
+
+  const onClickAddField = async () => {
+    const body: CreateBodySchemaDto = {
+      ...postBodyFieldDto,
+      contentTypeId: Number(contentTypeId),
+    };
+
+    const res = await postBodyField(body);
+    getContentTypeDetail(contentTypeId);
+  };
+
+  useEffect(() => {
+    getContentTypeDetail(contentTypeId);
+  }, [contentTypeId]);
+
+  return (
+    <div className='grid gap-4'>
+      {/* manage body field */}
+      <div className='card w-full p-4'>
+        {contentTypeDetailResult.isSuccess ? (
+          <Label>{contentTypeDetailResult.data.contentTypeName} 타입 필드 추가</Label>
+        ) : null}
+
+        {/* add field */}
+        <div className='mb-12 flex flex-col justify-evenly'>
+          {/* schemaType 중 하나 */}
+          <div>
+            <Input
+              className='mb-4'
+              value={postBodyFieldDto.schemaName}
+              onChange={(e) => {
+                setPostBodyFieldDto({
+                  ...postBodyFieldDto,
+                  schemaName: e.currentTarget.value,
+                });
+              }}
+            ></Input>
+
+            <div className='flex flex-row justify-between'>
+              <div className='flex flex-row justify-between gap-4'>
+                {(['string', 'text'] as schemaType[]).map((elem) => {
+                  return (
+                    <Button
+                      key={elem}
+                      className={`${
+                        postBodyFieldDto.schemaType === elem ? 'bg-primary' : 'bg-gray-200'
+                      } text-sm`}
+                      onClick={() => {
+                        setPostBodyFieldDto({
+                          ...postBodyFieldDto,
+                          schemaType: elem,
+                        });
+                      }}
+                    >
+                      {elem}
+                    </Button>
+                  );
+                })}
+              </div>
+              <Button
+                className='justify-self-end px-4 text-center text-sm'
+                onClick={onClickAddField}
+              >
+                필드 추가
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* field table */}
+        {contentTypeDetailResult.isSuccess ? (
+          <Label>{contentTypeDetailResult.data.contentTypeName} 타입 필드 목록</Label>
+        ) : null}
+        <div className='flex flex-row justify-center'>
+          <table className='table w-full'>
+            <thead>
+              <tr>
+                <th>필드 타입</th>
+                <th>필드 명</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contentTypeDetailResult.isSuccess ? (
+                <>
+                  {contentTypeDetailResult.data.contentBodySchema.map((elem: ContentBodySchema) => {
+                    return (
+                      <tr key={elem.schemaId}>
+                        <td>
+                          <div className='text-center'>{elem.schemaType}</div>{' '}
+                        </td>
+                        <td>
+                          <div className='text-center'>{elem.schemaName}</div>
+                        </td>
+                        <td>
+                          <Button
+                            className='bg-danger text-center text-sm'
+                            onClick={() => {
+                              onClickDeleteBodyField(elem.schemaId);
+                            }}
+                          >
+                            삭제
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default ContentTypeManage;
