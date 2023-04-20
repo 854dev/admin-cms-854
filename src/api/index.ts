@@ -14,6 +14,7 @@ const api = createApi({
         params: req,
       }),
       transformResponse: (response: common.PagedResponse<common.ContentMeta>) => response,
+      providesTags: (result, error, id) => ['Content'],
     }),
 
     getContentDetail: builder.query({
@@ -31,6 +32,7 @@ const api = createApi({
         body: dto,
       }),
       transformResponse: (response: common.MessageResponse) => response,
+      invalidatesTags: ['Content'],
     }),
 
     putContent: builder.mutation({
@@ -40,6 +42,16 @@ const api = createApi({
         body: dto,
       }),
       transformResponse: (response: common.MessageResponse) => response,
+      invalidatesTags: ['Content'],
+    }),
+
+    deleteContent: builder.mutation({
+      query: (id: common.ID) => ({
+        method: 'delete',
+        url: `content/${id}`,
+      }),
+      transformResponse: (response: common.MessageResponse) => response,
+      invalidatesTags: ['Content'],
     }),
 
     getContentTypeList: builder.query({
