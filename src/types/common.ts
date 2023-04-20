@@ -39,6 +39,7 @@ export interface ContentBody {
 export interface ContentType {
   contentTypeId: ID;
   contentTypeName: string;
+  contentBodySchema: ContentBodySchema[];
 }
 
 export interface ContentBodySchema {
@@ -48,9 +49,7 @@ export interface ContentBodySchema {
   schemaName: string;
 }
 
-export interface ContentTypeDetail extends ContentType {
-  bodySchema: ContentBodySchema[];
-}
+export interface ContentTypeDetail extends ContentType {}
 
 export interface ContentDetail extends ContentMeta {
   body: ContentBody;
