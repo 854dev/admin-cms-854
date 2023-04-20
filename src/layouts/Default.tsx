@@ -8,7 +8,7 @@ const LayoutDefault = () => {
     <>
       <TopBar />
 
-      <div className='w-full pt-16'>
+      <div className='w-full pt-20'>
         <Outlet />
       </div>
     </>
