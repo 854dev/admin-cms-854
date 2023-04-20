@@ -51,106 +51,102 @@ function FormBodyField(props: Props) {
   }, [contentTypeId]);
 
   return (
-    <>
-      <div className='flex w-full flex-row gap-4'>
-        {/* manage body field */}
-        <div className='card w-full p-4'>
-          {contentTypeDetailResult.isSuccess ? (
-            <Label>{contentTypeDetailResult.data.contentTypeName} 타입 필드 목록</Label>
-          ) : null}
+    <div className='grid gap-4'>
+      {/* manage body field */}
+      <div className='card p-4 sm:w-full md:w-1/2'>
+        {contentTypeDetailResult.isSuccess ? (
+          <Label>{contentTypeDetailResult.data.contentTypeName} 타입 필드 목록</Label>
+        ) : null}
 
-          <div className='flex flex-row justify-center'>
-            <table className='table w-full'>
-              <thead>
-                <tr>
-                  <th>필드 타입</th>
-                  <th>필드 명</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contentTypeDetailResult.isSuccess ? (
-                  <>
-                    {contentTypeDetailResult.data.contentBodySchema.map(
-                      (elem: ContentBodySchema) => {
-                        return (
-                          <tr key={elem.schemaId}>
-                            <td>
-                              <div className='text-center'>{elem.schemaType}</div>{' '}
-                            </td>
-                            <td>
-                              <div className='text-center'>{elem.schemaName}</div>
-                            </td>
-                            <td>
-                              <Button
-                                className='bg-danger text-center text-sm'
-                                onClick={() => {
-                                  onClickDeleteBodyField(elem.schemaId);
-                                }}
-                              >
-                                삭제
-                              </Button>
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )}
-                  </>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
+        <div className='flex flex-row justify-center'>
+          <table className='table w-full'>
+            <thead>
+              <tr>
+                <th>필드 타입</th>
+                <th>필드 명</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contentTypeDetailResult.isSuccess ? (
+                <>
+                  {contentTypeDetailResult.data.contentBodySchema.map((elem: ContentBodySchema) => {
+                    return (
+                      <tr key={elem.schemaId}>
+                        <td>
+                          <div className='text-center'>{elem.schemaType}</div>{' '}
+                        </td>
+                        <td>
+                          <div className='text-center'>{elem.schemaName}</div>
+                        </td>
+                        <td>
+                          <Button
+                            className='bg-danger text-center text-sm'
+                            onClick={() => {
+                              onClickDeleteBodyField(elem.schemaId);
+                            }}
+                          >
+                            삭제
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className='card w-1/2 p-4'>
+        <div className='flex justify-end'>
+          <Button className='px-4 text-center text-sm' onClick={onClickAddField}>
+            필드 추가
+          </Button>
         </div>
 
-        <div className='card w-full p-4'>
-          <div className='flex justify-end'>
-            <Button className='px-4 text-center text-sm' onClick={onClickAddField}>
-              필드 추가
-            </Button>
+        <div className='flex flex-col justify-evenly'>
+          <div className='mb-4'>
+            <p>필드 이름</p>
+            <Input
+              value={postBodyFieldDto.schemaName}
+              onChange={(e) => {
+                setPostBodyFieldDto({
+                  ...postBodyFieldDto,
+                  schemaName: e.currentTarget.value,
+                });
+              }}
+            ></Input>
           </div>
 
-          <div className='flex flex-col justify-evenly'>
-            <div className='mb-4'>
-              <p>필드 이름</p>
-              <Input
-                value={postBodyFieldDto.schemaName}
-                onChange={(e) => {
-                  setPostBodyFieldDto({
-                    ...postBodyFieldDto,
-                    schemaName: e.currentTarget.value,
-                  });
-                }}
-              ></Input>
-            </div>
-
-            {/* schemaType 중 하나 */}
-            <div>
-              <p>필드 타입</p>
-              <div className='flex flex-row justify-start gap-4'>
-                {(['string', 'number', 'boolean', 'text'] as schemaType[]).map((elem) => {
-                  return (
-                    <Button
-                      key={elem}
-                      className={`${
-                        postBodyFieldDto.schemaType === elem ? 'bg-primary' : 'bg-gray-200'
-                      } text-sm`}
-                      onClick={() => {
-                        setPostBodyFieldDto({
-                          ...postBodyFieldDto,
-                          schemaType: elem,
-                        });
-                      }}
-                    >
-                      {elem}
-                    </Button>
-                  );
-                })}
-              </div>
+          {/* schemaType 중 하나 */}
+          <div>
+            <p>필드 타입</p>
+            <div className='flex flex-row justify-start gap-4'>
+              {(['string', 'text'] as schemaType[]).map((elem) => {
+                return (
+                  <Button
+                    key={elem}
+                    className={`${
+                      postBodyFieldDto.schemaType === elem ? 'bg-primary' : 'bg-gray-200'
+                    } text-sm`}
+                    onClick={() => {
+                      setPostBodyFieldDto({
+                        ...postBodyFieldDto,
+                        schemaType: elem,
+                      });
+                    }}
+                  >
+                    {elem}
+                  </Button>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

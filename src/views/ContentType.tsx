@@ -88,47 +88,52 @@ const ContentTypeManage = () => {
           <h1>Content Type</h1>
         </section>
 
-        <div className='flex flex-row justify-between gap-4'>
-          {/* content type Select */}
-          <div className='card mb-5 w-full p-4'>
-            <div className='mb-2 flex justify-between'>
-              <p>콘텐츠 타입 이름</p>
-              <Button className={'bg-danger py-1 px-2 text-sm'} onClick={onClickDeleteContentType}>
-                콘텐츠 타입 삭제
-              </Button>
+        <div className='grid'>
+          <div className='card mb-5 p-4 sm:w-full md:w-1/2'>
+            {/* content type Select */}
+            <div className='mb-4'>
+              <div className='mb-2 flex items-center justify-between'>
+                <p>콘텐츠 타입 선택</p>
+                <Button
+                  className={'bg-danger py-1 px-2 text-sm'}
+                  onClick={onClickDeleteContentType}
+                >
+                  콘텐츠 타입 삭제
+                </Button>
+              </div>
+
+              <CustomSelect onChange={onChangeContentType}>
+                {contentTypeListData ? (
+                  <>
+                    {contentTypeListData.data.map((elem: ContentType) => (
+                      <option key={elem.contentTypeId} value={elem.contentTypeId}>
+                        {elem.contentTypeName}
+                      </option>
+                    ))}
+                  </>
+                ) : null}
+              </CustomSelect>
             </div>
 
-            <CustomSelect onChange={onChangeContentType}>
-              {contentTypeListData ? (
-                <>
-                  {contentTypeListData.data.map((elem: ContentType) => (
-                    <option key={elem.contentTypeId} value={elem.contentTypeId}>
-                      {elem.contentTypeName}
-                    </option>
-                  ))}
-                </>
-              ) : null}
-            </CustomSelect>
-          </div>
+            {/* content type Add */}
+            <div>
+              <div className='mb-2 flex items-center justify-between'>
+                <p>콘텐츠 타입 이름</p>
+                <Button className={'py-1 px-2 text-sm'} onClick={onClickAddContentType}>
+                  콘텐츠 타입 추가
+                </Button>
+              </div>
 
-          {/* content type Select */}
-          <div className='card mb-5 w-full p-4'>
-            <div className='mb-2 flex justify-between'>
-              <p>콘텐츠 타입 이름</p>
-              <Button className={'py-1 px-2 text-sm'} onClick={onClickAddContentType}>
-                콘텐츠 타입 추가
-              </Button>
+              <Input
+                value={contentTypeDto.contentTypeName}
+                onChange={(e) => {
+                  setContentTypeDto({
+                    ...contentTypeDto,
+                    contentTypeName: e.currentTarget.value,
+                  });
+                }}
+              ></Input>
             </div>
-
-            <Input
-              value={contentTypeDto.contentTypeName}
-              onChange={(e) => {
-                setContentTypeDto({
-                  ...contentTypeDto,
-                  contentTypeName: e.currentTarget.value,
-                });
-              }}
-            ></Input>
           </div>
         </div>
 
