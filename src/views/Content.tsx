@@ -26,7 +26,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/Button';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { ContentType } from 'types/common';
-import { parseDate } from 'util/util';
+import { apiThenShowMessage, parseDate } from 'util/util';
 
 const Content = () => {
   const [contentType, setcontentType] = useState<number>();
@@ -43,6 +43,8 @@ const Content = () => {
     }
   );
 
+  const [deleteContentTrigger, deleteContentResult] = api.useDeleteContentMutation();
+
   const {
     data: contentTypeListData,
     error: contentTypeListError,
@@ -58,13 +60,19 @@ const Content = () => {
     alert(id);
   };
 
+  const onClickDeleteBadge = async (id: string) => {
+    if (confirm('진짜 삭제?')) {
+      apiThenShowMessage(deleteContentTrigger(Number(id)).unwrap());
+    }
+  };
+
   const columnHelper = createColumnHelper<any>();
 
   const columns = [
     columnHelper.accessor('contentId', {
       header: 'contentId',
       cell: (info) => (
-        <div className='flex flex-row justify-evenly'>
+        <div className='flex flex-row justify-center gap-8'>
           {info.getValue()}
           <Link to={`/content/${info.getValue()}`}>
             <Badge
@@ -76,6 +84,14 @@ const Content = () => {
               수정
             </Badge>
           </Link>
+
+          <div
+            onClick={() => {
+              onClickDeleteBadge(info.getValue());
+            }}
+          >
+            <Badge className={'cursor-pointer bg-danger'}>삭제</Badge>
+          </div>
         </div>
       ),
     }),
