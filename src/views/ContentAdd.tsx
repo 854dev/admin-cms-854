@@ -87,7 +87,7 @@ const ContentAdd = () => {
         .then((payload) => {
           dispatch(
             setAlert({
-              title: `성공 : ${payload}`,
+              title: `성공 : ${payload.message}`,
               color: 'success',
               dismissable: true,
               outlined: false,

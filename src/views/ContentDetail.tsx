@@ -63,45 +63,21 @@ const ContentAdd = () => {
 
   const onSubmit = async () => {
     try {
-      const res = await triggerPatchContent({
+      const res = triggerPatchContent({
         ...contentDetail,
         contentId: Number(contentId) ?? -1,
-      });
-
-      console.log(res);
-
-      dispatch(
-        setAlert({
-          title: `성공 : ${res}`,
-          color: 'success',
-          dismissable: true,
-          outlined: false,
-        })
-      );
-
-      // .then((payload) => {
-      //   console.log(payload);
-      //   alert(payload);
-
-      //   dispatch(
-      //     setAlert({
-      //       title: `성공 : ${payload}`,
-      //       color: 'success',
-      //       dismissable: true,
-      //       outlined: false,
-      //     })
-      //   );
-      // })
-      // .catch((error) => {
-      //   dispatch(
-      //     setAlert({
-      //       title: `${JSON.stringify(error.data?.message)}`,
-      //       color: 'danger',
-      //       dismissable: true,
-      //       outlined: false,
-      //     })
-      //   );
-      // });
+      })
+        .unwrap()
+        .then((response) => {
+          dispatch(
+            setAlert({
+              title: `성공 : ${response.message}`,
+              color: 'success',
+              dismissable: true,
+              outlined: false,
+            })
+          );
+        });
     } catch (e) {
       dispatch(
         setAlert({
