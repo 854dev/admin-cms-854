@@ -30,6 +30,7 @@ const api = createApi({
         url: `content/`,
         body: dto,
       }),
+      transformResponse: (response: common.MessageResponse) => response,
     }),
 
     putContent: builder.mutation({
@@ -38,6 +39,7 @@ const api = createApi({
         url: `content/${dto.contentId}`,
         body: dto,
       }),
+      transformResponse: (response: common.MessageResponse) => response,
     }),
 
     getContentTypeList: builder.query({
@@ -72,6 +74,7 @@ const api = createApi({
         url: `content-type/${id}`,
       }),
       invalidatesTags: ['ContentType'],
+      transformResponse: (response: common.MessageResponse) => response,
     }),
 
     getContentTypeDetail: builder.query({
@@ -90,6 +93,7 @@ const api = createApi({
         body,
       }),
       invalidatesTags: ['ContentBodySchema'],
+      transformResponse: (response: common.MessageResponse) => response,
     }),
 
     deleteBodySchema: builder.mutation({
@@ -97,6 +101,7 @@ const api = createApi({
         method: 'delete',
         url: `content-body-schema/${id}`,
       }),
+      transformResponse: (response: common.MessageResponse) => response,
     }),
 
     postTag: builder.mutation({

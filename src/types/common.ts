@@ -3,6 +3,11 @@ export type contentMetaStatus = 'draft' | 'publish';
 export type schemaType = 'string' | 'number' | 'boolean' | 'text';
 export type ID = number;
 
+export interface MessageResponse {
+  status?: number;
+  message: string;
+}
+
 export interface PagedResponse<T = unknown> {
   data: T[];
   hasNextPage: boolean;
