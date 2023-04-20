@@ -17,7 +17,7 @@ export interface CreateContentTypeDto {
 }
 
 export interface CreateContentDto extends ContentMeta {
-  body: ContentBody[];
+  body: ContentBody;
 }
 
 export interface UpdateContentDto extends CreateContentDto {

@@ -1,13 +1,16 @@
 import { Outlet } from 'react-router-dom';
 
-import Navigation from 'layouts/partials/Navigation';
 import Footer from './partials/Footer';
+import TopBar from './partials/TopBar';
 
 const LayoutDefault = () => {
   return (
     <>
-      <Navigation />
-      <Outlet />
+      <TopBar />
+
+      <div className='w-full pt-20'>
+        <Outlet />
+      </div>
     </>
   );
 };
