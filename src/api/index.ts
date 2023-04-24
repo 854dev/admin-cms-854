@@ -4,7 +4,7 @@ import * as dto from 'types/dto';
 
 // Define a service using a base URL and expected endpoints
 const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BACKEND_URL, mode: 'cors' }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_REACT_APP_BACKEND_URL, mode: 'cors' }),
   tagTypes: ['ContentType', 'ContentBodySchema', 'Content', 'Tag'],
   endpoints: (builder) => ({
     getContentList: builder.query({
