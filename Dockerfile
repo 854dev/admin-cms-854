@@ -22,4 +22,4 @@ RUN \
   else yarn build; \
   fi
 
-COPY /home/ubuntu/app/admin-cms-854/dist /etc/nginx/html/admin-cms-854
+COPY ./dist /etc/nginx/html/admin-cms-854
