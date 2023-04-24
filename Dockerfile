@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
 WORKDIR /home/ubuntu/app/admin-cms-854
 
@@ -17,4 +17,4 @@ RUN \
 
 RUN yarn run build
 
-COPY --from=builder /home/ubuntu/app/admin-cms-854/dist /etc/nginx/html/admin-cms-854
+COPY /home/ubuntu/app/admin-cms-854/dist /etc/nginx/html/admin-cms-854
