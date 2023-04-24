@@ -8,4 +8,4 @@ RUN yarn install
 
 RUN yarn run build
 
-COPY ./dist /etc/nginx/html/admin-cms-854
+# COPY ./dist /etc/nginx/html/admin-cms-854
