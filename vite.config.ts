@@ -3,13 +3,15 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: '/admin/',
-  build: {
-    sourcemap: true,
-  },
-  plugins: [tsconfigPaths(), react()],
-  server: {
-    host: true,
-  },
+export default defineConfig(({ command, mode }) => {
+  return {
+    base: mode === 'production' ? 'https://www.loaclink.kr/admin/' : '/admin/',
+    build: {
+      sourcemap: true,
+    },
+    plugins: [tsconfigPaths(), react()],
+    server: {
+      host: true,
+    },
+  };
 });
