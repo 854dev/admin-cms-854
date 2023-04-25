@@ -80,9 +80,9 @@ export function NavLinks() {
 
   return (
     <ul>
-      <LinkItem to={'/'} name={'Dashboard'} />
-      <LinkItem to={'/content'} name={'Content'} />
-      <LinkItem to={'/content-type'} name={'Content Type'} />
+      <LinkItem to={'/admin'} name={'Dashboard'} />
+      <LinkItem to={'/admin/content'} name={'Content'} />
+      <LinkItem to={'/admin/content-type'} name={'Content Type'} />
     </ul>
   );
 }
