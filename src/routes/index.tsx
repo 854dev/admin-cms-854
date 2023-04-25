@@ -13,13 +13,13 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<LayoutDefault />}>
-          <Route path='/' element={<Dashboard />} />
-          <Route path='/content' element={<Content />} />
-          <Route path='/content/enum' element={<ContentEnum />} />
-          <Route path='/content/add' element={<ContentAdd />} />
-          <Route path='/content/:contentId' element={<ContentDetail />} />
-          <Route path='/content-type' element={<ContentType />} />
+        <Route path='admin' element={<LayoutDefault />}>
+          <Route path='' element={<Dashboard />} />
+          <Route path='content' element={<Content />} />
+          <Route path='content/enum' element={<ContentEnum />} />
+          <Route path='content/add' element={<ContentAdd />} />
+          <Route path='content/:contentId' element={<ContentDetail />} />
+          <Route path='content-type' element={<ContentType />} />
           <Route path='*' element={<Error404 />} />
         </Route>
       </Routes>
