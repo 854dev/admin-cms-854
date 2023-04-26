@@ -26,7 +26,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/Button';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { ContentType } from 'types/common';
-import { apiThenShowMessage, parseDate } from 'util/util';
+import { apiThenShowMessage, parseDate, routeParam } from 'util/util';
+import { route } from 'routes';
 
 const Content = () => {
   const [contentType, setcontentType] = useState<number>();
@@ -74,7 +75,7 @@ const Content = () => {
       cell: (info) => (
         <div className='flex flex-row justify-center gap-8'>
           {info.getValue()}
-          <Link to={`/content/${info.getValue()}`}>
+          <Link to={`${routeParam(route.contentDetail.absPath, { contentId: info.getValue() })}`}>
             <Badge
               className={'cursor-pointer'}
               onClick={() => {
@@ -154,7 +155,7 @@ const Content = () => {
         </section>
 
         <div className='mb-4 flex flex-row items-center justify-between'>
-          <Link to='/content/add' state={{ contentTypeId: contentType }}>
+          <Link to={route.contentAdd.absPath} state={{ contentTypeId: contentType }}>
             <Button className='px-4 py-1 text-lg'>
               <span>게시글 작성</span>
             </Button>
