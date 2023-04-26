@@ -104,7 +104,7 @@ const api = createApi({
         url: 'content-body-schema',
         body,
       }),
-      invalidatesTags: ['ContentBodySchema'],
+      invalidatesTags: ['ContentBodySchema', 'ContentType'],
       transformResponse: (response: common.MessageResponse) => response,
     }),
 
@@ -114,6 +114,7 @@ const api = createApi({
         url: `content-body-schema/${id}`,
       }),
       transformResponse: (response: common.MessageResponse) => response,
+      invalidatesTags: ['ContentBodySchema', 'ContentType'],
     }),
 
     postTag: builder.mutation({

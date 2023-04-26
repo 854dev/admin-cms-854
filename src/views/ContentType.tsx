@@ -33,7 +33,8 @@ const ContentTypeManage = () => {
       limit: 50,
     },
     {
-      skip: true,
+      skip: false,
+      refetchOnMountOrArgChange: true,
     }
   );
 
