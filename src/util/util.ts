@@ -34,5 +34,5 @@ export function apiThenShowMessage(promise: any) {
 
 // route path 에 정규식으로 인자 전달
 export function routeParam(path: string, params: { [key: string]: string }) {
-  compile(path)(params);
+  return compile(path)(params);
 }
