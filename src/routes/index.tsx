@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, RouteProps, PathRouteProps } from 'react-router-dom';
 
 import LayoutDefault from 'layouts/Default';
 import Dashboard from 'views/Dashboard';
@@ -9,18 +9,35 @@ import ContentDetail from 'views/ContentDetail';
 import ContentAdd from 'views/ContentAdd';
 import ContentEnum from 'views/ContentEnum';
 
+export const route = {
+  dashboard: { path: '', element: <Dashboard />, absPath: '/admin' },
+  content: { path: 'content', element: <Content />, absPath: '/admin/content' },
+  contentEnum: {
+    path: 'content/enum',
+    element: <ContentEnum />,
+    absPath: '/admin/content/enum',
+  },
+  contentAdd: { path: 'content/add', element: <ContentAdd />, absPath: '/admin/content/add' },
+  contentDetail: {
+    path: 'content/:contentId',
+    element: <ContentDetail />,
+    absPath: '/admin/content/:contentId',
+  },
+  contentType: {
+    path: 'content-type',
+    element: <ContentType />,
+    absPath: '/admin/content-type',
+  },
+};
+
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='admin' element={<LayoutDefault />}>
-          <Route path='' element={<Dashboard />} />
-          <Route path='content' element={<Content />} />
-          <Route path='content/enum' element={<ContentEnum />} />
-          <Route path='content/add' element={<ContentAdd />} />
-          <Route path='content/:contentId' element={<ContentDetail />} />
-          <Route path='content-type' element={<ContentType />} />
-          <Route path='*' element={<Error404 />} />
+          {Object.values(route).map((elem) => {
+            return <Route key={elem.path} path={elem.path} element={elem.element} />;
+          })}
         </Route>
       </Routes>
     </BrowserRouter>
