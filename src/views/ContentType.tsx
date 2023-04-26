@@ -27,10 +27,15 @@ const ContentTypeManage = () => {
     isFetching: contentTypeListIsFetching,
     isSuccess: contentTypeListSuccess,
     refetch: contentTypeListRefetch,
-  } = api.useGetContentTypeListQuery({
-    page: 1,
-    limit: 50,
-  });
+  } = api.useGetContentTypeListQuery(
+    {
+      page: 1,
+      limit: 50,
+    },
+    {
+      skip: true,
+    }
+  );
 
   const [addContentTypeTrigger, addContentTypeResult] = api.usePostContentTypeMutation();
 
