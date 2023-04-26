@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import { DATE_FORMAT } from './constant';
 import store from 'features/store';
 import { alertSlice } from 'features/alertSlice';
+import { compile } from 'path-to-regexp';
 
 export const parseDate = (dateString: string, format?: string) => {
   return DateTime.fromISO(dateString).toFormat(format ?? DATE_FORMAT);
@@ -29,4 +30,9 @@ export function apiThenShowMessage(promise: any) {
         })
       );
     });
+}
+
+// route path 에 정규식으로 인자 전달
+export function routeParam(path: string, params: { [key: string]: string }) {
+  compile(path)(params);
 }
