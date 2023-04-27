@@ -1,6 +1,7 @@
 import Dropdown from 'components/Dropdown';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { route } from 'routes';
 
 const TopBar = () => {
   const [menuBarVisible, setMenuBarVisible] = useState(true);
@@ -80,9 +81,9 @@ export function NavLinks() {
 
   return (
     <ul>
-      <LinkItem to={'/admin'} name={'Dashboard'} />
-      <LinkItem to={'/admin/content'} name={'Content'} />
-      <LinkItem to={'/admin/content-type'} name={'Content Type'} />
+      <LinkItem to={route.dashboard.path} name={'Dashboard'} />
+      <LinkItem to={route.content.path} name={'Content'} />
+      <LinkItem to={route.contentType.path} name={'Content Type'} />
     </ul>
   );
 }
