@@ -75,14 +75,14 @@ const ContentTypeManage = () => {
       });
   };
 
-  useEffect(() => {
-    if (contentTypeListSuccess) {
-      if (contentTypeListData.data.length > 0) {
-        const firstId = contentTypeListData.data[0].contentTypeId;
-        setcontentType(firstId);
-      }
-    }
-  }, [contentTypeListSuccess, contentTypeListIsFetching]);
+  // useEffect(() => {
+  //   if (contentTypeListSuccess) {
+  //     if (contentTypeListData.data.length > 0) {
+  //       const firstId = contentTypeListData.data[0].contentTypeId;
+  //       setcontentType(firstId);
+  //     }
+  //   }
+  // }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
     <main className='workspace'>
@@ -106,7 +106,26 @@ const ContentTypeManage = () => {
                 </Button>
               </div>
 
-              <CustomSelect onChange={onChangeContentType}>
+              <div className='mb-4'>
+                {contentTypeListData ? (
+                  <>
+                    {contentTypeListData.data.map((elem: ContentType) => (
+                      <>
+                        <Button
+                          className='mb-2 mr-2 text-sm'
+                          key={elem.contentTypeId}
+                          value={elem.contentTypeId}
+                          onClick={onChangeContentType}
+                        >
+                          {elem.contentTypeName}
+                        </Button>
+                      </>
+                    ))}
+                  </>
+                ) : null}
+              </div>
+
+              {/* <CustomSelect onChange={onChangeContentType}>
                 {contentTypeListData ? (
                   <>
                     {contentTypeListData.data.map((elem: ContentType) => (
@@ -116,7 +135,7 @@ const ContentTypeManage = () => {
                     ))}
                   </>
                 ) : null}
-              </CustomSelect>
+              </CustomSelect> */}
             </div>
 
             {/* content type Add */}
