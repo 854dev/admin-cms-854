@@ -60,7 +60,7 @@ const TopBar = () => {
       </Dropdown>
 
       {/* Brand */}
-      <span className='brand'>{import.meta.env.VITE_APP_TITLE} Admin</span>
+      <span className='brand'>{import.meta.env.VITE_REACT_APP_TITLE} Admin</span>
     </header>
   );
 };
