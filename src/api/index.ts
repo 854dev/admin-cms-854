@@ -117,40 +117,40 @@ const api = createApi({
       invalidatesTags: ['ContentBodySchema', 'ContentType'],
     }),
 
-    postTag: builder.mutation({
-      query: (body: dto.CreateTagDto) => ({
-        method: 'post',
-        url: `tag`,
-        body,
-      }),
-      invalidatesTags: ['Tag'],
-    }),
+    // postTag: builder.mutation({
+    //   query: (body: dto.CreateTagDto) => ({
+    //     method: 'post',
+    //     url: `tag`,
+    //     body,
+    //   }),
+    //   invalidatesTags: ['Tag'],
+    // }),
 
-    getTag: builder.query({
-      query: () => ({
-        method: 'get',
-        url: `tag`,
-        transformResponse: (response: common.ContentTag[]) => response,
-      }),
-      providesTags: (result, error, id) => ['Tag'],
-    }),
+    // getTag: builder.query({
+    //   query: () => ({
+    //     method: 'get',
+    //     url: `tag`,
+    //     transformResponse: (response: common.ContentTag[]) => response,
+    //   }),
+    //   providesTags: (result, error, id) => ['Tag'],
+    // }),
 
-    putTag: builder.mutation({
-      query: (body: dto.UpdateTagDto) => ({
-        method: 'put',
-        url: `tag/${body.tagId}`,
-        body,
-      }),
-      invalidatesTags: ['Tag'],
-    }),
+    // putTag: builder.mutation({
+    //   query: (body: dto.UpdateTagDto) => ({
+    //     method: 'put',
+    //     url: `tag/${body.tagId}`,
+    //     body,
+    //   }),
+    //   invalidatesTags: ['Tag'],
+    // }),
 
-    deleteTag: builder.mutation({
-      query: (id: common.ID) => ({
-        method: 'delete',
-        url: `tag/${id}`,
-      }),
-      invalidatesTags: ['Tag'],
-    }),
+    // deleteTag: builder.mutation({
+    //   query: (id: common.ID) => ({
+    //     method: 'delete',
+    //     url: `tag/${id}`,
+    //   }),
+    //   invalidatesTags: ['Tag'],
+    // }),
   }),
 });
 
