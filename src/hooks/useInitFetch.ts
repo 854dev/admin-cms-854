@@ -51,6 +51,13 @@ function useInitFetch() {
     },
     contentTypeList: {
       data: contentTypeListData?.data,
+      findContentType: (id: ID) => {
+        if (!contentTypeListData) return;
+
+        return contentTypeListData?.data.find(
+          (elem) => elem.contentTypeId === id
+        );
+      },
     },
     contentList: {
       data: contentListResponse?.data,
