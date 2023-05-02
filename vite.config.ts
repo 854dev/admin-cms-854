@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   return {
-    base: mode === "production" ? "https://www.localink.kr/admin/" : "/admin",
+    base: mode === "production" ? "https://studio854.blog/admin/" : "/admin",
     build: {
       sourcemap: true,
     },
