@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "api/api_rtk";
-import { ID } from "types/common";
+import { ContentMeta, ContentType, ID } from "types/common";
 function useInitFetch() {
   /* core parameter */
   const [contentTypeId, setcontentTypeId] = useState<ID>();
@@ -14,15 +14,12 @@ function useInitFetch() {
     api.useLazyGetContentListQuery();
 
   // CONTENT TYPE
-  const { data: contentTypeListData } = api.useGetContentTypeListQuery(
-    {
-      page: 1,
-      limit: 50,
-    },
-    { refetchOnReconnect: true }
-  );
+  const { data: contentTypeListData } = api.useGetContentTypeListQuery({
+    page: 1,
+    limit: 50,
+  });
 
-  /* contentTypeId */
+  /* contentListFetch */
   useEffect(() => {
     if (contentTypeId) {
       const params = {
@@ -33,14 +30,13 @@ function useInitFetch() {
 
       contentListFetch(params)
         .unwrap()
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           return;
         });
     }
 
     return;
-  }, [contentTypeId]);
+  }, [contentTypeId, page, limit]);
 
   return {
     param: {
@@ -54,10 +50,10 @@ function useInitFetch() {
       setLimit,
     },
     contentTypeList: {
-      data: contentTypeListData?.data ?? [],
+      data: contentTypeListData?.data,
     },
     contentList: {
-      data: contentListResponse.data ?? [],
+      data: contentListResponse?.data,
     },
   };
 }
