@@ -14,10 +14,13 @@ function useInitFetch() {
     api.useLazyGetContentListQuery();
 
   // CONTENT TYPE
-  const { data: contentTypeListData } = api.useGetContentTypeListQuery({
-    page: 1,
-    limit: 50,
-  });
+  const { data: contentTypeListData } = api.useGetContentTypeListQuery(
+    {
+      page: 1,
+      limit: 50,
+    },
+    { refetchOnReconnect: true }
+  );
 
   /* contentTypeId */
   useEffect(() => {
@@ -51,7 +54,10 @@ function useInitFetch() {
       setLimit,
     },
     contentTypeList: {
-      data: contentTypeListData,
+      data: contentTypeListData?.data ?? [],
+    },
+    contentList: {
+      data: contentListResponse.data ?? [],
     },
   };
 }
