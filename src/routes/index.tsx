@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import LayoutDefault from "layouts/Default";
 
+import useInitFetch from "hooks/useInitFetch";
+
 const Dashboard = lazy(() => import("views/Dashboard"));
 const ContentType = lazy(() => import("views/ContentType"));
 const Content = lazy(() => import("views/Content"));
@@ -42,6 +44,8 @@ export const route = {
 };
 
 const Router = () => {
+  const { contentTypeList } = useInitFetch();
+
   return (
     <BrowserRouter>
       <Routes>
