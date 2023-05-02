@@ -1,9 +1,4 @@
-import {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import Footer from "layouts/partials/Footer";
 
@@ -11,25 +6,14 @@ import { ContentBodySchema, ContentType, ID, schemaType } from "types/common";
 import api from "api/api_rtk";
 import { CreateBodySchemaDto } from "types/dto";
 
-const ContentTypeManage = () => {
-  const [contentType, setcontentType] = useState<number>();
+import useInitFetch from "hooks/useInitFetch";
+import ContentTypeSelect from "./components/ContentTypeSelect";
 
+const ContentTypeManage = () => {
   const {
-    data: contentTypeListData,
-    error: contentTypeListError,
-    isFetching: contentTypeListIsFetching,
-    isSuccess: contentTypeListSuccess,
-    refetch: contentTypeListRefetch,
-  } = api.useGetContentTypeListQuery(
-    {
-      page: 1,
-      limit: 50,
-    },
-    {
-      skip: false,
-      refetchOnMountOrArgChange: true,
-    }
-  );
+    param: { contentTypeId, setcontentTypeId },
+    contentTypeList,
+  } = useInitFetch();
 
   const [addContentTypeTrigger, addContentTypeResult] =
     api.usePostContentTypeMutation();
@@ -40,12 +24,6 @@ const ContentTypeManage = () => {
   const [contentTypeDto, setContentTypeDto] = useState({
     contentTypeName: "",
   });
-
-  const onChangeContentType: MouseEventHandler<HTMLButtonElement> = async (
-    e
-  ) => {
-    setcontentType(Number(e.currentTarget.value));
-  };
 
   const onClickAddContentType = async () => {
     const res = addContentTypeTrigger(contentTypeDto)
@@ -59,16 +37,20 @@ const ContentTypeManage = () => {
 
   const onClickDeleteContentType = async () => {
     if (
-      !contentType ||
-      !confirm("해당 타입의 콘텐츠 전체가 삭제됩니다. 진짜 삭제?")
+      !contentTypeId ||
+      !confirm(
+        `해당 타입의 콘텐츠 전체가 삭제됩니다. ${
+          contentTypeList.findContentType(contentTypeId)?.contentTypeName
+        } 타입 진짜 삭제?`
+      )
     ) {
       return;
     }
 
-    const res = await deleteContentTypeTrigger(contentType)
+    const res = await deleteContentTypeTrigger(contentTypeId)
       .then(() => {
         alert("타입 삭제 완료");
-        setcontentType(undefined);
+        setcontentTypeId(undefined);
       })
       .catch(() => {
         alert("에러 발생");
@@ -97,26 +79,13 @@ const ContentTypeManage = () => {
                 </button>
               </div>
 
-              <div>
-                {contentTypeListData ? (
-                  <>
-                    {contentTypeListData.data.map((elem: ContentType) => (
-                      <button
-                        className={
-                          contentType === elem.contentTypeId
-                            ? "bg-primary text-white"
-                            : ""
-                        }
-                        key={elem.contentTypeId}
-                        value={elem.contentTypeId}
-                        onClick={onChangeContentType}
-                      >
-                        {elem.contentTypeName}
-                      </button>
-                    ))}
-                  </>
-                ) : null}
-              </div>
+              <ContentTypeSelect
+                contentTypeId={contentTypeId}
+                setcontentTypeId={setcontentTypeId}
+                contentTypeList={
+                  contentTypeList.data ? contentTypeList.data : []
+                }
+              />
             </div>
           </fieldset>
 
@@ -142,8 +111,8 @@ const ContentTypeManage = () => {
 
           <hr />
 
-          {contentTypeListData && contentType ? (
-            <FormBodyField contentTypeId={contentType}></FormBodyField>
+          {contentTypeList && contentTypeId ? (
+            <FormBodyField contentTypeId={contentTypeId}></FormBodyField>
           ) : null}
         </div>
       </div>
