@@ -5,9 +5,6 @@ const TopBar = () => {
   const location = useLocation();
   return (
     <header className="top-bar disable-scrollbars">
-      {/* Brand */}
-      <span className="brand">Localink Admin</span>
-
       <nav className="tabs">
         {Object.entries(route).map(([key, value]) => {
           if (!value.isNav) return null;
