@@ -1,35 +1,13 @@
-import Footer from 'layouts/partials/Footer';
+import React, { useState, ChangeEventHandler, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-// import LineWithAnnotationChart from 'components/charts/LineWithAnnotationChart';
-// import Area from 'components/charts/Area';
-import Badge from 'components/Badge';
-import Breadcrumb, { BreadcrumbItem } from 'components/Breadcrumb';
-import CustomSelect from 'components/form/CustomSelect';
-import Input from 'components/form/Input';
-import Label from 'components/form/Label';
-// import PolarArea from 'components/charts/PolarArea';
-import Textarea from 'components/form/Textarea';
+import api from "api/api_rtk";
+import { ContentType } from "types/common";
+import { route } from "routes";
+import { routeParam } from "util/util";
+import ContentCard from "components/ContentCard";
 
-// import DataChartJS from 'data/chartjs';
-
-import api from 'api';
-import {
-  ColumnDef,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  createColumnHelper,
-} from '@tanstack/react-table';
-import TableComponent from 'components/Table';
-import { Link, useNavigate } from 'react-router-dom';
-import Button from 'components/Button';
-import { ChangeEventHandler, useEffect, useState } from 'react';
-import { ContentType } from 'types/common';
-import { apiThenShowMessage, parseDate, routeParam } from 'util/util';
-import { route } from 'routes';
-
-const Content = () => {
+function Content() {
   const [contentType, setcontentType] = useState<number>();
 
   const { data, isFetching } = api.useGetContentListQuery(
@@ -44,7 +22,8 @@ const Content = () => {
     }
   );
 
-  const [deleteContentTrigger, deleteContentResult] = api.useDeleteContentMutation();
+  const [deleteContentTrigger, deleteContentResult] =
+    api.useDeleteContentMutation();
 
   const {
     data: contentTypeListData,
@@ -62,78 +41,14 @@ const Content = () => {
   };
 
   const onClickDeleteBadge = async (id: string) => {
-    if (confirm('진짜 삭제?')) {
-      apiThenShowMessage(deleteContentTrigger(Number(id)).unwrap());
+    if (confirm("진짜 삭제?")) {
+      alert(deleteContentTrigger(Number(id)).unwrap());
     }
   };
 
-  const columnHelper = createColumnHelper<any>();
-
-  const columns = [
-    columnHelper.accessor('contentId', {
-      header: 'contentId',
-      cell: (info) => (
-        <div className='flex flex-row justify-center gap-8'>
-          {info.getValue()}
-          <Link to={`${routeParam(route.contentDetail.absPath, { contentId: info.getValue() })}`}>
-            <Badge
-              className={'cursor-pointer'}
-              onClick={() => {
-                onClickIdBadge(info.getValue());
-              }}
-            >
-              수정
-            </Badge>
-          </Link>
-
-          <div
-            onClick={() => {
-              onClickDeleteBadge(info.getValue());
-            }}
-          >
-            <Badge className={'cursor-pointer bg-danger'}>삭제</Badge>
-          </div>
-        </div>
-      ),
-    }),
-    columnHelper.accessor('title', {
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor('creator', {
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor('createdAt', {
-      cell: (info) => parseDate(info.getValue()),
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('updatedAt', {
-      cell: (info) => parseDate(info.getValue()),
-      footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('status', {
-      cell: (info) => (
-        <>
-          {info.getValue() === 'draft' ? (
-            <span className='badge badge_secondary'>{info.getValue()}</span>
-          ) : (
-            <span className='badge badge_primary'>{info.getValue()}</span>
-          )}
-        </>
-      ),
-      footer: (info) => info.column.id,
-    }),
-  ];
-
-  const table = useReactTable({
-    data: data ? data.data : [],
-    columns,
-    // Pipeline
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
-
-  const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (e) => {
+  const onChangeContentType: ChangeEventHandler<HTMLSelectElement> = async (
+    e
+  ) => {
     setcontentType(Number(e.currentTarget.value));
   };
 
@@ -147,50 +62,62 @@ const Content = () => {
   }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
-    <main className='workspace'>
-      <div className='container'>
-        {/* Breadcrumb */}
-        <section className='breadcrumb'>
-          <h1>Content</h1>
-        </section>
+    <div>
+      {/* Breadcrumb */}
+      <section className="breadcrumb">
+        <h1>Content</h1>
+      </section>
 
-        <div className='mb-4 flex flex-row items-center justify-between'>
-          <Link to={route.contentAdd.absPath} state={{ contentTypeId: contentType }}>
-            <Button className='px-4 py-1 text-lg'>
-              <span>게시글 작성</span>
-            </Button>
-          </Link>
+      <div>
+        <Link
+          to={route.contentAdd.absPath}
+          state={{ contentTypeId: contentType }}
+        >
+          <button className="">
+            <span>게시글 작성</span>
+          </button>
+        </Link>
 
-          {/* content type Select */}
-          <div className='mb-5 w-48'>
-            <div className='mb-2 flex justify-between'>
-              <p>콘텐츠 타입 이름</p>
-            </div>
-
-            <CustomSelect onChange={onChangeContentType}>
-              {contentTypeListData ? (
-                <>
-                  {contentTypeListData.data.map((elem: ContentType) => (
-                    <option key={elem.contentTypeId} value={elem.contentTypeId}>
-                      {elem.contentTypeName}
-                    </option>
-                  ))}
-                </>
-              ) : null}
-            </CustomSelect>
+        {/* content type Select */}
+        <div className="mb-5 w-48">
+          <div className="mb-2 flex justify-between">
+            <p>콘텐츠 타입 이름</p>
           </div>
-        </div>
 
-        <div className='card p-4'>
-          <div className='flex'>
-            {data ? <TableComponent table={table} className='w-full'></TableComponent> : null}
-          </div>
+          <select onChange={onChangeContentType}>
+            {contentTypeListData ? (
+              <>
+                {contentTypeListData.data.map((elem: ContentType) => (
+                  <option key={elem.contentTypeId} value={elem.contentTypeId}>
+                    {elem.contentTypeName}
+                  </option>
+                ))}
+              </>
+            ) : null}
+          </select>
         </div>
       </div>
 
-      <Footer />
-    </main>
+      {data ? (
+        <>
+          {data.data.map((elem) => {
+            return (
+              <ContentCard
+                key={elem.contentId}
+                {...elem}
+                linkTo={`${routeParam(route.contentDetail.absPath, {
+                  contentId: String(elem.contentId) ?? "",
+                })}`}
+                onClickDelete={() => {
+                  onClickDeleteBadge(String(elem.contentId));
+                }}
+              />
+            );
+          })}
+        </>
+      ) : null}
+    </div>
   );
-};
+}
 
 export default Content;

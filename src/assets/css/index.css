@@ -1,0 +1,13 @@
+@import "chota/dist/chota.min.css";
+
+@import "./custom.css";
+
+@import "./util.css";
+
+/* Quill */
+@import "react-quill/dist/quill.snow.css";
+.ql-editor {
+  min-height: 30rem;
+  max-height: 30rem;
+  overflow-y: scroll;
+}

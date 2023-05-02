@@ -1,6 +1,6 @@
 export type contentMetaDate = string | null; // "2023-02-16T04:48:28.000Z",
-export type contentMetaStatus = 'draft' | 'publish';
-export type schemaType = 'string' | 'number' | 'boolean' | 'text';
+export type contentMetaStatus = "draft" | "publish";
+export type schemaType = "string" | "number" | "boolean" | "text";
 export type ID = number;
 
 export interface MessageResponse {

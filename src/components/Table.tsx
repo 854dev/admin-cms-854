@@ -1,5 +1,5 @@
-import React from 'react';
-import { flexRender, Table } from '@tanstack/react-table';
+import React from "react";
+import { flexRender, Table } from "@tanstack/react-table";
 
 interface Props {
   table: Table<any>;
@@ -18,7 +18,12 @@ function ReactTable(props: Props) {
               return (
                 <th key={header.id} colSpan={header.colSpan}>
                   {header.isPlaceholder ? null : (
-                    <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
+                    <div>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </div>
                   )}
                 </th>
               );
@@ -32,7 +37,7 @@ function ReactTable(props: Props) {
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => {
                 return (
-                  <td key={cell.id} className='text-center'>
+                  <td key={cell.id} className="text-center">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 );

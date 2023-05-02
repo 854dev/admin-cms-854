@@ -1,157 +1,117 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import * as common from 'types/common';
-import * as dto from 'types/dto';
+import axios, { AxiosPromise } from "axios";
+import * as common from "types/common";
+import * as dto from "types/dto";
 
-// Define a service using a base URL and expected endpoints
-const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_REACT_APP_BACKEND_URL, mode: 'cors' }),
-  tagTypes: ['ContentType', 'ContentBodySchema', 'Content', 'Tag'],
-  endpoints: (builder) => ({
-    getContentList: builder.query({
-      query: (req: dto.PagedRequest) => ({
-        method: 'get',
-        url: 'content',
-        params: req,
-      }),
-      transformResponse: (response: common.PagedResponse<common.ContentMeta>) => response,
-      providesTags: (result, error, id) => ['Content'],
-    }),
+const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
-    getContentDetail: builder.query({
-      query: (id: common.ID) => ({
-        method: 'get',
-        url: `content/${id}`,
-      }),
-      transformResponse: (response: common.ContentDetail) => response,
-    }),
+export function getContentList(
+  req: dto.PagedRequest
+): AxiosPromise<common.PagedResponse<common.ContentMeta>> {
+  return axios.get(`${backendUrl}/content`, { params: req });
+}
 
-    postContent: builder.mutation({
-      query: (dto: dto.CreateContentDto) => ({
-        method: 'post',
-        url: `content/`,
-        body: dto,
-      }),
-      transformResponse: (response: common.MessageResponse) => response,
-      invalidatesTags: ['Content'],
-    }),
+export function getContentDetail(
+  id: common.ID
+): AxiosPromise<common.ContentDetail> {
+  return axios.get(`${backendUrl}/content/${id}`);
+}
 
-    putContent: builder.mutation({
-      query: (dto: dto.UpdateContentDto) => ({
-        method: 'put',
-        url: `content/${dto.contentId}`,
-        body: dto,
-      }),
-      transformResponse: (response: common.MessageResponse) => response,
-      invalidatesTags: ['Content'],
-    }),
+export function postContent(
+  dto: dto.CreateContentDto
+): AxiosPromise<common.MessageResponse> {
+  return axios.post(`${backendUrl}/content`, dto);
+}
 
-    deleteContent: builder.mutation({
-      query: (id: common.ID) => ({
-        method: 'delete',
-        url: `content/${id}`,
-      }),
-      transformResponse: (response: common.MessageResponse) => response,
-      invalidatesTags: ['Content'],
-    }),
+export function putContent(
+  dto: dto.UpdateContentDto
+): AxiosPromise<common.MessageResponse> {
+  return axios.put(`${backendUrl}/content/${dto.contentId}`, dto);
+}
 
-    getContentTypeList: builder.query({
-      query: (req: dto.PagedRequest) => ({
-        method: 'get',
-        url: 'content-type',
-      }),
-      transformResponse: (response: common.PagedResponse<common.ContentType>) => response,
-      providesTags: (result, error, id) => ['ContentType'],
-    }),
+export function deleteContent(
+  id: common.ID
+): AxiosPromise<common.MessageResponse> {
+  return axios.delete(`${backendUrl}/content/${id}`);
+}
 
-    postContentType: builder.mutation({
-      query: (body: dto.CreateContentTypeDto) => ({
-        method: 'post',
-        url: 'content-type',
-        body,
-      }),
-      invalidatesTags: ['ContentType'],
-    }),
+export function getContentTypeList(
+  req: dto.PagedRequest
+): AxiosPromise<common.PagedResponse<common.ContentType>> {
+  return axios.get(`${backendUrl}/content-type`, { params: req });
+}
 
-    putContentType: builder.mutation({
-      query: (id: common.ID) => ({
-        method: 'put',
-        url: `content-type/${id}`,
-      }),
-      invalidatesTags: ['ContentType'],
-    }),
+export function postContentType(
+  body: dto.CreateContentTypeDto
+): AxiosPromise<any> {
+  return axios.post(`${backendUrl}/content-type`, body);
+}
 
-    deleteContentType: builder.mutation({
-      query: (id: common.ID) => ({
-        method: 'delete',
-        url: `content-type/${id}`,
-      }),
-      invalidatesTags: ['ContentType'],
-      transformResponse: (response: common.MessageResponse) => response,
-    }),
+export function putContentType(
+  id: common.ID
+): AxiosPromise<common.MessageResponse> {
+  return axios.put(`${backendUrl}/content-type/${id}`);
+}
 
-    getContentTypeDetail: builder.query({
-      query: (id: common.ID) => ({
-        method: 'get',
-        url: `content-type/${id}`,
-        transformResponse: (response: common.ContentTypeDetail) => response,
-      }),
-      providesTags: (result, error, id) => ['ContentBodySchema'],
-    }),
+export function deleteContentType(
+  id: common.ID
+): AxiosPromise<common.MessageResponse> {
+  return axios.delete(`${backendUrl}/content-type/${id}`);
+}
 
-    postBodySchema: builder.mutation({
-      query: (body: dto.CreateBodySchemaDto) => ({
-        method: 'post',
-        url: 'content-body-schema',
-        body,
-      }),
-      invalidatesTags: ['ContentBodySchema', 'ContentType'],
-      transformResponse: (response: common.MessageResponse) => response,
-    }),
+export function getContentTypeDetail(
+  id: common.ID
+): AxiosPromise<common.ContentTypeDetail> {
+  return axios.get(`${backendUrl}/content-type/${id}`);
+}
 
-    deleteBodySchema: builder.mutation({
-      query: (id: common.ID) => ({
-        method: 'delete',
-        url: `content-body-schema/${id}`,
-      }),
-      transformResponse: (response: common.MessageResponse) => response,
-      invalidatesTags: ['ContentBodySchema', 'ContentType'],
-    }),
+export function postBodySchema(
+  body: dto.CreateBodySchemaDto
+): AxiosPromise<common.MessageResponse> {
+  return axios.post(`${backendUrl}/content-body-schema`, body);
+}
 
-    // postTag: builder.mutation({
-    //   query: (body: dto.CreateTagDto) => ({
-    //     method: 'post',
-    //     url: `tag`,
-    //     body,
-    //   }),
-    //   invalidatesTags: ['Tag'],
-    // }),
+export function deleteBodySchema(
+  id: common.ID
+): AxiosPromise<common.MessageResponse> {
+  return axios.delete(`${backendUrl}/content-body-schema/${id}`);
+}
 
-    // getTag: builder.query({
-    //   query: () => ({
-    //     method: 'get',
-    //     url: `tag`,
-    //     transformResponse: (response: common.ContentTag[]) => response,
-    //   }),
-    //   providesTags: (result, error, id) => ['Tag'],
-    // }),
+export function postTag(
+  body: dto.CreateTagDto
+): AxiosPromise<common.MessageResponse> {
+  return axios.post(`${backendUrl}/tag`, body);
+}
 
-    // putTag: builder.mutation({
-    //   query: (body: dto.UpdateTagDto) => ({
-    //     method: 'put',
-    //     url: `tag/${body.tagId}`,
-    //     body,
-    //   }),
-    //   invalidatesTags: ['Tag'],
-    // }),
+export function getTag(): AxiosPromise<common.ContentTag[]> {
+  return axios.get(`${backendUrl}/tag`);
+}
 
-    // deleteTag: builder.mutation({
-    //   query: (id: common.ID) => ({
-    //     method: 'delete',
-    //     url: `tag/${id}`,
-    //   }),
-    //   invalidatesTags: ['Tag'],
-    // }),
-  }),
-});
+export function putTag(
+  body: dto.UpdateTagDto
+): AxiosPromise<common.MessageResponse> {
+  return axios.put(`${backendUrl}/tag/${body.tagId}`, body);
+}
 
+export function deleteTag(id: common.ID): AxiosPromise<common.MessageResponse> {
+  return axios.delete(`${backendUrl}/tag/${id}`);
+}
+
+const api = {
+  getContentList,
+  getContentDetail,
+  postContent,
+  putContent,
+  deleteContent,
+  getContentTypeList,
+  postContentType,
+  putContentType,
+  deleteContentType,
+  getContentTypeDetail,
+  postBodySchema,
+  deleteBodySchema,
+  postTag,
+  getTag,
+  putTag,
+  deleteTag,
+};
 export default api;

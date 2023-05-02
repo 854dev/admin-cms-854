@@ -1,32 +1,43 @@
-import { BrowserRouter, Routes, Route, RouteProps, PathRouteProps } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import LayoutDefault from "layouts/Default";
 
-import LayoutDefault from 'layouts/Default';
-import Dashboard from 'views/Dashboard';
-import Error404 from 'views/Error404';
-import ContentType from 'views/ContentType';
-import Content from 'views/Content';
-import ContentDetail from 'views/ContentDetail';
-import ContentAdd from 'views/ContentAdd';
-import ContentEnum from 'views/ContentEnum';
+const Dashboard = lazy(() => import("views/Dashboard"));
+const ContentType = lazy(() => import("views/ContentType"));
+const Content = lazy(() => import("views/Content"));
+const ContentDetail = lazy(() => import("views/ContentDetail"));
+const ContentAdd = lazy(() => import("views/ContentAdd"));
 
 export const route = {
-  dashboard: { path: '', element: <Dashboard />, absPath: '/admin' },
-  content: { path: 'content', element: <Content />, absPath: '/admin/content' },
-  contentEnum: {
-    path: 'content/enum',
-    element: <ContentEnum />,
-    absPath: '/admin/content/enum',
+  dashboard: {
+    path: "",
+    element: <Dashboard />,
+    absPath: "/admin",
+    isNav: true,
   },
-  contentAdd: { path: 'content/add', element: <ContentAdd />, absPath: '/admin/content/add' },
+  content: {
+    path: "content",
+    element: <Content />,
+    absPath: "/admin/content",
+    isNav: true,
+  },
+  contentAdd: {
+    path: "content/add",
+    element: <ContentAdd />,
+    absPath: "/admin/content/add",
+    isNav: true,
+  },
   contentDetail: {
-    path: 'content/:contentId',
+    path: "content/:contentId",
     element: <ContentDetail />,
-    absPath: '/admin/content/:contentId',
+    absPath: "/admin/content/:contentId",
+    isNav: false,
   },
   contentType: {
-    path: 'content-type',
+    path: "content-type",
     element: <ContentType />,
-    absPath: '/admin/content-type',
+    absPath: "/admin/content-type",
+    isNav: true,
   },
 };
 
@@ -34,9 +45,19 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='admin' element={<LayoutDefault />}>
+        <Route path="admin" element={<LayoutDefault />}>
           {Object.values(route).map((elem) => {
-            return <Route key={elem.path} path={elem.path} element={elem.element} />;
+            return (
+              <Route
+                key={elem.path}
+                path={elem.path}
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    {elem.element}
+                  </Suspense>
+                }
+              />
+            );
           })}
         </Route>
       </Routes>

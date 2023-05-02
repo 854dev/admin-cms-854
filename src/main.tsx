@@ -1,17 +1,10 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import "assets/css/index.css";
 
-import 'line-awesome/dist/line-awesome/css/line-awesome.css';
-import './index.css';
-
-import App from './App';
-
-const container = document.getElementById('root');
-if (container) {
-  const root = createRoot(container);
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

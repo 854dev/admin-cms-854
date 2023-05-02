@@ -1,39 +1,31 @@
-import Footer from 'layouts/partials/Footer';
+import React, { ChangeEvent, useEffect, useState } from "react";
+import ReactQuill from "react-quill";
 
-import Breadcrumb, { BreadcrumbItem } from 'components/Breadcrumb';
-import Button from 'components/Button';
-import Input from 'components/form/Input';
-import Label from 'components/form/Label';
-
-import api from 'api';
-import { useLocation } from 'react-router-dom';
-import { ContentBodySchema, ContentDetail, ContentType, ID } from 'types/common';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import CustomSelect from 'components/form/CustomSelect';
-import { useDispatch } from 'react-redux';
-import { setAlert } from 'features/alertSlice';
-import ReactQuill from 'react-quill';
+import {
+  ContentBodySchema,
+  ContentDetail,
+  ContentType,
+  ID,
+} from "types/common";
+import { useLocation } from "react-router-dom";
+import api from "api/api_rtk";
 
 const contentDetailDefault: ContentDetail = {
-  title: '',
+  title: "",
   contentTypeId: -1,
-  contentTypeName: '',
-  creator: '',
-  createdAt: '-',
-  updatedAt: '-',
-  deletedAt: '',
-  status: 'draft',
+  contentTypeName: "",
+  creator: "",
+  createdAt: "-",
+  updatedAt: "-",
+  deletedAt: "",
+  status: "draft",
   body: {},
   tags: [],
 };
 
-const ContentAdd = () => {
+function ContentAdd() {
   const location = useLocation();
-
-  const dispatch = useDispatch();
-
   const [contentType, setcontentType] = useState<number>();
-
   const {
     data: contentTypeListData,
     error: contentTypeListError,
@@ -49,11 +41,17 @@ const ContentAdd = () => {
 
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
 
-  const [contentDetail, setContentDetail] = useState<ContentDetail>(contentDetailDefault);
+  const [contentDetail, setContentDetail] =
+    useState<ContentDetail>(contentDetailDefault);
 
-  const [contentBodySchema, setContentBodySchema] = useState<ContentBodySchema[]>([]);
+  const [contentBodySchema, setContentBodySchema] = useState<
+    ContentBodySchema[]
+  >([]);
 
-  const onChangeContentType = async (contentTypeId: ID, contentTypeName: string) => {
+  const onChangeContentType = async (
+    contentTypeId: ID,
+    contentTypeName: string
+  ) => {
     setcontentType(contentTypeId);
     getContentTypeDetail(contentTypeId);
   };
@@ -63,7 +61,9 @@ const ContentAdd = () => {
     setContentBodySchema(res.contentBodySchema);
   };
 
-  const handleContentDetailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleContentDetailChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const key = event.target.name as keyof ContentDetail;
     const value = event.target.value;
 
@@ -85,34 +85,13 @@ const ContentAdd = () => {
       const res = await postContentTrigger(contentDetail)
         .unwrap()
         .then((payload) => {
-          dispatch(
-            setAlert({
-              title: `성공 : ${payload.message}`,
-              color: 'success',
-              dismissable: true,
-              outlined: false,
-            })
-          );
+          alert(`성공 : ${payload.message}`);
         })
         .catch((error) => {
-          dispatch(
-            setAlert({
-              title: `${JSON.stringify(error.data?.message)}`,
-              color: 'danger',
-              dismissable: true,
-              outlined: false,
-            })
-          );
+          alert(`${JSON.stringify(error.data?.message)}`);
         });
     } catch (e) {
-      dispatch(
-        setAlert({
-          title: `rejected`,
-          color: 'danger',
-          dismissable: true,
-          outlined: false,
-        })
-      );
+      alert(`rejected`);
     }
   };
 
@@ -138,150 +117,165 @@ const ContentAdd = () => {
   }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
-    <main className='workspace'>
-      <div className='container'>
-        {/* Breadcrumb */}
-        <section className='breadcrumb'>
-          <Breadcrumb title={'Content'}>
-            <BreadcrumbItem>Content</BreadcrumbItem>
-            <BreadcrumbItem>Add</BreadcrumbItem>
-          </Breadcrumb>
-        </section>
+    <div>
+      {/* Breadcrumb */}
+      <section className="breadcrumb">
+        <h1>Content Add</h1>
+      </section>
 
+      <div className="">
         {/* content type Select */}
-        <div className='relative mb-5 p-4'>
+        <div className="relative p-4 mb-5">
           {/* Content */}
-          <div className='lg:col-span-2 xl:col-span-3'>
-            <div className='card p-5'>
-              <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='contentTypeSelect'>
-                  콘텐츠 타입 선택
-                </Label>
-                <CustomSelect
-                  className={'mb-2'}
-                  name='contentTypeSelect'
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                    const option = e.currentTarget.options[e.currentTarget.options.selectedIndex]
-                      .dataset as { contentTypeId: string; contentTypeName: string };
-                    onChangeContentType(Number(option.contentTypeId), option.contentTypeName);
-                  }}
-                >
-                  {contentTypeListData ? (
-                    <>
-                      {contentTypeListData.data.map((elem: ContentType) => (
-                        <option
-                          selected={elem.contentTypeId === contentType}
-                          key={elem.contentTypeId}
-                          value={elem.contentTypeId}
-                          data-content-type-id={elem.contentTypeId}
-                          data-content-type-name={elem.contentTypeName}
-                        >
-                          {elem.contentTypeName}
-                        </option>
-                      ))}
-                    </>
-                  ) : null}
-                </CustomSelect>
-              </div>
+          <div>
+            <div>
+              <fieldset>
+                <div>
+                  <label htmlFor="contentTypeSelect">콘텐츠 타입 선택</label>
+                  <select
+                    name="contentTypeSelect"
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                      const option = e.currentTarget.options[
+                        e.currentTarget.options.selectedIndex
+                      ].dataset as {
+                        contentTypeId: string;
+                        contentTypeName: string;
+                      };
+                      onChangeContentType(
+                        Number(option.contentTypeId),
+                        option.contentTypeName
+                      );
+                    }}
+                  >
+                    {contentTypeListData ? (
+                      <>
+                        {contentTypeListData.data.map((elem: ContentType) => (
+                          <option
+                            selected={elem.contentTypeId === contentType}
+                            key={elem.contentTypeId}
+                            value={elem.contentTypeId}
+                            data-content-type-id={elem.contentTypeId}
+                            data-content-type-name={elem.contentTypeName}
+                          >
+                            {elem.contentTypeName}
+                          </option>
+                        ))}
+                      </>
+                    ) : null}
+                  </select>
+                </div>
 
-              <hr className='mb-3' />
+                <hr />
 
-              {/* content meta */}
-              <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='title'>
-                  Title
-                </Label>
-                <Input id='title' name='title' type='text' onChange={handleContentDetailChange} />
-              </div>
-              <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='creator'>
-                  Creator
-                </Label>
-                <Input
-                  id='creator'
-                  name='creator'
-                  type='text'
-                  onChange={handleContentDetailChange}
-                />
-              </div>
-              <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='description'>
-                  Description
-                </Label>
-                <Input
-                  id='description'
-                  name='description'
-                  type='text'
-                  onChange={handleContentDetailChange}
-                />
-              </div>
-              <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='status'>
-                  Status
-                </Label>
-                <Button
-                  onClick={handleContentDetailChange}
-                  name='status'
-                  value='draft'
-                  className={`mb-2 text-sm ${
-                    contentDetail.status === 'draft' ? 'bg-primary' : 'bg-secondary'
-                  }`}
-                >
-                  draft
-                </Button>
-                <Button
-                  onClick={handleContentDetailChange}
-                  name='status'
-                  value='publish'
-                  className={`mb-2 text-sm ${
-                    contentDetail.status === 'publish' ? 'bg-primary' : 'bg-secondary'
-                  }`}
-                >
-                  publish
-                </Button>
-              </div>
-              <div className='mb-5 sm:w-full xl:w-1/2'>
-                <Label className='mb-2 block' htmlFor='title'>
-                  createdAt : {contentDetail.createdAt}
-                </Label>
-                <Label className='mb-2 block' htmlFor='title'>
-                  updatedAt : {contentDetail.updatedAt}
-                </Label>
-              </div>
+                {/* content meta */}
+                <div>
+                  <label htmlFor="title">Title</label>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    onChange={handleContentDetailChange}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="creator">Creator</label>
+                  <input
+                    id="creator"
+                    name="creator"
+                    type="text"
+                    onChange={handleContentDetailChange}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="description">Description</label>
+                  <input
+                    id="description"
+                    name="description"
+                    type="text"
+                    onChange={handleContentDetailChange}
+                  />
+                </div>
 
-              <hr className='mb-3' />
+                <div className="p-4">
+                  <label className="block mb-2" htmlFor="status">
+                    Status
+                  </label>
+
+                  <label>
+                    <input
+                      onChange={handleContentDetailChange}
+                      type="radio"
+                      name="status"
+                      value="draft"
+                      className={`p-4 ${
+                        contentDetail.status === "draft"
+                          ? "bg-primary"
+                          : "bg-secondary"
+                      }`}
+                    ></input>
+                    draft
+                  </label>
+
+                  <label>
+                    <input
+                      onChange={handleContentDetailChange}
+                      type="radio"
+                      name="status"
+                      value="publish"
+                      className={`p-4 ${
+                        contentDetail.status === "publish"
+                          ? "bg-primary"
+                          : "bg-secondary"
+                      }`}
+                    ></input>
+                    publish
+                  </label>
+                </div>
+
+                <div>
+                  <label htmlFor="title">
+                    createdAt : {contentDetail.createdAt}
+                  </label>
+                  <label htmlFor="title">
+                    updatedAt : {contentDetail.updatedAt}
+                  </label>
+                </div>
+              </fieldset>
+
+              <hr />
 
               {/* content body */}
-              <div className='w-full'>
+              <div>
                 {contentBodySchema.map((elem) => {
                   return (
                     <React.Fragment key={elem.schemaName}>
-                      <Label className='mb-2 block' htmlFor='title'>
-                        {elem.schemaName}
-                      </Label>
+                      <label htmlFor="title">{elem.schemaName}</label>
 
-                      {elem.schemaType === 'string' ? (
-                        <Input
+                      {elem.schemaType === "string" ? (
+                        <input
                           id={elem.schemaName}
                           name={elem.schemaName}
-                          type='text'
+                          type="text"
                           onChange={(e) => {
-                            handleBodyChange(elem.schemaName, e.currentTarget.value);
+                            handleBodyChange(
+                              elem.schemaName,
+                              e.currentTarget.value
+                            );
                           }}
                         />
                       ) : null}
 
-                      {elem.schemaType === 'text' ? (
-                        <div className='mt-5 min-h-[23rem]'>
-                          <ReactQuill
-                            className='h-[17rem] w-full'
-                            theme='snow'
-                            onChange={(content, delta, source, editor) => {
-                              handleBodyChange(elem.schemaName, editor.getHTML());
-                            }}
-                          ></ReactQuill>
-                        </div>
+                      {elem.schemaType === "text" ? (
+                        <ReactQuill
+                          theme="snow"
+                          className="bg-white react-quill-editor"
+                          onChange={(content, delta, source, editor) => {
+                            handleBodyChange(elem.schemaName, editor.getHTML());
+                          }}
+                        ></ReactQuill>
                       ) : null}
+
+                      <hr />
                     </React.Fragment>
                   );
                 })}
@@ -290,15 +284,14 @@ const ContentAdd = () => {
           </div>
         </div>
 
-        <div className='my-1 text-right'>
-          <Button onClick={onSubmit} name='submit'>
+        <div className="my-1 text-right">
+          <button onClick={onSubmit} name="submit">
             Submit
-          </Button>
+          </button>
         </div>
       </div>
-      <Footer />
-    </main>
+    </div>
   );
-};
+}
 
 export default ContentAdd;
