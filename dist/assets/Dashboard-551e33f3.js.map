@@ -1,1 +1,0 @@
-{"version":3,"file":"Dashboard-551e33f3.js","sources":["../../src/views/Dashboard.tsx"],"sourcesContent":["import React from \"react\";\n\nfunction Dashboard() {\n  return <div>Dashboard</div>;\n}\n\nexport default Dashboard;\n"],"names":["Dashboard","jsx"],"mappings":"wCAEA,SAASA,GAAY,CACZ,OAAAC,EAAA,IAAC,OAAI,SAAS,WAAA,CAAA,CACvB"}
