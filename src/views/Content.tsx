@@ -73,8 +73,6 @@ function Content() {
               page={page}
               totalPage={contentList.data.totalPage}
               setPage={setPage}
-              limit={limit}
-              setLimit={setLimit}
             />
           </>
         ) : null}

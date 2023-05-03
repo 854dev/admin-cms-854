@@ -3,7 +3,6 @@ import { getPageNumbers } from "util/util";
 
 interface PaginationProps {
   totalPage: number;
-  count: number;
   page: number;
   setPage: (page: number) => void;
   // limit: number;
@@ -20,12 +19,6 @@ const Pagination: React.FC<PaginationProps> = ({
   const handleClick = (pageNum: number) => {
     setPage(pageNum);
   };
-
-  // const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setLimit(parseInt(e.target.value));
-  // };
-
-  // 총 페이지 수 계산
 
   // 페이지 번호 목록 만들기
   const pages = getPageNumbers(page, totalPage, 10);
