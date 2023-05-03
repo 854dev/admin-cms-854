@@ -4,21 +4,27 @@ interface Props {
   contentTypeId: ID | undefined;
   setcontentTypeId: (contentTypeId: ID) => void;
   contentTypeList: ContentType[];
+  disabled?: boolean;
+  onChange?: (contentType: ContentType) => void;
 }
 
 const ContentTypeSelect = ({
   contentTypeId,
   setcontentTypeId,
   contentTypeList,
+  disabled,
+  onChange,
 }: Props) => {
-  const handleContentTypeClick = (selectedContentTypeId: number) => {
-    setcontentTypeId(selectedContentTypeId);
+  const handleContentTypeClick = (selectedContentType: ContentType) => {
+    setcontentTypeId(selectedContentType.contentTypeId);
+    onChange && onChange(selectedContentType);
   };
 
   return (
     <div>
       {contentTypeList.map((contentType) => (
         <button
+          disabled={disabled}
           className={`
             m-1
             ${
@@ -28,7 +34,7 @@ const ContentTypeSelect = ({
             }
             `}
           key={contentType.contentTypeId}
-          onClick={() => handleContentTypeClick(contentType.contentTypeId)}
+          onClick={() => handleContentTypeClick(contentType)}
         >
           {contentType.contentTypeName}
         </button>
