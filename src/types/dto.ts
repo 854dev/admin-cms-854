@@ -1,4 +1,4 @@
-import { schemaType, ContentBody, ContentMeta, ID, ContentTag } from './common';
+import { schemaType, ContentBody, ContentMeta, ID, ContentTag } from "./common";
 
 export interface PagedRequest {
   page: number;
