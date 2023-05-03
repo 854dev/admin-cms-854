@@ -15,7 +15,9 @@ function ContentCard(props: props) {
   return (
     <div className="p-1 my-1 bd-dark">
       <div className="flex flex-row items-center justify-between">
-        <h4>{title}</h4>
+        <h4>
+          {contentId} : {title}
+        </h4>
         <p className="description"></p>
 
         <div className="text-right">
