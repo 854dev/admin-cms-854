@@ -7,6 +7,9 @@ export const parseDate = (dateString: string, format?: string) => {
 };
 
 // route path 에 정규식으로 인자 전달
-export function routeParam(path: string, params: { [key: string]: string }) {
+export function compileRouteParam(
+  path: string,
+  params: { [key: string]: string }
+) {
   return compile(path)(params);
 }
