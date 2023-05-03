@@ -70,7 +70,7 @@ const ContentTypeManage = () => {
             {/* content type Select */}
             <div>
               <div className="flex items-center justify-between">
-                <h3>콘텐츠 타입 선택</h3>
+                <span>콘텐츠 타입 선택</span>
                 <button
                   className={"bg-error text-white"}
                   onClick={onClickDeleteContentType}
