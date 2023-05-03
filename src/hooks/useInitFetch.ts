@@ -51,8 +51,8 @@ function useInitFetch() {
     },
     contentTypeList: {
       data: contentTypeListData?.data,
-      findContentType: (id: ID) => {
-        if (!contentTypeListData) return;
+      findContentType: (id?: ID) => {
+        if (!contentTypeListData || !id) return;
 
         return contentTypeListData?.data.find(
           (elem) => elem.contentTypeId === id
