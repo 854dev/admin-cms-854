@@ -12,15 +12,7 @@ import Pagination from "./components/Pagination";
 
 function Content() {
   const {
-    param: {
-      contentTypeId,
-      setcontentTypeId,
-      page,
-      setPage,
-      limit,
-      setLimit,
-      setContentId,
-    },
+    param: { contentTypeId, setcontentTypeId, page, setPage, limit, setLimit },
     contentTypeList,
     contentList,
   } = useInitFetch();
@@ -31,8 +23,14 @@ function Content() {
     api.useDeleteContentMutation();
 
   const onClickDeleteBadge = async (id: string) => {
-    if (confirm("진짜 삭제?")) {
-      alert(deleteContentTrigger(Number(id)).unwrap());
+    try {
+      if (confirm("진짜 삭제?")) {
+        const res = await deleteContentTrigger(Number(id)).unwrap();
+
+        alert(`성공 : ${res.message}`);
+      }
+    } catch (e: any) {
+      alert(`${JSON.stringify(e.message)}`);
     }
   };
 
