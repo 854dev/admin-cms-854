@@ -69,6 +69,17 @@ function Content() {
       </div>
 
       <>
+        {contentList.data ? (
+          <>
+            <Pagination
+              page={page}
+              setPage={setPage}
+              limit={limit}
+              setLimit={setLimit}
+            />
+          </>
+        ) : null}
+
         {contentList.data?.data &&
           contentList.data.data.map((elem) => {
             return (
@@ -84,17 +95,6 @@ function Content() {
               </>
             );
           })}
-
-        {contentList.data?.hasNextPage ? (
-          <>
-            <Pagination
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              setLimit={setLimit}
-            />
-          </>
-        ) : null}
       </>
     </div>
   );
