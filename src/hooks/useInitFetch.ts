@@ -13,6 +13,9 @@ function useInitFetch() {
   const [contentListFetch, contentListResponse] =
     api.useLazyGetContentListQuery();
 
+  const [contentDetailFetch, contentDetailResponse] =
+    api.useLazyGetContentDetailQuery();
+
   // CONTENT TYPE
   const { data: contentTypeListData } = api.useGetContentTypeListQuery({
     page: 1,
@@ -22,21 +25,32 @@ function useInitFetch() {
   /* contentListFetch */
   useEffect(() => {
     if (contentTypeId) {
-      const params = {
+      contentListFetch({
         page,
         limit,
         contentTypeId,
-      };
-
-      contentListFetch(params)
+      })
         .unwrap()
         .then(() => {
           return;
         });
     }
-
     return;
   }, [contentTypeId, page, limit]);
+
+  /* contentDetailFetch */
+  useEffect(() => {
+    if (contentTypeId) {
+      contentDetailFetch({
+        contentId,
+      })
+        .unwrap()
+        .then(() => {
+          return;
+        });
+    }
+    return;
+  }, [contentId]);
 
   return {
     param: {
@@ -61,6 +75,21 @@ function useInitFetch() {
     },
     contentList: {
       data: contentListResponse?.data,
+    },
+    contentDetail: {
+      data: contentDetailResponse?.data,
+      formDefault: {
+        title: "",
+        contentTypeId: -1,
+        contentTypeName: "",
+        creator: "",
+        createdAt: "-",
+        updatedAt: "-",
+        deletedAt: "",
+        status: "draft",
+        body: {},
+        tags: [],
+      },
     },
   };
 }
