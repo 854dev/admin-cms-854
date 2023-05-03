@@ -40,10 +40,8 @@ function useInitFetch() {
 
   /* contentDetailFetch */
   useEffect(() => {
-    if (contentTypeId) {
-      contentDetailFetch({
-        contentId,
-      })
+    if (contentId) {
+      contentDetailFetch(contentId)
         .unwrap()
         .then(() => {
           return;
