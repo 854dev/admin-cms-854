@@ -2,19 +2,19 @@ import React from "react";
 
 import { parseDate } from "util/util";
 import { ContentMeta, ID } from "types/common";
-import { Link } from "react-router-dom";
 
 interface props extends ContentMeta {
-  linkTo: string;
   onClickDelete: (id: ID) => void;
+  onClickEdit: (id: ID) => void;
 }
 
 function ContentCard(props: props) {
-  const { title, createdAt, contentId, linkTo, onClickDelete, status } = props;
+  const { title, createdAt, contentId, onClickDelete, onClickEdit, status } =
+    props;
 
   return (
-    <div className="bd-dark p-4 my-2">
-      <div className="flex flex-row justify-between items-center">
+    <div className="p-4 my-2 bd-dark">
+      <div className="flex flex-row items-center justify-between">
         <h4>{title}</h4>
         <p className="description"></p>
 
@@ -25,12 +25,17 @@ function ContentCard(props: props) {
 
           <span className="p-4">{parseDate(createdAt ?? "")}</span>
 
-          <Link to={linkTo}>
-            <button className="bg-success p-4">수정</button>
-          </Link>
+          <button
+            className="p-4 bg-success"
+            onClick={() => {
+              contentId && onClickEdit(contentId);
+            }}
+          >
+            수정
+          </button>
 
           <button
-            className="bg-error p-4"
+            className="p-4 bg-error"
             onClick={() => {
               onClickDelete(contentId ?? -1);
             }}

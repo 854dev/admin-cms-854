@@ -1,10 +1,10 @@
 import React, { useState, ChangeEventHandler, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import api from "api/api_rtk";
-import { ContentType } from "types/common";
+import { ContentType, ID } from "types/common";
 import { route } from "routes";
-import { routeParam } from "util/util";
+import { compileRouteParam } from "util/util";
 import ContentCard from "components/ContentCard";
 import useInitFetch from "hooks/useInitFetch";
 import ContentTypeSelect from "./components/ContentTypeSelect";
@@ -12,10 +12,20 @@ import Pagination from "./components/Pagination";
 
 function Content() {
   const {
-    param: { contentTypeId, setcontentTypeId, page, setPage, limit, setLimit },
+    param: {
+      contentTypeId,
+      setcontentTypeId,
+      page,
+      setPage,
+      limit,
+      setLimit,
+      setContentId,
+    },
     contentTypeList,
     contentList,
   } = useInitFetch();
+
+  const navigate = useNavigate();
 
   const [deleteContentTrigger, deleteContentResult] =
     api.useDeleteContentMutation();
@@ -24,6 +34,14 @@ function Content() {
     if (confirm("진짜 삭제?")) {
       alert(deleteContentTrigger(Number(id)).unwrap());
     }
+  };
+
+  const onClickEdit = (contentId: ID) => {
+    navigate(
+      `${compileRouteParam(route.contentDetail.absPath, {
+        contentId: `${contentId}`,
+      })}`
+    );
   };
 
   return (
@@ -58,9 +76,7 @@ function Content() {
                 <ContentCard
                   key={elem.contentId}
                   {...elem}
-                  linkTo={`${routeParam(route.contentDetail.absPath, {
-                    contentId: String(elem.contentId) ?? "",
-                  })}`}
+                  onClickEdit={onClickEdit}
                   onClickDelete={() => {
                     onClickDeleteBadge(String(elem.contentId));
                   }}
