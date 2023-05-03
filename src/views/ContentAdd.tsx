@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 
 import {
@@ -7,8 +7,11 @@ import {
   ContentType,
   ID,
 } from "types/common";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "api/api_rtk";
+import useInitFetch from "hooks/useInitFetch";
+import ContentTypeSelect from "./components/ContentTypeSelect";
+import { route } from "routes";
 
 const contentDetailDefault: ContentDetail = {
   title: "",
@@ -25,40 +28,34 @@ const contentDetailDefault: ContentDetail = {
 
 function ContentAdd() {
   const location = useLocation();
-  const [contentType, setcontentType] = useState<number>();
+  const navigate = useNavigate();
   const {
-    data: contentTypeListData,
-    error: contentTypeListError,
-    isSuccess: contentTypeListSuccess,
-    isFetching: contentTypeListIsFetching,
-  } = api.useGetContentTypeListQuery({
-    page: 1,
-    limit: 50,
-  });
-
-  const [contentTypeDetailTrigger, contentTypeDetailResult] =
-    api.useLazyGetContentTypeDetailQuery();
+    param: { contentTypeId, setcontentTypeId },
+    contentTypeList,
+    contentList,
+  } = useInitFetch();
 
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
+
+  const contentType = useCallback(() => {
+    return contentTypeList.findContentType(contentTypeId);
+  }, [contentTypeId]);
+
+  const contentBodySchema = contentType()
+    ? contentType().contentBodySchema
+    : [];
 
   const [contentDetail, setContentDetail] =
     useState<ContentDetail>(contentDetailDefault);
 
-  const [contentBodySchema, setContentBodySchema] = useState<
-    ContentBodySchema[]
-  >([]);
+  const handleContentTypeChange = (contentType) => {
+    const { contentTypeId, contentTypeName } = contentType;
 
-  const onChangeContentType = async (
-    contentTypeId: ID,
-    contentTypeName: string
-  ) => {
-    setcontentType(contentTypeId);
-    getContentTypeDetail(contentTypeId);
-  };
-
-  const getContentTypeDetail = async (id: ID) => {
-    const res = await contentTypeDetailTrigger(Number(id)).unwrap();
-    setContentBodySchema(res.contentBodySchema);
+    setContentDetail((prevState) => ({
+      ...prevState,
+      contentTypeId,
+      contentTypeName,
+    }));
   };
 
   const handleContentDetailChange = (
@@ -86,6 +83,7 @@ function ContentAdd() {
         .unwrap()
         .then((payload) => {
           alert(`성공 : ${payload.message}`);
+          navigate(route.content.absPath);
         })
         .catch((error) => {
           alert(`${JSON.stringify(error.data?.message)}`);
@@ -94,27 +92,6 @@ function ContentAdd() {
       alert(`rejected`);
     }
   };
-
-  /** 컨텐츠 타입 페칭 후  1번쨰 선택. 이전페이지에서 넘어왔다면 이미 선택되어 있음 */
-  useEffect(() => {
-    if (contentTypeListSuccess && contentTypeListData.data.length > 0) {
-      const contentTypeIdLocation = location.state?.contentTypeId;
-
-      const selectedContentType = contentTypeIdLocation
-        ? (contentTypeListData.data.find(
-            (elem) => elem.contentTypeId === contentTypeIdLocation
-          ) as ContentType)
-        : contentTypeListData.data[0];
-
-      setcontentType(selectedContentType.contentTypeId);
-      setContentDetail({
-        ...contentDetail,
-        contentTypeId: selectedContentType.contentTypeId,
-        contentTypeName: selectedContentType.contentTypeName,
-      });
-      getContentTypeDetail(selectedContentType.contentTypeId);
-    }
-  }, [contentTypeListSuccess, contentTypeListIsFetching]);
 
   return (
     <div>
@@ -132,41 +109,22 @@ function ContentAdd() {
               <fieldset>
                 <div>
                   <label htmlFor="contentTypeSelect">콘텐츠 타입 선택</label>
-                  <select
-                    name="contentTypeSelect"
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                      const option = e.currentTarget.options[
-                        e.currentTarget.options.selectedIndex
-                      ].dataset as {
-                        contentTypeId: string;
-                        contentTypeName: string;
-                      };
-                      onChangeContentType(
-                        Number(option.contentTypeId),
-                        option.contentTypeName
-                      );
-                    }}
-                  >
-                    {contentTypeListData ? (
-                      <>
-                        {contentTypeListData.data.map((elem: ContentType) => (
-                          <option
-                            selected={elem.contentTypeId === contentType}
-                            key={elem.contentTypeId}
-                            value={elem.contentTypeId}
-                            data-content-type-id={elem.contentTypeId}
-                            data-content-type-name={elem.contentTypeName}
-                          >
-                            {elem.contentTypeName}
-                          </option>
-                        ))}
-                      </>
-                    ) : null}
-                  </select>
+
+                  {/* content type Select */}
+                  <ContentTypeSelect
+                    contentTypeId={contentTypeId}
+                    setcontentTypeId={setcontentTypeId}
+                    contentTypeList={
+                      contentTypeList.data ? contentTypeList.data : []
+                    }
+                    onChange={handleContentTypeChange}
+                  />
                 </div>
+              </fieldset>
 
-                <hr />
+              <hr />
 
+              <fieldset disabled={!!!contentTypeId}>
                 {/* content meta */}
                 <div>
                   <label htmlFor="title">Title</label>
@@ -204,6 +162,7 @@ function ContentAdd() {
                   <label>
                     <input
                       onChange={handleContentDetailChange}
+                      checked={contentDetail.status === "draft"}
                       type="radio"
                       name="status"
                       value="draft"
@@ -219,6 +178,7 @@ function ContentAdd() {
                   <label>
                     <input
                       onChange={handleContentDetailChange}
+                      checked={contentDetail.status === "publish"}
                       type="radio"
                       name="status"
                       value="publish"
@@ -236,6 +196,9 @@ function ContentAdd() {
                   <label htmlFor="title">
                     createdAt : {contentDetail.createdAt}
                   </label>
+                </div>
+
+                <div>
                   <label htmlFor="title">
                     updatedAt : {contentDetail.updatedAt}
                   </label>
@@ -285,7 +248,7 @@ function ContentAdd() {
         </div>
 
         <div className="my-1 text-right">
-          <button onClick={onSubmit} name="submit">
+          <button disabled={!!!contentTypeId} onClick={onSubmit} name="submit">
             Submit
           </button>
         </div>
