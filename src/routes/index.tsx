@@ -31,7 +31,7 @@ export const route = {
   },
   contentDetail: {
     path: "content/:contentId",
-    element: <ContentAdd />,
+    element: <ContentDetail />,
     absPath: "/admin/content/:contentId",
     isNav: false,
   },
