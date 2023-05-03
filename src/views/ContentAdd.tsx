@@ -27,24 +27,18 @@ const contentDetailDefault: ContentDetail = {
 };
 
 function ContentAdd() {
-  const location = useLocation();
   const navigate = useNavigate();
   const {
     param: { contentTypeId, setcontentTypeId },
     contentTypeList,
-    contentList,
     contentDetail,
   } = useInitFetch();
 
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
 
-  const contentType = useCallback(() => {
-    return contentTypeList.findContentType(contentTypeId);
-  }, [contentTypeId]);
+  const contentType = contentTypeList.findContentType(contentTypeId);
 
-  const contentBodySchema = contentType()
-    ? contentType().contentBodySchema
-    : [];
+  const contentBodySchema = contentType ? contentType.contentBodySchema : [];
 
   const [contentDetailForm, setContentDetailForm] = useState<ContentDetail>(
     contentDetail.formDefault
