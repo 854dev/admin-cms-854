@@ -7,7 +7,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     base: mode === "production" ? "https://studio854.blog/admin/" : "/admin",
     build: {
-      sourcemap: true,
+      sourcemap: mode === "production" ? false : true,
     },
     plugins: [tsconfigPaths(), react()],
     server: {
