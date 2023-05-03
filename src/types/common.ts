@@ -10,6 +10,13 @@ export interface MessageResponse {
 
 export interface PagedResponse<T = unknown> {
   data: T[];
+  count: number;
+  currentPage: number;
+  totalPage: number;
+}
+
+export interface PagedInfinityResponse<T = unknown> {
+  data: T[];
   hasNextPage: boolean;
 }
 
