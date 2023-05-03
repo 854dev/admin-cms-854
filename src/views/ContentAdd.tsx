@@ -33,6 +33,7 @@ function ContentAdd() {
     param: { contentTypeId, setcontentTypeId },
     contentTypeList,
     contentList,
+    contentDetail,
   } = useInitFetch();
 
   const [postContentTrigger, postContentResult] = api.usePostContentMutation();
@@ -45,13 +46,14 @@ function ContentAdd() {
     ? contentType().contentBodySchema
     : [];
 
-  const [contentDetail, setContentDetail] =
-    useState<ContentDetail>(contentDetailDefault);
+  const [contentDetailForm, setContentDetailForm] = useState<ContentDetail>(
+    contentDetail.formDefault
+  );
 
-  const handleContentTypeChange = (contentType) => {
+  const handleContentTypeChange = (contentType: ContentType) => {
     const { contentTypeId, contentTypeName } = contentType;
 
-    setContentDetail((prevState) => ({
+    setContentDetailForm((prevState) => ({
       ...prevState,
       contentTypeId,
       contentTypeName,
@@ -64,14 +66,14 @@ function ContentAdd() {
     const key = event.target.name as keyof ContentDetail;
     const value = event.target.value;
 
-    setContentDetail((prevState) => ({
+    setContentDetailForm((prevState) => ({
       ...prevState,
       [key]: value,
     }));
   };
 
   const handleBodyChange = (key: string, value: string) => {
-    setContentDetail((prevState) => ({
+    setContentDetailForm((prevState) => ({
       ...prevState,
       body: { ...prevState.body, [key]: value },
     }));
@@ -79,7 +81,7 @@ function ContentAdd() {
 
   const onSubmit = async () => {
     try {
-      const res = await postContentTrigger(contentDetail)
+      const res = await postContentTrigger(contentDetailForm)
         .unwrap()
         .then((payload) => {
           alert(`성공 : ${payload.message}`);
@@ -162,12 +164,12 @@ function ContentAdd() {
                   <label>
                     <input
                       onChange={handleContentDetailChange}
-                      checked={contentDetail.status === "draft"}
+                      checked={contentDetailForm.status === "draft"}
                       type="radio"
                       name="status"
                       value="draft"
                       className={`p-4 ${
-                        contentDetail.status === "draft"
+                        contentDetailForm.status === "draft"
                           ? "bg-primary"
                           : "bg-secondary"
                       }`}
@@ -178,12 +180,12 @@ function ContentAdd() {
                   <label>
                     <input
                       onChange={handleContentDetailChange}
-                      checked={contentDetail.status === "publish"}
+                      checked={contentDetailForm.status === "publish"}
                       type="radio"
                       name="status"
                       value="publish"
                       className={`p-4 ${
-                        contentDetail.status === "publish"
+                        contentDetailForm.status === "publish"
                           ? "bg-primary"
                           : "bg-secondary"
                       }`}
@@ -194,13 +196,13 @@ function ContentAdd() {
 
                 <div>
                   <label htmlFor="title">
-                    createdAt : {contentDetail.createdAt}
+                    createdAt : {contentDetailForm.createdAt}
                   </label>
                 </div>
 
                 <div>
                   <label htmlFor="title">
-                    updatedAt : {contentDetail.updatedAt}
+                    updatedAt : {contentDetailForm.updatedAt}
                   </label>
                 </div>
               </fieldset>

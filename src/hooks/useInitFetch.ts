@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "api/api_rtk";
-import { ContentMeta, ContentType, ID } from "types/common";
+import { ContentDetail, ContentMeta, ContentType, ID } from "types/common";
 function useInitFetch() {
   /* core parameter */
   const [contentTypeId, setcontentTypeId] = useState<ID>();
@@ -89,7 +89,7 @@ function useInitFetch() {
         status: "draft",
         body: {},
         tags: [],
-      },
+      } as ContentDetail,
     },
   };
 }
