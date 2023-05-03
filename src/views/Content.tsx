@@ -71,6 +71,7 @@ function Content() {
           <>
             <Pagination
               page={page}
+              totalPage={contentList.data.totalPage}
               setPage={setPage}
               limit={limit}
               setLimit={setLimit}
