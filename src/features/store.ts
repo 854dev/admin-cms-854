@@ -4,8 +4,16 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import api from "api/api_rtk";
 import accountSlice from "./accountSlice";
 
-import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 
 const reducer = combineReducers({
   // Add the generated reducer as a specific top-level slice
@@ -25,7 +33,11 @@ const store = configureStore({
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(api.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
