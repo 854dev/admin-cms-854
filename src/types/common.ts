@@ -3,6 +3,23 @@ export type contentMetaStatus = "draft" | "publish";
 export type schemaType = "string" | "number" | "boolean" | "text";
 export type ID = number;
 
+export interface User {
+  id: ID;
+  username: string; // "aaaa@studio854.com";
+  nickname?: string; // null;
+  firstName?: string; // "master";
+  lastName?: string; // "admin";
+  role: string; // "admin";
+  createdAt: string; // "2023-05-04T13:15:45.224Z";
+  updatedAt: string; // "2023-05-04T13:15:45.224Z";
+  deletedAt?: string; //null;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: User;
+}
+
 export interface MessageResponse {
   status?: number;
   message: string;

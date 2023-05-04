@@ -1,5 +1,10 @@
 import { schemaType, ContentBody, ContentMeta, ID, ContentTag } from "./common";
 
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
 export interface PagedRequest {
   page: number;
   limit: number;
