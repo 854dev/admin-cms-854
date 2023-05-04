@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import LayoutDefault from "layouts/Default";
 
-import useInitFetch from "hooks/useInitFetch";
+import Login from "views/Login";
 
 const Dashboard = lazy(() => import("views/Dashboard"));
 const ContentType = lazy(() => import("views/ContentType"));
@@ -11,10 +11,17 @@ const ContentDetail = lazy(() => import("views/ContentDetail"));
 const ContentAdd = lazy(() => import("views/ContentAdd"));
 
 export const route = {
-  dashboard: {
+  login: {
     path: "",
-    element: <Dashboard />,
+    element: <Login />,
     absPath: "/admin",
+    isNav: true,
+  },
+
+  dashboard: {
+    path: "dashboard",
+    element: <Dashboard />,
+    absPath: "/admin/dashboard",
     isNav: true,
   },
   content: {
