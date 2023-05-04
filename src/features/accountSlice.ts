@@ -20,7 +20,7 @@ const userSlice = createSlice({
       state.user = action.payload.user;
     },
     resetUser: (state) => {
-      state.token = "";
+      state.token = null;
       state.user = null;
     },
   },
