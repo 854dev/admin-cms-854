@@ -44,9 +44,6 @@ export const route = {
 };
 
 const Router = () => {
-  /** 접속 path에 관계없이 api 초기화를 한번은 호출해야 함 */
-  const { contentTypeList } = useInitFetch();
-
   return (
     <BrowserRouter>
       <Routes>
