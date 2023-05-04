@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "api/api_rtk";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "features/accountSlice";
+import { setUser, resetUser } from "features/accountSlice";
 import { useNavigate } from "react-router-dom";
 import { route } from "routes";
 import { RootState } from "features/store";
@@ -35,10 +35,26 @@ const Login = () => {
     }
   };
 
+  /** 로그아웃 처리 */
+  const handleLogout = () => {
+    // 토큰, 사용자정보 비우기
+    dispatch(resetUser());
+
+    // 스토리지 비우기
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+
+    // 로그인 페이지로
+    window.location.href = route.login.path;
+  };
+
   return (
     <div className="is-full-width flex flex-row justify-center items-center">
       {account.user ? (
-        <div>현재 로그인 중 : {account.user.username}</div>
+        <div>
+          현재 로그인 중 : {account.user.username}
+          <button onClick={handleLogout}>로그아웃</button>
+        </div>
       ) : (
         <></>
       )}
