@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "features/store";
 import * as common from "types/common";
 import * as dto from "types/dto";
 
@@ -7,9 +8,30 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_REACT_APP_BACKEND_URL,
     mode: "cors",
+    prepareHeaders: (headers, baseQueryApi) => {
+      // getState() 함수를 이용하여 리덕스 스토어에서 로그인 여부 등을 조회하여
+      // 필요한 경우에만 JWT 헤더를 추가합니다.
+      const state = baseQueryApi.getState() as RootState;
+      const token = state.account.token;
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
+
   tagTypes: ["ContentType", "ContentBodySchema", "Content", "Tag"],
+
   endpoints: (builder) => ({
+    postLogin: builder.mutation({
+      query: (req: dto.LoginRequest) => ({
+        method: "post",
+        url: "auth/login",
+        body: req,
+      }),
+      transformResponse: (response: common.LoginResponse) => response,
+    }),
+
     getContentList: builder.query({
       query: (req: dto.PagedRequest) => ({
         method: "get",
