@@ -1,13 +1,17 @@
 import { useState } from "react";
 import api from "api/api_rtk";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "features/accountSlice";
 import { useNavigate } from "react-router-dom";
 import { route } from "routes";
+import { RootState } from "features/store";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const account = useSelector((state: RootState) => {
+    return state.account;
+  });
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +37,13 @@ const Login = () => {
 
   return (
     <div className="is-full-width flex flex-row justify-center items-center">
-      <form onSubmit={handleSubmit}>
+      {account.user ? (
+        <div>현재 로그인 중 : {account.user.username}</div>
+      ) : (
+        <></>
+      )}
+
+      <form onSubmit={handleSubmit} hidden={account.user !== null}>
         <h1>Log in</h1>
         <div className="mb-4">
           <label htmlFor="email">Email</label>
