@@ -1,14 +1,27 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from "@reduxjs/toolkit/query";
 import api from "api/api_rtk";
 import accountSlice from "./accountSlice";
+
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const reducer = combineReducers({
+  // Add the generated reducer as a specific top-level slice
+  [api.reducerPath]: api.reducer,
+  account: accountSlice,
+});
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
 const store = configureStore({
-  reducer: {
-    // Add the generated reducer as a specific top-level slice
-    [api.reducerPath]: api.reducer,
-    account: accountSlice,
-  },
+  reducer: persistedReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
