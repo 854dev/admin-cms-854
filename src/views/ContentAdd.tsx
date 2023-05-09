@@ -1,30 +1,12 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactQuill from "react-quill";
 
-import {
-  ContentBodySchema,
-  ContentDetail,
-  ContentType,
-  ID,
-} from "types/common";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ContentDetail, ContentType } from "types/common";
+import { useNavigate } from "react-router-dom";
 import api from "api/api_rtk";
 import useInitFetch from "hooks/useInitFetch";
 import ContentTypeSelect from "./components/ContentTypeSelect";
 import { route } from "routes";
-
-const contentDetailDefault: ContentDetail = {
-  title: "",
-  contentTypeId: -1,
-  contentTypeName: "",
-  creator: "",
-  createdAt: "-",
-  updatedAt: "-",
-  deletedAt: "",
-  status: "draft",
-  body: {},
-  tags: [],
-};
 
 function ContentAdd() {
   const navigate = useNavigate();
@@ -34,7 +16,7 @@ function ContentAdd() {
     contentDetail,
   } = useInitFetch();
 
-  const [postContentTrigger, postContentResult] = api.usePostContentMutation();
+  const [postContentTrigger] = api.usePostContentMutation();
 
   const contentType = contentTypeList.findContentType(contentTypeId);
 
@@ -75,7 +57,7 @@ function ContentAdd() {
 
   const onSubmit = async () => {
     try {
-      const res = await postContentTrigger(contentDetailForm)
+      await postContentTrigger(contentDetailForm)
         .unwrap()
         .then((payload) => {
           alert(`성공 : ${payload.message}`);
@@ -120,7 +102,7 @@ function ContentAdd() {
 
               <hr />
 
-              <fieldset disabled={!!!contentTypeId}>
+              <fieldset disabled={!contentTypeId}>
                 {/* content meta */}
                 <div>
                   <label htmlFor="title">Title</label>
@@ -244,7 +226,7 @@ function ContentAdd() {
         </div>
 
         <div className="my-1 text-right">
-          <button disabled={!!!contentTypeId} onClick={onSubmit} name="submit">
+          <button disabled={!contentTypeId} onClick={onSubmit} name="submit">
             Submit
           </button>
         </div>
