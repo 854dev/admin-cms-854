@@ -23,7 +23,7 @@ export interface CreateContentTypeDto {
 
 export interface CreateContentDto extends ContentMeta {
   body: ContentBody;
-  tags: TagDto[];
+  tags?: TagDto[];
 }
 
 export interface UpdateContentDto extends CreateContentDto {
