@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactQuill from "react-quill";
 
 import { ContentDetail, ContentType } from "types/common";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +6,7 @@ import api from "api/api_rtk";
 import useInitFetch from "hooks/useInitFetch";
 import ContentTypeSelect from "./components/ContentTypeSelect";
 import ContentMetaEdit from "./components/ContentMetaEdit";
+import ContentBodyEdit from "./components/ContentBodyEdit";
 import { route } from "routes";
 
 function ContentAdd() {
@@ -86,19 +86,17 @@ function ContentAdd() {
           <div>
             <div>
               <fieldset>
-                <div>
-                  <label htmlFor="contentTypeSelect">콘텐츠 타입 선택</label>
+                <label htmlFor="contentTypeSelect">콘텐츠 타입 선택</label>
 
-                  {/* content type Select */}
-                  <ContentTypeSelect
-                    contentTypeId={contentTypeId}
-                    setcontentTypeId={setcontentTypeId}
-                    contentTypeList={
-                      contentTypeList.data ? contentTypeList.data : []
-                    }
-                    onChange={handleContentTypeChange}
-                  />
-                </div>
+                {/* content type Select */}
+                <ContentTypeSelect
+                  contentTypeId={contentTypeId}
+                  setcontentTypeId={setcontentTypeId}
+                  contentTypeList={
+                    contentTypeList.data ? contentTypeList.data : []
+                  }
+                  onChange={handleContentTypeChange}
+                />
               </fieldset>
 
               <hr />
@@ -112,41 +110,10 @@ function ContentAdd() {
               <hr />
 
               {/* content body */}
-              <div>
-                {contentBodySchema.map((elem) => {
-                  return (
-                    <React.Fragment key={elem.schemaName}>
-                      <label htmlFor="title">{elem.schemaName}</label>
-
-                      {elem.schemaType === "string" ? (
-                        <input
-                          id={elem.schemaName}
-                          name={elem.schemaName}
-                          type="text"
-                          onChange={(e) => {
-                            handleBodyChange(
-                              elem.schemaName,
-                              e.currentTarget.value
-                            );
-                          }}
-                        />
-                      ) : null}
-
-                      {elem.schemaType === "text" ? (
-                        <ReactQuill
-                          theme="snow"
-                          className="bg-white react-quill-editor"
-                          onChange={(content, delta, source, editor) => {
-                            handleBodyChange(elem.schemaName, editor.getHTML());
-                          }}
-                        ></ReactQuill>
-                      ) : null}
-
-                      <hr />
-                    </React.Fragment>
-                  );
-                })}
-              </div>
+              <ContentBodyEdit
+                contentBodySchema={contentBodySchema}
+                handleBodyChange={handleBodyChange}
+              ></ContentBodyEdit>
             </div>
           </div>
         </div>
