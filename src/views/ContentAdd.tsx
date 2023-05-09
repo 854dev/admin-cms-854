@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import api from "api/api_rtk";
 import useInitFetch from "hooks/useInitFetch";
 import ContentTypeSelect from "./components/ContentTypeSelect";
+import ContentMetaEdit from "./components/ContentMetaEdit";
 import { route } from "routes";
 
 function ContentAdd() {
@@ -102,86 +103,11 @@ function ContentAdd() {
 
               <hr />
 
-              <fieldset disabled={!contentTypeId}>
-                {/* content meta */}
-                <div>
-                  <label htmlFor="title">Title</label>
-                  <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    onChange={handleContentDetailChange}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="creator">Creator</label>
-                  <input
-                    id="creator"
-                    name="creator"
-                    type="text"
-                    onChange={handleContentDetailChange}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description">Description</label>
-                  <input
-                    id="description"
-                    name="description"
-                    type="text"
-                    onChange={handleContentDetailChange}
-                  />
-                </div>
-
-                <div className="p-4">
-                  <label className="block mb-2" htmlFor="status">
-                    Status
-                  </label>
-
-                  <label>
-                    <input
-                      onChange={handleContentDetailChange}
-                      checked={contentDetailForm.status === "draft"}
-                      type="radio"
-                      name="status"
-                      value="draft"
-                      className={`p-4 ${
-                        contentDetailForm.status === "draft"
-                          ? "bg-primary"
-                          : "bg-secondary"
-                      }`}
-                    ></input>
-                    draft
-                  </label>
-
-                  <label>
-                    <input
-                      onChange={handleContentDetailChange}
-                      checked={contentDetailForm.status === "publish"}
-                      type="radio"
-                      name="status"
-                      value="publish"
-                      className={`p-4 ${
-                        contentDetailForm.status === "publish"
-                          ? "bg-primary"
-                          : "bg-secondary"
-                      }`}
-                    ></input>
-                    publish
-                  </label>
-                </div>
-
-                <div>
-                  <label htmlFor="title">
-                    createdAt : {contentDetailForm.createdAt}
-                  </label>
-                </div>
-
-                <div>
-                  <label htmlFor="title">
-                    updatedAt : {contentDetailForm.updatedAt}
-                  </label>
-                </div>
-              </fieldset>
+              <ContentMetaEdit
+                disabled={!contentTypeId}
+                contentDetailForm={contentDetailForm}
+                onContentDetailChange={handleContentDetailChange}
+              ></ContentMetaEdit>
 
               <hr />
 
