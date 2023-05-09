@@ -23,16 +23,13 @@ export interface CreateContentTypeDto {
 
 export interface CreateContentDto extends ContentMeta {
   body: ContentBody;
+  tags: TagDto[];
 }
 
 export interface UpdateContentDto extends CreateContentDto {
   contentId: ID;
 }
 
-export interface CreateTagDto {
-  name: string; // '하이';
-}
-
-export interface UpdateTagDto extends CreateTagDto {
-  tagId: ID; // 1
+export interface TagDto {
+  name: string; // '하이' 'category:topic';
 }
