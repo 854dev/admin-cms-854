@@ -22,7 +22,11 @@ export interface LoginResponse {
   user: User;
 }
 
-export interface TokenValidateResponse {}
+export interface TokenValidateResponse {
+  exp: number;
+  iat: number;
+  id: number;
+}
 
 export interface MessageResponse {
   status?: number;

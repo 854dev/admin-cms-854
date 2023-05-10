@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser, resetUser } from "features/accountSlice";
 import { useNavigate } from "react-router-dom";
 import { route } from "routes";
-import { RootState } from "features/store";
+import useTokenValidate from "hooks/useTokenValidate";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const account = useSelector((state: RootState) => {
-    return state.account;
-  });
+
+  const { isValid, logout, account } = useTokenValidate(true);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,25 +34,12 @@ const Login = () => {
     }
   };
 
-  /** 로그아웃 처리 */
-  const handleLogout = () => {
-    // 토큰, 사용자정보 비우기
-    dispatch(resetUser());
-
-    // 스토리지 비우기
-    window.localStorage.clear();
-    window.sessionStorage.clear();
-
-    // 로그인 페이지로
-    window.location.href = route.login.path;
-  };
-
   return (
     <div className="is-full-width flex flex-row justify-center items-center">
-      {account.user ? (
+      {isValid && account.user ? (
         <div>
           현재 로그인 중 : {account.user.username}
-          <button onClick={handleLogout}>로그아웃</button>
+          <button onClick={logout}>로그아웃</button>
         </div>
       ) : (
         <></>

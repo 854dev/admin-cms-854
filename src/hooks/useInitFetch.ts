@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "api/api_rtk";
 import { ContentDetail, ID } from "types/common";
-function useInitFetch() {
+
+/**
+ * useInitFetch
+ * @param enabled : 전체 페칭을 처리할지 말지 결정
+ * @returns
+ */
+function useInitFetch(disabled?: boolean) {
   /* core parameter */
   const [contentTypeId, setcontentTypeId] = useState<ID>();
   const [contentId, setcontentId] = useState<ID>();
@@ -17,10 +23,23 @@ function useInitFetch() {
     api.useLazyGetContentDetailQuery();
 
   // CONTENT TYPE
-  const { data: contentTypeListData } = api.useGetContentTypeListQuery({
-    page: 1,
-    limit: 50,
-  });
+  const [contentTypeFetch, contentTypeResponse] =
+    api.useLazyGetContentTypeListQuery();
+
+  /* contentTypeFetch : 이후 API 호출 전 호출 */
+  useEffect(() => {
+    if (!disabled) {
+      contentTypeFetch({
+        page: 1,
+        limit: 50,
+      })
+        .unwrap()
+        .then(() => {
+          return;
+        });
+      return;
+    }
+  }, []);
 
   /* contentListFetch */
   useEffect(() => {
@@ -62,11 +81,10 @@ function useInitFetch() {
       setLimit,
     },
     contentTypeList: {
-      data: contentTypeListData?.data,
+      data: contentTypeResponse?.data?.data,
       findContentType: (id?: ID) => {
-        if (!contentTypeListData || !id) return;
-
-        return contentTypeListData?.data.find(
+        if (!contentTypeResponse.data || !id) return;
+        return contentTypeResponse.data.data.find(
           (elem) => elem.contentTypeId === id
         );
       },
