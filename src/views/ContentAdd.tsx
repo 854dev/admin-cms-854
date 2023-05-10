@@ -37,17 +37,6 @@ function ContentAdd() {
     }));
   };
 
-  const getKeyValueFromInputChangeEvent = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const key = event.target.name as keyof ContentDetail;
-    const value = event.target.value;
-    return {
-      key,
-      value,
-    };
-  };
-
   const handleContentDetailChange = (
     key: keyof ContentDetail,
     value: ValueOf<ContentDetail>
@@ -56,22 +45,6 @@ function ContentAdd() {
       ...prevState,
       [key]: value,
     }));
-  };
-
-  const parseUniqueTags = (commaString: string) => {
-    const tags = commaString.split(",").map((name) => {
-      return {
-        name,
-      };
-    });
-
-    const uniqueTags = [...new Set(tags.map((tag) => tag.name))].map(
-      (name) => ({
-        name,
-      })
-    );
-
-    return uniqueTags;
   };
 
   const handleBodyChange = (key: string, value: string) => {
@@ -129,12 +102,7 @@ function ContentAdd() {
               <ContentMetaEdit
                 disabled={!contentTypeId}
                 contentDetailForm={contentDetailForm}
-                onContentDetailChange={(e) => {
-                  const { key, value } = getKeyValueFromInputChangeEvent(e);
-                  if (key === "tags") {
-                    handleContentDetailChange(key, parseUniqueTags(value));
-                  }
-
+                onContentDetailChange={(key, value) => {
                   handleContentDetailChange(key, value);
                 }}
               ></ContentMetaEdit>

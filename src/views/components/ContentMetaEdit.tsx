@@ -29,9 +29,9 @@ function ContentMetaEdit(props: Props) {
       event.preventDefault();
       const newTag = { name: tagInput.trim() };
       if (newTag.name && !tags.find((tag) => tag.name === newTag.name)) {
-        setTagInput("");
-        onContentDetailChange(e);
+        onContentDetailChange("tags", [...tags, newTag]);
       }
+      setTagInput("");
     }
   };
 
@@ -39,8 +39,7 @@ function ContentMetaEdit(props: Props) {
     const { tags } = contentDetailForm;
     if (!tags) return;
     const updatedTags = tags.filter((tag) => tag.name !== tagName);
-    console.log(updatedTags);
-    // onContentDetailChange("tags", uniqueTags);
+    onContentDetailChange("tags", updatedTags);
   };
 
   const getKeyValueFromInputChangeEvent = (
@@ -149,14 +148,18 @@ function ContentMetaEdit(props: Props) {
             className={`p-4`}
             onKeyDown={handleTagKeydown}
           ></input>
-          <ul>
+          <div className="p-4">
             {contentDetailForm.tags?.map((elem) => (
-              <li key={elem.name}>
+              <button
+                className="p-2 m-2"
+                key={elem.name}
+                onClick={() => handleRemoveTag(elem.name)}
+              >
                 {elem.name}
-                <button onClick={() => handleRemoveTag(elem.name)}>X</button>
-              </li>
+                <span className="p-2 text-error">X</span>
+              </button>
             ))}
-          </ul>
+          </div>
         </label>
       </div>
 
