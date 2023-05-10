@@ -1,17 +1,13 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
-import ReactQuill from "react-quill";
+import React, { useEffect, useState } from "react";
 
-import {
-  ContentBodySchema,
-  ContentDetail,
-  ContentType,
-  ID,
-} from "types/common";
+import { ContentDetail, ContentType, ValueOf } from "types/common";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "api/api_rtk";
 import useInitFetch from "hooks/useInitFetch";
 import ContentTypeSelect from "./components/ContentTypeSelect";
 import { route } from "routes";
+import ContentMetaEdit from "./components/ContentMetaEdit";
+import ContentBodyEdit from "./components/ContentBodyEdit";
 
 function ContentDetailPage() {
   const param = useParams();
@@ -33,8 +29,6 @@ function ContentDetailPage() {
 
   const contentTypeId = contentDetailData?.contentTypeId;
 
-  const contentTypeName = contentDetailData?.contentTypeName;
-
   const contentBodySchema = contentTypeList.findContentType(
     contentDetailData?.contentTypeId
   )?.contentBodySchema;
@@ -54,11 +48,9 @@ function ContentDetailPage() {
   };
 
   const handleContentDetailChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    key: keyof ContentDetail,
+    value: ValueOf<ContentDetail>
   ) => {
-    const key = event.target.name as keyof ContentDetail;
-    const value = event.target.value;
-
     setContentDetailForm((prevState) => ({
       ...prevState,
       [key]: value,
@@ -136,134 +128,22 @@ function ContentDetailPage() {
 
               <hr />
 
-              <fieldset>
-                {/* content meta */}
-                <div>
-                  <label htmlFor="title">Title</label>
-                  <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    onChange={handleContentDetailChange}
-                    value={contentDetailForm.title}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="creator">Creator</label>
-                  <input
-                    id="creator"
-                    name="creator"
-                    type="text"
-                    onChange={handleContentDetailChange}
-                    value={contentDetailForm.creator}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description">Description</label>
-                  <input
-                    id="description"
-                    name="description"
-                    type="text"
-                    onChange={handleContentDetailChange}
-                    value={contentDetailForm.description}
-                  />
-                </div>
-
-                <div className="p-4">
-                  <label className="block mb-2" htmlFor="status">
-                    Status
-                  </label>
-
-                  <label>
-                    <input
-                      onChange={handleContentDetailChange}
-                      checked={contentDetailForm.status === "draft"}
-                      type="radio"
-                      name="status"
-                      value="draft"
-                      className={`p-4 ${
-                        contentDetailForm.status === "draft"
-                          ? "bg-primary"
-                          : "bg-secondary"
-                      }`}
-                    ></input>
-                    draft
-                  </label>
-
-                  <label>
-                    <input
-                      onChange={handleContentDetailChange}
-                      checked={contentDetailForm.status === "publish"}
-                      type="radio"
-                      name="status"
-                      value="publish"
-                      className={`p-4 ${
-                        contentDetailForm.status === "publish"
-                          ? "bg-primary"
-                          : "bg-secondary"
-                      }`}
-                    ></input>
-                    publish
-                  </label>
-                </div>
-
-                <div>
-                  <label htmlFor="title">
-                    createdAt : {contentDetailForm.createdAt}
-                  </label>
-                </div>
-
-                <div>
-                  <label htmlFor="title">
-                    updatedAt : {contentDetailForm.updatedAt}
-                  </label>
-                </div>
-              </fieldset>
+              <ContentMetaEdit
+                disabled={!contentTypeId}
+                contentDetailForm={contentDetailForm}
+                onContentDetailChange={(key, value) => {
+                  handleContentDetailChange(key, value);
+                }}
+              ></ContentMetaEdit>
 
               <hr />
 
               {/* content body */}
               {contentBodySchema ? (
-                <div>
-                  {contentBodySchema.map((elem) => {
-                    return (
-                      <React.Fragment key={elem.schemaName}>
-                        <label htmlFor="title">{elem.schemaName}</label>
-
-                        {elem.schemaType === "string" ? (
-                          <input
-                            id={elem.schemaName}
-                            name={elem.schemaName}
-                            type="text"
-                            value={contentDetailForm.body[elem.schemaName]}
-                            onChange={(e) => {
-                              handleBodyChange(
-                                elem.schemaName,
-                                e.currentTarget.value
-                              );
-                            }}
-                          />
-                        ) : null}
-
-                        {elem.schemaType === "text" ? (
-                          <ReactQuill
-                            theme="snow"
-                            className="bg-white react-quill-editor"
-                            value={contentDetailForm.body[elem.schemaName]}
-                            onChange={(content, delta, source, editor) => {
-                              handleBodyChange(
-                                elem.schemaName,
-                                editor.getHTML()
-                              );
-                            }}
-                          ></ReactQuill>
-                        ) : null}
-
-                        <hr />
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
+                <ContentBodyEdit
+                  contentBodySchema={contentBodySchema}
+                  handleBodyChange={handleBodyChange}
+                ></ContentBodyEdit>
               ) : null}
             </div>
           </div>
