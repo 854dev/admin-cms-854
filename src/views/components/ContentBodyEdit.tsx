@@ -1,14 +1,15 @@
 import React from "react";
 import ReactQuill from "react-quill";
-import { ContentBodySchema } from "types/common";
+import { ContentBodySchema, ContentDetail } from "types/common";
 
 interface Props {
+  contentDetail: ContentDetail;
   contentBodySchema: ContentBodySchema[];
   handleBodyChange: (key: string, value: string) => void;
 }
 
 function ContentBodyEdit(props: Props) {
-  const { contentBodySchema, handleBodyChange } = props;
+  const { contentBodySchema, handleBodyChange, contentDetail } = props;
 
   return (
     <div>
@@ -22,6 +23,7 @@ function ContentBodyEdit(props: Props) {
                 id={elem.schemaName}
                 name={elem.schemaName}
                 type="text"
+                value={contentDetail.body[elem.schemaName]}
                 onChange={(e) => {
                   handleBodyChange(elem.schemaName, e.currentTarget.value);
                 }}
@@ -32,6 +34,7 @@ function ContentBodyEdit(props: Props) {
               <ReactQuill
                 theme="snow"
                 className="bg-white react-quill-editor"
+                value={contentDetail.body[elem.schemaName]}
                 onChange={(content, delta, source, editor) => {
                   handleBodyChange(elem.schemaName, editor.getHTML());
                 }}

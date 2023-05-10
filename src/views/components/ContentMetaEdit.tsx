@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ContentDetail } from "types/common";
+import { ContentDetail, ValueOf } from "types/common";
 
 interface Props {
   disabled: boolean;

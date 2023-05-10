@@ -141,6 +141,7 @@ function ContentDetailPage() {
               {/* content body */}
               {contentBodySchema ? (
                 <ContentBodyEdit
+                  contentDetail={contentDetailForm}
                   contentBodySchema={contentBodySchema}
                   handleBodyChange={handleBodyChange}
                 ></ContentBodyEdit>

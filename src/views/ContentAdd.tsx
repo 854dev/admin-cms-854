@@ -111,6 +111,7 @@ function ContentAdd() {
 
               {/* content body */}
               <ContentBodyEdit
+                contentDetail={contentDetailForm}
                 contentBodySchema={contentBodySchema}
                 handleBodyChange={handleBodyChange}
               ></ContentBodyEdit>
