@@ -32,6 +32,14 @@ const api = createApi({
       transformResponse: (response: common.LoginResponse) => response,
     }),
 
+    postTokenValidate: builder.mutation({
+      query: () => ({
+        method: "post",
+        url: `auth/validate-token/`,
+      }),
+      transformResponse: (response: common.TokenValidateResponse) => response,
+    }),
+
     getContentList: builder.query({
       query: (req: dto.PagedRequest) => ({
         method: "get",

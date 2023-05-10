@@ -22,6 +22,8 @@ export interface LoginResponse {
   user: User;
 }
 
+export interface TokenValidateResponse {}
+
 export interface MessageResponse {
   status?: number;
   message: string;
