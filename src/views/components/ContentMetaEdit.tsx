@@ -62,6 +62,7 @@ function ContentMetaEdit(props: Props) {
           id="title"
           name="title"
           type="text"
+          value={contentDetailForm.title}
           onChange={(e) => {
             const { key, value } = getKeyValueFromInputChangeEvent(e);
             onContentDetailChange(key, value);
@@ -74,6 +75,7 @@ function ContentMetaEdit(props: Props) {
           id="creator"
           name="creator"
           type="text"
+          value={contentDetailForm.creator}
           onChange={(e) => {
             const { key, value } = getKeyValueFromInputChangeEvent(e);
             onContentDetailChange(key, value);
@@ -86,6 +88,7 @@ function ContentMetaEdit(props: Props) {
           id="description"
           name="description"
           type="text"
+          value={contentDetailForm.description}
           onChange={(e) => {
             const { key, value } = getKeyValueFromInputChangeEvent(e);
             onContentDetailChange(key, value);
