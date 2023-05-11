@@ -10,7 +10,7 @@ const LayoutDefault = () => {
   useInitFetch(isValid !== "VALID");
 
   useEffect(() => {
-    if (!isValid) {
+    if (isValid === "INVALID") {
       logout();
     }
   }, [isValid]);
