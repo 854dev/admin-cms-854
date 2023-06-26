@@ -2,7 +2,7 @@ export type ValueOf<T> = T[keyof T];
 
 export type contentMetaDate = string | null; // "2023-02-16T04:48:28.000Z",
 export type contentMetaStatus = "draft" | "publish";
-export type schemaType = "string" | "number" | "boolean" | "text";
+export type schemaType = "string" | "number" | "boolean" | "text" | "markdown";
 export type ID = number;
 
 export interface User {
