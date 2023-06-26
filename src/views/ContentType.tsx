@@ -240,26 +240,28 @@ function FormBodyField(props: { contentTypeId: ID }) {
 
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row justify-between gap-4">
-                    {(["string", "text"] as schemaType[]).map((elem) => {
-                      return (
-                        <button
-                          key={elem}
-                          className={`${
-                            postBodyFieldDto.schemaType === elem
-                              ? "bg-primary"
-                              : "bg-gray-200"
-                          } text-sm`}
-                          onClick={() => {
-                            setPostBodyFieldDto({
-                              ...postBodyFieldDto,
-                              schemaType: elem,
-                            });
-                          }}
-                        >
-                          {elem}
-                        </button>
-                      );
-                    })}
+                    {(["string", "text", "markdown"] as schemaType[]).map(
+                      (elem) => {
+                        return (
+                          <button
+                            key={elem}
+                            className={`${
+                              postBodyFieldDto.schemaType === elem
+                                ? "bg-primary"
+                                : "bg-gray-200"
+                            } text-sm`}
+                            onClick={() => {
+                              setPostBodyFieldDto({
+                                ...postBodyFieldDto,
+                                schemaType: elem,
+                              });
+                            }}
+                          >
+                            {elem}
+                          </button>
+                        );
+                      }
+                    )}
                   </div>
                   <button className="bg-primary" onClick={onClickAddField}>
                     필드 추가

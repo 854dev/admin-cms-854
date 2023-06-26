@@ -1,6 +1,7 @@
 import React from "react";
 import ReactQuill from "react-quill";
 import { ContentBodySchema, ContentDetail } from "types/common";
+import MDEditor from "@uiw/react-md-editor";
 
 interface Props {
   contentDetail: ContentDetail;
@@ -39,6 +40,17 @@ function ContentBodyEdit(props: Props) {
                   handleBodyChange(elem.schemaName, editor.getHTML());
                 }}
               ></ReactQuill>
+            ) : null}
+
+            {elem.schemaType === "markdown" ? (
+              <MDEditor
+                className="bg-white"
+                height={480}
+                value={contentDetail.body[elem.schemaName]}
+                onChange={(value) => {
+                  handleBodyChange(elem.schemaName, value ?? "");
+                }}
+              ></MDEditor>
             ) : null}
 
             <hr />
